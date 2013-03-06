@@ -3,9 +3,9 @@
 <head>
 	<title>Test Event Handling Performance</title>
 	<script src="benchmark.js"></script>
-	<script src="jquery-basis.js"></script>
+	<script src="EhQuery-basis.js"></script>
 	<script>var old = EhQuery.noConflict(true);</script>
-	<script src="../dist/jquery.js"></script>
+	<script src="../dist/EhQuery.js"></script>
 	<script>
 	var num = 400;
 
@@ -38,7 +38,7 @@
 
 		var curNum = (new Date).getTime() - s;
 
-		EhQuery("#num").text( old.fn.jquery + ": " + oldNum + " " + EhQuery.fn.jquery + ": " + curNum );
+		EhQuery("#num").text( old.fn.EhQuery + ": " + oldNum + " " + EhQuery.fn.EhQuery + ": " + curNum );
 	});
 
 	EhQuery(function(){
@@ -70,7 +70,7 @@
 
 		var curNum = (new Date).getTime() - s;
 
-		EhQuery("#num2").text( old.fn.jquery + ": " + oldNum + " " + EhQuery.fn.jquery + ": " + curNum );
+		EhQuery("#num2").text( old.fn.EhQuery + ": " + oldNum + " " + EhQuery.fn.EhQuery + ": " + curNum );
 	});
 	</script>
 	<style>p { position: absolute; top: 5px; left: 5px; }</style>

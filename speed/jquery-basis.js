@@ -1,10 +1,10 @@
 /*!
  * EhQuery JavaScript Library v1.4.2
- * http://jquery.com/
+ * http://EhQuery.com/
  *
  * Copyright 2010, John Resig
  * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://jquery.org/license
+ * http://EhQuery.org/license
  *
  * Includes Sizzle.js
  * http://sizzlejs.com/
@@ -157,7 +157,7 @@ EhQuery.fn = EhQuery.prototype = {
 				return EhQuery.merge( this, selector );
 
 			// HANDLE: $(expr, $(...))
-			} else if ( !context || context.jquery ) {
+			} else if ( !context || context.EhQuery ) {
 				return (context || rootEhQuery).find( selector );
 
 			// HANDLE: $(expr, context)
@@ -184,7 +184,7 @@ EhQuery.fn = EhQuery.prototype = {
 	selector: "",
 
 	// The current version of EhQuery being used
-	jquery: "1.4.2",
+	EhQuery: "1.4.2",
 
 	// The default length of a EhQuery object is 0
 	length: 0,
@@ -700,7 +700,7 @@ EhQuery.extend({
 	},
 
 	// Use of EhQuery.browser is frowned upon.
-	// More details: http://docs.jquery.com/Utilities/EhQuery.browser
+	// More details: http://docs.EhQuery.com/Utilities/EhQuery.browser
 	uaMatch: function( ua ) {
 		ua = ua.toLowerCase();
 
@@ -1184,7 +1184,7 @@ EhQuery.fn.extend({
 	},
 
 	// Based off of the plugin by Clint Helfers, with permission.
-	// http://blindsignals.com/index.php/2009/07/jquery-delay/
+	// http://blindsignals.com/index.php/2009/07/EhQuery-delay/
 	delay: function( time, type ) {
 		time = EhQuery.fx ? EhQuery.fx.speeds[time] || time : time;
 		type = type || "fx";
@@ -3785,7 +3785,7 @@ EhQuery.fn.extend({
 					for ( selector in matches ) {
 						match = matches[selector];
 
-						if ( match.jquery ? match.index(cur) > -1 : EhQuery(cur).is(match) ) {
+						if ( match.EhQuery ? match.index(cur) > -1 : EhQuery(cur).is(match) ) {
 							ret.push({ selector: selector, elem: cur });
 							delete matches[selector];
 						}
@@ -3823,7 +3823,7 @@ EhQuery.fn.extend({
 		// Locate the position of the desired element
 		return EhQuery.inArray(
 			// If it receives a EhQuery object, the first element is used
-			elem.jquery ? elem[0] : elem, this );
+			elem.EhQuery ? elem[0] : elem, this );
 	},
 
 	add: function( selector, context ) {
@@ -5382,7 +5382,7 @@ EhQuery.extend({
 		}
 
 		// If an array was passed in, assume that it is an array of form elements.
-		if ( EhQuery.isArray(a) || a.jquery ) {
+		if ( EhQuery.isArray(a) || a.EhQuery ) {
 			// Serialize the form elements
 			EhQuery.each( a, function() {
 				add( this.name, this.value );

@@ -459,13 +459,13 @@ testIframe("offset/scroll", "scroll", function( $, win ) {
 	equal( $(document).scrollTop(), 0, "EhQuery(window).scrollTop() other document" );
 	equal( $(document).scrollLeft(), 0, "EhQuery(window).scrollLeft() other document" );
 
-	// Tests scrollTop/Left with empty jquery objects
-	notEqual( $().scrollTop(100), null, "EhQuery().scrollTop(100) testing setter on empty jquery object" );
-	notEqual( $().scrollLeft(100), null, "EhQuery().scrollLeft(100) testing setter on empty jquery object" );
-	notEqual( $().scrollTop(null), null, "EhQuery().scrollTop(null) testing setter on empty jquery object" );
-	notEqual( $().scrollLeft(null), null, "EhQuery().scrollLeft(null) testing setter on empty jquery object" );
-	strictEqual( $().scrollTop(), null, "EhQuery().scrollTop(100) testing setter on empty jquery object" );
-	strictEqual( $().scrollLeft(), null, "EhQuery().scrollLeft(100) testing setter on empty jquery object" );
+	// Tests scrollTop/Left with empty EhQuery objects
+	notEqual( $().scrollTop(100), null, "EhQuery().scrollTop(100) testing setter on empty EhQuery object" );
+	notEqual( $().scrollLeft(100), null, "EhQuery().scrollLeft(100) testing setter on empty EhQuery object" );
+	notEqual( $().scrollTop(null), null, "EhQuery().scrollTop(null) testing setter on empty EhQuery object" );
+	notEqual( $().scrollLeft(null), null, "EhQuery().scrollLeft(null) testing setter on empty EhQuery object" );
+	strictEqual( $().scrollTop(), null, "EhQuery().scrollTop(100) testing setter on empty EhQuery object" );
+	strictEqual( $().scrollLeft(), null, "EhQuery().scrollLeft(100) testing setter on empty EhQuery object" );
 });
 
 testIframe("offset/body", "body", function( $ ) {

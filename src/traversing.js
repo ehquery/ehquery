@@ -116,7 +116,7 @@ EhQuery.fn.extend({
 		return core_indexOf.call( this,
 
 			// If it receives a EhQuery object, the first element is used
-			elem.jquery ? elem[ 0 ] : elem
+			elem.EhQuery ? elem[ 0 ] : elem
 		);
 	},
 

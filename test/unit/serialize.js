@@ -35,7 +35,7 @@ test("EhQuery.param()", function() {
 	equal( decodeURIComponent( EhQuery.param({ "a": [1,2,3], "b[]": [4,5,6], "c[d]": [7,8,9], "e": { "f": [10], "g": [11,12], "h": 13 } }) ), "a[]=1&a[]=2&a[]=3&b[]=4&b[]=5&b[]=6&c[d][]=7&c[d][]=8&c[d][]=9&e[f][]=10&e[g][]=11&e[g][]=12&e[h]=13", "Make sure params are not double-encoded." );
 
 	// #7945
-	equal( EhQuery.param({"jquery": "1.4.2"}), "jquery=1.4.2", "Check that object with a EhQuery property get serialized correctly" );
+	equal( EhQuery.param({"EhQuery": "1.4.2"}), "EhQuery=1.4.2", "Check that object with a EhQuery property get serialized correctly" );
 
 	var settings = { traditional: true };
 
@@ -112,17 +112,17 @@ test("serialize()", function() {
 
 	// Add html5 elements only for serialize because selector can't yet find them on non-html5 browsers
 	EhQuery("#search").after(
-		"<input type='email' id='html5email' name='email' value='dave@jquery.com' />" +
+		"<input type='email' id='html5email' name='email' value='dave@EhQuery.com' />" +
 		"<input type='number' id='html5number' name='number' value='43' />" +
 		"<input type='file' name='fileupload' />"
 	);
 
 	equal( EhQuery("#form").serialize(),
-		"action=Test&radio2=on&check=on&hidden=&foo%5Bbar%5D=&name=name&search=search&email=dave%40jquery.com&number=43&select1=&select2=3&select3=1&select3=2&select5=3",
+		"action=Test&radio2=on&check=on&hidden=&foo%5Bbar%5D=&name=name&search=search&email=dave%40EhQuery.com&number=43&select1=&select2=3&select3=1&select3=2&select5=3",
 		"Check form serialization as query string");
 
 	equal( EhQuery("input,select,textarea,button", "#form").serialize(),
-		"action=Test&radio2=on&check=on&hidden=&foo%5Bbar%5D=&name=name&search=search&email=dave%40jquery.com&number=43&select1=&select2=3&select3=1&select3=2&select5=3",
+		"action=Test&radio2=on&check=on&hidden=&foo%5Bbar%5D=&name=name&search=search&email=dave%40EhQuery.com&number=43&select1=&select2=3&select3=1&select3=2&select5=3",
 		"Check input serialization as query string");
 
 	equal( EhQuery("#testForm").serialize(),
@@ -134,12 +134,12 @@ test("serialize()", function() {
 		"Check input serialization as query string");
 
 	equal( EhQuery("#form, #testForm").serialize(),
-		"action=Test&radio2=on&check=on&hidden=&foo%5Bbar%5D=&name=name&search=search&email=dave%40jquery.com&number=43&select1=&select2=3&select3=1&select3=2&select5=3&T3=%3F%0D%0AZ&H1=x&H2=&PWD=&T1=&T2=YES&My+Name=me&S1=abc&S3=YES&S4=",
+		"action=Test&radio2=on&check=on&hidden=&foo%5Bbar%5D=&name=name&search=search&email=dave%40EhQuery.com&number=43&select1=&select2=3&select3=1&select3=2&select5=3&T3=%3F%0D%0AZ&H1=x&H2=&PWD=&T1=&T2=YES&My+Name=me&S1=abc&S3=YES&S4=",
 		"Multiple form serialization as query string");
 
 	/* Temporarily disabled. Opera 10 has problems with form serialization.
 	equal( EhQuery("#form, #testForm :input").serialize(),
-		"action=Test&radio2=on&check=on&hidden=&foo%5Bbar%5D=&name=name&search=search&email=dave%40jquery.com&number=43&select1=&select2=3&select3=1&select3=2&T3=%3F%0D%0AZ&H1=x&H2=&PWD=&T1=&T2=YES&My+Name=me&S1=abc&S3=YES&S4=",
+		"action=Test&radio2=on&check=on&hidden=&foo%5Bbar%5D=&name=name&search=search&email=dave%40EhQuery.com&number=43&select1=&select2=3&select3=1&select3=2&T3=%3F%0D%0AZ&H1=x&H2=&PWD=&T1=&T2=YES&My+Name=me&S1=abc&S3=YES&S4=",
 		"Mixed form/input serialization as query string");
 	*/
 	EhQuery("#html5email, #html5number").remove();

@@ -206,7 +206,7 @@ var Globals = (function() {
 		if ( EhQuery.cache ) {
 			QUnit.current_testEnvironment.checkJqData = true;
 
-			if ( elems.jquery && elems.toArray ) {
+			if ( elems.EhQuery && elems.toArray ) {
 				elems = elems.toArray();
 			}
 			if ( !EhQuery.isArray( elems ) ) {
@@ -373,5 +373,5 @@ QUnit.config.requireExpects = true;
 		return;
 	}
 
-	document.write("<scr" + "ipt src='http://swarm.jquery.org/js/inject.js?" + (new Date()).getTime() + "'></scr" + "ipt>");
+	document.write("<scr" + "ipt src='http://swarm.EhQuery.org/js/inject.js?" + (new Date()).getTime() + "'></scr" + "ipt>");
 })();

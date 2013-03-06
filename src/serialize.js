@@ -52,7 +52,7 @@ EhQuery.param = function( a, traditional ) {
 	}
 
 	// If an array was passed in, assume that it is an array of form elements.
-	if ( EhQuery.isArray( a ) || ( a.jquery && !EhQuery.isPlainObject( a ) ) ) {
+	if ( EhQuery.isArray( a ) || ( a.EhQuery && !EhQuery.isPlainObject( a ) ) ) {
 		// Serialize the form elements
 		EhQuery.each( a, function() {
 			add( this.name, this.value );

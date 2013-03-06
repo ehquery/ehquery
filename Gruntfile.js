@@ -3,9 +3,9 @@ module.exports = function( grunt ) {
 	"use strict";
 
 	var distpaths = [
-			"dist/jquery.js",
-			"dist/jquery.min.map",
-			"dist/jquery.min.js"
+			"dist/EhQuery.js",
+			"dist/EhQuery.min.map",
+			"dist/EhQuery.min.js"
 		],
 		readOptionalJSON = function( filepath ) {
 			var data = {};
@@ -23,12 +23,12 @@ module.exports = function( grunt ) {
 		},
 		selector: {
 			destFile: "src/selector-sizzle.js",
-			apiFile: "src/sizzle-jquery.js",
+			apiFile: "src/sizzle-EhQuery.js",
 			srcFile: "src/sizzle/sizzle.js"
 		},
 		build: {
 			all:{
-				dest: "dist/jquery.js",
+				dest: "dist/EhQuery.js",
 				src: [
 					"src/intro.js",
 					"src/core.js",
@@ -62,7 +62,7 @@ module.exports = function( grunt ) {
 
 		jshint: {
 			dist: {
-				src: [ "dist/jquery.js" ],
+				src: [ "dist/EhQuery.js" ],
 				options: {
 					jshintrc: "src/.jshintrc"
 				}
@@ -95,11 +95,11 @@ module.exports = function( grunt ) {
 		uglify: {
 			all: {
 				files: {
-					"dist/jquery.min.js": [ "dist/jquery.js" ]
+					"dist/EhQuery.min.js": [ "dist/EhQuery.js" ]
 				},
 				options: {
-					banner: "/*! EhQuery v<%= pkg.version %> | (c) 2005, 2013 EhQuery Foundation, Inc. | jquery.org/license */",
-					sourceMap: "dist/jquery.min.map",
+					banner: "/*! EhQuery v<%= pkg.version %> | (c) 2005, 2013 EhQuery Foundation, Inc. | EhQuery.org/license */",
+					sourceMap: "dist/EhQuery.min.map",
 					beautify: {
 						ascii_only: true
 					}
@@ -113,14 +113,14 @@ module.exports = function( grunt ) {
 			testswarm = require( "testswarm" ),
 			testUrls = [],
 			pull = /PR-(\d+)/.exec( commit ),
-			config = grunt.file.readJSON( configFile ).jquery,
+			config = grunt.file.readJSON( configFile ).EhQuery,
 			tests = grunt.config([ this.name, "tests" ]);
 
 		if ( pull ) {
-			jobName = "EhQuery pull <a href='https://github.com/jquery/jquery/pull/" +
+			jobName = "EhQuery pull <a href='https://github.com/EhQuery/EhQuery/pull/" +
 				pull[ 1 ] + "'>#" + pull[ 1 ] + "</a>";
 		} else {
-			jobName = "EhQuery commit #<a href='https://github.com/jquery/jquery/commit/" +
+			jobName = "EhQuery commit #<a href='https://github.com/EhQuery/EhQuery/commit/" +
 				commit + "'>" + commit.substr( 0, 10 ) + "</a>";
 		}
 
@@ -156,7 +156,7 @@ module.exports = function( grunt ) {
 
 		/**
 
-			sizzle-jquery.js -> sizzle between "EXPOSE" blocks,
+			sizzle-EhQuery.js -> sizzle between "EXPOSE" blocks,
 			replace define & window.Sizzle assignment
 
 

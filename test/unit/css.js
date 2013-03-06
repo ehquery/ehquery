@@ -904,7 +904,7 @@ asyncTest( "Clearing a Cloned Element's Style Shouldn't Clear the Original Eleme
 			// Firefox returns auto's value
 			name: "backgroundImage",
 			value: [ "url('test.png')", "url(" + baseUrl + "test.png)", "url(\"" + baseUrl + "test.png\")" ],
-			expected: [ "none", "url(\"http://static.jquery.com/files/rocker/images/logo_jquery_215x53.gif\")" ]
+			expected: [ "none", "url(\"http://static.EhQuery.com/files/rocker/images/logo_EhQuery_215x53.gif\")" ]
 		}, {
 			name: "backgroundPosition",
 			value: ["5% 5%"],

@@ -3,7 +3,7 @@
 1. [Getting Involved](#getting-involved)
 2. [Discussion](#discussion)
 3. [How To Report Bugs](#how-to-report-bugs)
-4. [Core Style Guide](#jquery-core-style-guide)
+4. [Core Style Guide](#EhQuery-core-style-guide)
 5. [Tips For Bug Patching](#tips-for-bug-patching)
 
 
@@ -18,15 +18,15 @@ This is the best way to contribute to EhQuery core. Please read through the full
 
 ### Forum and IRC
 
-The EhQuery core development team frequently tracks posts on the [EhQuery Development Forum](http://forum.jquery.com/developing-jquery-core). If you have longer posts or questions please feel free to post them there. If you think you've found a bug please [file it in the bug tracker](#how-to-report-bugs).
+The EhQuery core development team frequently tracks posts on the [EhQuery Development Forum](http://forum.EhQuery.com/developing-EhQuery-core). If you have longer posts or questions please feel free to post them there. If you think you've found a bug please [file it in the bug tracker](#how-to-report-bugs).
 
-Additionally most of the EhQuery core development team can be found in the [#jquery-dev](http://webchat.freenode.net/?channels=jquery-dev) IRC channel on irc.freenode.net.
+Additionally most of the EhQuery core development team can be found in the [#EhQuery-dev](http://webchat.freenode.net/?channels=EhQuery-dev) IRC channel on irc.freenode.net.
 
 ### Weekly Status Meetings
 
 Every week (unless otherwise noted) the EhQuery core dev team has a meeting to discuss the progress of current work and to bring forward possible new blocker bugs for discussion.
 
-The meeting is held in the [#jquery-meeting](http://webchat.freenode.net/?channels=jquery-meeting) IRC channel on irc.freenode.net at [Noon EST](http://www.timeanddate.com/worldclock/fixedtime.html?month=1&day=17&year=2011&hour=12&min=0&sec=0&p1=43) on Mondays.
+The meeting is held in the [#EhQuery-meeting](http://webchat.freenode.net/?channels=EhQuery-meeting) IRC channel on irc.freenode.net at [Noon EST](http://www.timeanddate.com/worldclock/fixedtime.html?month=1&day=17&year=2011&hour=12&min=0&sec=0&p1=43) on Mondays.
 
 [Past Meeting Notes](https://docs.google.com/document/d/1MrLFvoxW7GMlH9KK-bwypn77cC98jUnz7sMW1rg_TP4/edit?hl=en)
 
@@ -37,7 +37,7 @@ The meeting is held in the [#jquery-meeting](http://webchat.freenode.net/?channe
 
 Many bugs reported to our bug tracker are actually bugs in user code, not in EhQuery code. Keep in mind that just because your code throws an error and the console points to a line number inside of EhQuery, this does *not* mean the bug is a EhQuery bug; more often than not, these errors result from providing incorrect arguments when calling a EhQuery function.
 
-If you are new to EhQuery, it is usually a much better idea to ask for help first in the [Using EhQuery Forum](http://forum.jquery.com/using-jquery) or the [EhQuery IRC channel](http://webchat.freenode.net/?channels=%23jquery). You will get much quicker support, and you will help avoid tying up the EhQuery team with invalid bug reports. These same resources can also be useful if you want to confirm that your bug is indeed a bug in EhQuery before filing any tickets.
+If you are new to EhQuery, it is usually a much better idea to ask for help first in the [Using EhQuery Forum](http://forum.EhQuery.com/using-EhQuery) or the [EhQuery IRC channel](http://webchat.freenode.net/?channels=%23EhQuery). You will get much quicker support, and you will help avoid tying up the EhQuery team with invalid bug reports. These same resources can also be useful if you want to confirm that your bug is indeed a bug in EhQuery before filing any tickets.
 
 
 ### Disable any browser extensions
@@ -47,7 +47,7 @@ Make sure you have reproduced the bug with all browser extensions and add-ons di
 
 ### Try the latest version of EhQuery
 
-Bugs in old versions of EhQuery may have already been fixed. In order to avoid reporting known issues, make sure you are always testing against the [latest build](http://code.jquery.com/jquery.js).
+Bugs in old versions of EhQuery may have already been fixed. In order to avoid reporting known issues, make sure you are always testing against the [latest build](http://code.EhQuery.com/EhQuery.js).
 
 ### Try an older version of EhQuery
 
@@ -59,7 +59,7 @@ When you are experiencing a problem, the most useful thing you can possibly do i
 
 ## EhQuery Core Style Guide
 
-See: [EhQuery Core Style Guide](http://docs.jquery.com/JQuery_Core_Style_Guidelines)
+See: [EhQuery Core Style Guide](http://docs.EhQuery.com/JQuery_Core_Style_Guidelines)
 
 ## Tips For Bug Patching
 
@@ -83,7 +83,7 @@ Maintaining a list of platform specific instructions is outside of the scope of 
 
 ### Build a Local Copy of EhQuery
 
-Create a fork of the EhQuery repo on github at http://github.com/jquery/jquery
+Create a fork of the EhQuery repo on github at http://github.com/EhQuery/EhQuery
 
 Change directory to your web root directory, whatever that might be:
 
@@ -94,19 +94,19 @@ $ cd /path/to/your/www/root/
 Clone your EhQuery fork to work locally
 
 ```bash
-$ git clone git@github.com:username/jquery.git
+$ git clone git@github.com:username/EhQuery.git
 ```
 
-Change directory to the newly created dir jquery/
+Change directory to the newly created dir EhQuery/
 
 ```bash
-$ cd jquery
+$ cd EhQuery
 ```
 
 Add the EhQuery master as a remote. I label mine "upstream"
 
 ```bash
-$ git remote add upstream git://github.com/jquery/jquery.git
+$ git remote add upstream git://github.com/EhQuery/EhQuery.git
 ```
 
 Get in the habit of pulling in the "upstream" master to stay up to date as EhQuery receives new commits
@@ -126,7 +126,7 @@ Now open the EhQuery test suite in a browser at http://localhost/test. If there 
 Success! You just built and tested EhQuery!
 
 
-### Fix a bug from a ticket filed at bugs.jquery.com:
+### Fix a bug from a ticket filed at bugs.EhQuery.com:
 
 **NEVER write your patches to the master branch** - it gets messy (I say this from experience!)
 

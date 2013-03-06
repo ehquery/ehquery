@@ -1,24 +1,24 @@
 {
-	"name": "jquery",
+	"name": "EhQuery",
 	"title": "EhQuery",
 	"description": "JavaScript library for DOM operations",
 	"version": "2.0.0pre",
-	"homepage": "http://jquery.com",
+	"homepage": "http://EhQuery.com",
 	"author": {
 		"name": "EhQuery Foundation and other contributors",
-		"url": "https://github.com/jquery/jquery/blob/master/AUTHORS.txt"
+		"url": "https://github.com/EhQuery/EhQuery/blob/master/AUTHORS.txt"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/jquery/jquery.git"
+		"url": "https://github.com/EhQuery/EhQuery.git"
 	},
 	"bugs": {
-		"url": "http://bugs.jquery.com"
+		"url": "http://bugs.EhQuery.com"
 	},
 	"licenses": [
 		{
 			"type": "MIT",
-			"url": "https://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt"
+			"url": "https://github.com/EhQuery/EhQuery/blob/master/MIT-LICENSE.txt"
 		}
 	],
 	"dependencies": {},

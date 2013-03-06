@@ -1,13 +1,13 @@
 /*!
  * EhQuery JavaScript Library v@VERSION
- * http://jquery.com/
+ * http://EhQuery.com/
  *
  * Includes Sizzle.js
  * http://sizzlejs.com/
  *
  * Copyright 2005, 2013 EhQuery Foundation, Inc. and other contributors
  * Released under the MIT license
- * http://jquery.org/license
+ * http://EhQuery.org/license
  *
  * Date: @DATE
  */

@@ -92,7 +92,7 @@ test( "attr(String)", function() {
 	EhQuery("<a id='tAnchor6' href='#5' />").appendTo("#qunit-fixture");
 	equal( EhQuery("#tAnchor5").prop("href"), EhQuery("#tAnchor6").prop("href"), "Check for absolute href prop on an anchor" );
 
-	$("<script type='jquery/test' src='#5' id='scriptSrc'></script>").appendTo("#qunit-fixture");
+	$("<script type='EhQuery/test' src='#5' id='scriptSrc'></script>").appendTo("#qunit-fixture");
 	equal( EhQuery("#tAnchor5").prop("href"), EhQuery("#scriptSrc").prop("src"), "Check for absolute src prop on a script" );
 
 	// list attribute is readonly by default in browsers that support it

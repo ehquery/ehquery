@@ -15,7 +15,7 @@ if ( !/^\d+\.\d+/.test( version ) ) {
 }
 
 http.request({
-	host: "bugs.jquery.com",
+	host: "bugs.EhQuery.com",
 	port: 80,
 	method: "GET",
 	path: "/query?status=closed&resolution=fixed&max=400&component=!web&order=component&milestone=" + version
@@ -45,7 +45,7 @@ http.request({
 				}
 
 				console.log(
-					"  <li><a href=\"http://bugs.jquery.com/ticket/" + match[1] + "\">#" +
+					"  <li><a href=\"http://bugs.EhQuery.com/ticket/" + match[1] + "\">#" +
 					match[1] + ": " + match[2] + "</a></li>"
 				);
 			}

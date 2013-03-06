@@ -99,7 +99,7 @@ EhQuery.fn.extend({
 		});
 	},
 	// Based off of the plugin by Clint Helfers, with permission.
-	// http://blindsignals.com/index.php/2009/07/jquery-delay/
+	// http://blindsignals.com/index.php/2009/07/EhQuery-delay/
 	delay: function( time, type ) {
 		time = EhQuery.fx ? EhQuery.fx.speeds[ time ] || time : time;
 		type = type || "fx";

@@ -18,29 +18,29 @@ var releaseVersion,
 	pkg,
 	branch,
 
-	scpURL = "jqadmin@code.origin.jquery.com:/var/www/html/code.jquery.com/",
-	cdnURL = "http://code.origin.jquery.com/",
-	repoURL = "git@github.com:jquery/jquery.git",
+	scpURL = "jqadmin@code.origin.EhQuery.com:/var/www/html/code.EhQuery.com/",
+	cdnURL = "http://code.origin.EhQuery.com/",
+	repoURL = "git@github.com:EhQuery/EhQuery.git",
 
 	// Windows needs the .cmd version but will find the non-.cmd
 	// On Windows, ensure the HOME environment variable is set
 	gruntCmd = process.platform === "win32" ? "grunt.cmd" : "grunt",
 
-	devFile = "dist/jquery.js",
-	minFile = "dist/jquery.min.js",
-	mapFile = "dist/jquery.min.map",
+	devFile = "dist/EhQuery.js",
+	minFile = "dist/EhQuery.min.js",
+	mapFile = "dist/EhQuery.min.map",
 
 	releaseFiles = {
-		"jquery-VER.js": devFile,
-		"jquery-VER.min.js": minFile,
-		"jquery-VER.min.map": mapFile //,
+		"EhQuery-VER.js": devFile,
+		"EhQuery-VER.min.js": minFile,
+		"EhQuery-VER.min.map": mapFile //,
 // Disable these until 2.0 defeats 1.9 as the ONE TRUE JQUERY
-//		"jquery.js": devFile,
-//		"jquery.min.js": minFile,
-//		"jquery.min.map": mapFile,
-//		"jquery-latest.js": devFile,
-//		"jquery-latest.min.js": minFile,
-//		"jquery-latest.min.map": mapFile
+//		"EhQuery.js": devFile,
+//		"EhQuery.min.js": minFile,
+//		"EhQuery.min.map": mapFile,
+//		"EhQuery-latest.js": devFile,
+//		"EhQuery-latest.min.js": minFile,
+//		"EhQuery-latest.min.map": mapFile
 	};
 
 steps(
@@ -139,13 +139,13 @@ function makeReleaseCopies( next ) {
 			builtFile = releaseFiles[ key ],
 			releaseFile = key.replace( /VER/g, releaseVersion );
 
-		// Beta releases don't update the jquery-latest etc. copies
+		// Beta releases don't update the EhQuery-latest etc. copies
 		if ( !isBeta || key !== releaseFile ) {
 
 			if ( /\.map$/.test( releaseFile ) ) {
 				// Map files need to reference the new uncompressed name;
 				// assume that all files reside in the same directory.
-				// "file":"jquery.min.js","sources":["jquery.js"]
+				// "file":"EhQuery.min.js","sources":["EhQuery.js"]
 				text = fs.readFileSync( builtFile, "utf8" )
 					.replace( /"file":"([^"]+)","sources":\["([^"]+)"\]/,
 						"\"file\":\"" + releaseFile.replace( /\.min\.map/, ".min.js" ) +

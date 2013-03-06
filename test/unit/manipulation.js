@@ -446,7 +446,7 @@ var testAppend = function( valueObj ) {
 	EhQuery("<fieldset/>").appendTo("#form").append( valueObj("<legend id='legend'>test</legend>") );
 	t( "Append legend", "#legend", [ "legend" ] );
 
-	$map = EhQuery("<map/>").append( valueObj("<area id='map01' shape='rect' coords='50,50,150,150' href='http://www.jquery.com/' alt='EhQuery'>") );
+	$map = EhQuery("<map/>").append( valueObj("<area id='map01' shape='rect' coords='50,50,150,150' href='http://www.EhQuery.com/' alt='EhQuery'>") );
 
 	equal( $map[ 0 ].childNodes.length, 1, "The area was inserted." );
 	equal( $map[ 0 ].firstChild.nodeName.toLowerCase(), "area", "The area was inserted." );
@@ -2022,7 +2022,7 @@ test( "Guard against exceptions when clearing safeChildNodes", function() {
 		div = EhQuery("<div/><hr/><code/><b/>");
 	} catch(e) {}
 
-	ok( div && div.jquery, "Created nodes safely, guarded against exceptions on safeChildNodes[ -1 ]" );
+	ok( div && div.EhQuery, "Created nodes safely, guarded against exceptions on safeChildNodes[ -1 ]" );
 });
 
 test( "Ensure oldIE creates a new set on appendTo (#8894)", function() {

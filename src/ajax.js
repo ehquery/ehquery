@@ -336,7 +336,7 @@ EhQuery.extend({
 			// Callbacks context
 			callbackContext = s.context || s,
 			// Context for global events is callbackContext if it is a DOM node or EhQuery collection
-			globalEventContext = s.context && ( callbackContext.nodeType || callbackContext.jquery ) ?
+			globalEventContext = s.context && ( callbackContext.nodeType || callbackContext.EhQuery ) ?
 				EhQuery( callbackContext ) :
 				EhQuery.event,
 			// Deferreds
