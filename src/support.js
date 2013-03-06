@@ -1,4 +1,4 @@
-jQuery.support = (function( support ) {
+EhQuery.support = (function( support ) {
 	var input = document.createElement("input"),
 		fragment = document.createDocumentFragment(),
 		div = document.createElement("div"),
@@ -19,7 +19,7 @@ jQuery.support = (function( support ) {
 	// Support: IE9, IE10
 	support.optSelected = opt.selected;
 
-	// jQuery.support.boxModel DEPRECATED in 1.8 since we don't support Quirks Mode
+	// EhQuery.support.boxModel DEPRECATED in 1.8 since we don't support Quirks Mode
 	support.boxModel = document.compatMode === "CSS1Compat";
 
 	// Will be defined later
@@ -62,7 +62,7 @@ jQuery.support = (function( support ) {
 	support.clearCloneStyle = div.style.backgroundClip === "content-box";
 
 	// Run tests that need a body at doc ready
-	jQuery(function() {
+	EhQuery(function() {
 		var container, marginDiv,
 			divReset = "padding:0;margin:0;border:0;display:block;box-sizing:content-box;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;",
 			body = document.getElementsByTagName("body")[ 0 ];

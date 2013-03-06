@@ -15,14 +15,14 @@ var fxNow, timerId,
 
 			if ( parts ) {
 				end = +parts[2];
-				unit = parts[3] || ( jQuery.cssNumber[ prop ] ? "" : "px" );
+				unit = parts[3] || ( EhQuery.cssNumber[ prop ] ? "" : "px" );
 
 				// We need to compute starting value
 				if ( unit !== "px" && start ) {
 					// Iteratively approximate from a nonzero starting point
 					// Prefer the current property, because this process will be trivial if it uses the same units
 					// Fallback to end or a simple constant
-					start = jQuery.css( tween.elem, prop, true ) || end || 1;
+					start = EhQuery.css( tween.elem, prop, true ) || end || 1;
 
 					do {
 						// If previous iteration zeroed out, double until we get *something*
@@ -31,7 +31,7 @@ var fxNow, timerId,
 
 						// Adjust and apply
 						start = start / scale;
-						jQuery.style( tween.elem, prop, start + unit );
+						EhQuery.style( tween.elem, prop, start + unit );
 
 					// Update scale, tolerating zero or NaN from tween.cur()
 					// And breaking the loop if scale is unchanged or perfect, or if we've just had enough
@@ -52,11 +52,11 @@ function createFxNow() {
 	setTimeout(function() {
 		fxNow = undefined;
 	});
-	return ( fxNow = jQuery.now() );
+	return ( fxNow = EhQuery.now() );
 }
 
 function createTweens( animation, props ) {
-	jQuery.each( props, function( prop, value ) {
+	EhQuery.each( props, function( prop, value ) {
 		var collection = ( tweeners[ prop ] || [] ).concat( tweeners[ "*" ] ),
 			index = 0,
 			length = collection.length;
@@ -75,7 +75,7 @@ function Animation( elem, properties, options ) {
 		stopped,
 		index = 0,
 		length = animationPrefilters.length,
-		deferred = jQuery.Deferred().always( function() {
+		deferred = EhQuery.Deferred().always( function() {
 			// don't match elem in the :animated selector
 			delete tick.elem;
 		}),
@@ -106,15 +106,15 @@ function Animation( elem, properties, options ) {
 		},
 		animation = deferred.promise({
 			elem: elem,
-			props: jQuery.extend( {}, properties ),
-			opts: jQuery.extend( true, { specialEasing: {} }, options ),
+			props: EhQuery.extend( {}, properties ),
+			opts: EhQuery.extend( true, { specialEasing: {} }, options ),
 			originalProperties: properties,
 			originalOptions: options,
 			startTime: fxNow || createFxNow(),
 			duration: options.duration,
 			tweens: [],
 			createTween: function( prop, end ) {
-				var tween = jQuery.Tween( elem, animation.opts, prop, end,
+				var tween = EhQuery.Tween( elem, animation.opts, prop, end,
 						animation.opts.specialEasing[ prop ] || animation.opts.easing );
 				animation.tweens.push( tween );
 				return tween;
@@ -155,12 +155,12 @@ function Animation( elem, properties, options ) {
 
 	createTweens( animation, props );
 
-	if ( jQuery.isFunction( animation.opts.start ) ) {
+	if ( EhQuery.isFunction( animation.opts.start ) ) {
 		animation.opts.start.call( elem, animation );
 	}
 
-	jQuery.fx.timer(
-		jQuery.extend( tick, {
+	EhQuery.fx.timer(
+		EhQuery.extend( tick, {
 			elem: elem,
 			anim: animation,
 			queue: animation.opts.queue
@@ -179,10 +179,10 @@ function propFilter( props, specialEasing ) {
 
 	// camelCase, specialEasing and expand cssHook pass
 	for ( index in props ) {
-		name = jQuery.camelCase( index );
+		name = EhQuery.camelCase( index );
 		easing = specialEasing[ name ];
 		value = props[ index ];
-		if ( jQuery.isArray( value ) ) {
+		if ( EhQuery.isArray( value ) ) {
 			easing = value[ 1 ];
 			value = props[ index ] = value[ 0 ];
 		}
@@ -192,7 +192,7 @@ function propFilter( props, specialEasing ) {
 			delete props[ index ];
 		}
 
-		hooks = jQuery.cssHooks[ name ];
+		hooks = EhQuery.cssHooks[ name ];
 		if ( hooks && "expand" in hooks ) {
 			value = hooks.expand( value );
 			delete props[ name ];
@@ -211,10 +211,10 @@ function propFilter( props, specialEasing ) {
 	}
 }
 
-jQuery.Animation = jQuery.extend( Animation, {
+EhQuery.Animation = EhQuery.extend( Animation, {
 
 	tweener: function( props, callback ) {
-		if ( jQuery.isFunction( props ) ) {
+		if ( EhQuery.isFunction( props ) ) {
 			callback = props;
 			props = [ "*" ];
 		} else {
@@ -252,7 +252,7 @@ function defaultPrefilter( elem, props, opts ) {
 
 	// handle queue: false promises
 	if ( !opts.queue ) {
-		hooks = jQuery._queueHooks( elem, "fx" );
+		hooks = EhQuery._queueHooks( elem, "fx" );
 		if ( hooks.unqueued == null ) {
 			hooks.unqueued = 0;
 			oldfire = hooks.empty.fire;
@@ -269,7 +269,7 @@ function defaultPrefilter( elem, props, opts ) {
 			// before this completes
 			anim.always(function() {
 				hooks.unqueued--;
-				if ( !jQuery.queue( elem, "fx" ).length ) {
+				if ( !EhQuery.queue( elem, "fx" ).length ) {
 					hooks.empty.fire();
 				}
 			});
@@ -286,8 +286,8 @@ function defaultPrefilter( elem, props, opts ) {
 
 		// Set display property to inline-block for height/width
 		// animations on inline elements that are having width/height animated
-		if ( jQuery.css( elem, "display" ) === "inline" &&
-				jQuery.css( elem, "float" ) === "none" ) {
+		if ( EhQuery.css( elem, "display" ) === "inline" &&
+				EhQuery.css( elem, "float" ) === "none" ) {
 
 			style.display = "inline-block";
 		}
@@ -318,7 +318,7 @@ function defaultPrefilter( elem, props, opts ) {
 
 	length = handled.length;
 	if ( length ) {
-		dataShow = jQuery._data( elem, "fxshow" ) || jQuery._data( elem, "fxshow", {} );
+		dataShow = EhQuery._data( elem, "fxshow" ) || EhQuery._data( elem, "fxshow", {} );
 		if ( "hidden" in dataShow ) {
 			hidden = dataShow.hidden;
 		}
@@ -328,23 +328,23 @@ function defaultPrefilter( elem, props, opts ) {
 			dataShow.hidden = !hidden;
 		}
 		if ( hidden ) {
-			jQuery( elem ).show();
+			EhQuery( elem ).show();
 		} else {
 			anim.done(function() {
-				jQuery( elem ).hide();
+				EhQuery( elem ).hide();
 			});
 		}
 		anim.done(function() {
 			var prop;
-			jQuery._removeData( elem, "fxshow" );
+			EhQuery._removeData( elem, "fxshow" );
 			for ( prop in orig ) {
-				jQuery.style( elem, prop, orig[ prop ] );
+				EhQuery.style( elem, prop, orig[ prop ] );
 			}
 		});
 		for ( index = 0 ; index < length ; index++ ) {
 			prop = handled[ index ];
 			tween = anim.createTween( prop, hidden ? dataShow[ prop ] : 0 );
-			orig[ prop ] = dataShow[ prop ] || jQuery.style( elem, prop );
+			orig[ prop ] = dataShow[ prop ] || EhQuery.style( elem, prop );
 
 			if ( !( prop in dataShow ) ) {
 				dataShow[ prop ] = tween.start;
@@ -360,7 +360,7 @@ function defaultPrefilter( elem, props, opts ) {
 function Tween( elem, options, prop, end, easing ) {
 	return new Tween.prototype.init( elem, options, prop, end, easing );
 }
-jQuery.Tween = Tween;
+EhQuery.Tween = Tween;
 
 Tween.prototype = {
 	constructor: Tween,
@@ -371,7 +371,7 @@ Tween.prototype = {
 		this.options = options;
 		this.start = this.now = this.cur();
 		this.end = end;
-		this.unit = unit || ( jQuery.cssNumber[ prop ] ? "" : "px" );
+		this.unit = unit || ( EhQuery.cssNumber[ prop ] ? "" : "px" );
 	},
 	cur: function() {
 		var hooks = Tween.propHooks[ this.prop ];
@@ -385,7 +385,7 @@ Tween.prototype = {
 			hooks = Tween.propHooks[ this.prop ];
 
 		if ( this.options.duration ) {
-			this.pos = eased = jQuery.easing[ this.easing ](
+			this.pos = eased = EhQuery.easing[ this.easing ](
 				percent, this.options.duration * percent, 0, 1, this.options.duration
 			);
 		} else {
@@ -422,17 +422,17 @@ Tween.propHooks = {
 			// attempt a parseFloat and fallback to a string if the parse fails
 			// so, simple values such as "10px" are parsed to Float.
 			// complex values such as "rotate(1rad)" are returned as is.
-			result = jQuery.css( tween.elem, tween.prop, "" );
+			result = EhQuery.css( tween.elem, tween.prop, "" );
 			// Empty strings, null, undefined and "auto" are converted to 0.
 			return !result || result === "auto" ? 0 : result;
 		},
 		set: function( tween ) {
 			// use step hook for back compat - use cssHook if its there - use .style if its
 			// available and use plain properties where available
-			if ( jQuery.fx.step[ tween.prop ] ) {
-				jQuery.fx.step[ tween.prop ]( tween );
-			} else if ( tween.elem.style && ( tween.elem.style[ jQuery.cssProps[ tween.prop ] ] != null || jQuery.cssHooks[ tween.prop ] ) ) {
-				jQuery.style( tween.elem, tween.prop, tween.now + tween.unit );
+			if ( EhQuery.fx.step[ tween.prop ] ) {
+				EhQuery.fx.step[ tween.prop ]( tween );
+			} else if ( tween.elem.style && ( tween.elem.style[ EhQuery.cssProps[ tween.prop ] ] != null || EhQuery.cssHooks[ tween.prop ] ) ) {
+				EhQuery.style( tween.elem, tween.prop, tween.now + tween.unit );
 			} else {
 				tween.elem[ tween.prop ] = tween.now;
 			}
@@ -451,16 +451,16 @@ Tween.propHooks.scrollTop = Tween.propHooks.scrollLeft = {
 	}
 };
 
-jQuery.each([ "toggle", "show", "hide" ], function( i, name ) {
-	var cssFn = jQuery.fn[ name ];
-	jQuery.fn[ name ] = function( speed, easing, callback ) {
+EhQuery.each([ "toggle", "show", "hide" ], function( i, name ) {
+	var cssFn = EhQuery.fn[ name ];
+	EhQuery.fn[ name ] = function( speed, easing, callback ) {
 		return speed == null || typeof speed === "boolean" ?
 			cssFn.apply( this, arguments ) :
 			this.animate( genFx( name, true ), speed, easing, callback );
 	};
 });
 
-jQuery.fn.extend({
+EhQuery.fn.extend({
 	fadeTo: function( speed, to, easing, callback ) {
 
 		// show any hidden elements after setting opacity to 0
@@ -470,16 +470,16 @@ jQuery.fn.extend({
 			.end().animate({ opacity: to }, speed, easing, callback );
 	},
 	animate: function( prop, speed, easing, callback ) {
-		var empty = jQuery.isEmptyObject( prop ),
-			optall = jQuery.speed( speed, easing, callback ),
+		var empty = EhQuery.isEmptyObject( prop ),
+			optall = EhQuery.speed( speed, easing, callback ),
 			doAnimation = function() {
 				// Operate on a copy of prop so per-property easing won't be lost
-				var anim = Animation( this, jQuery.extend( {}, prop ), optall );
+				var anim = Animation( this, EhQuery.extend( {}, prop ), optall );
 				doAnimation.finish = function() {
 					anim.stop( true );
 				};
 				// Empty animations, or finishing resolves immediately
-				if ( empty || jQuery._data( this, "finish" ) ) {
+				if ( empty || EhQuery._data( this, "finish" ) ) {
 					anim.stop( true );
 				}
 			};
@@ -508,8 +508,8 @@ jQuery.fn.extend({
 		return this.each(function() {
 			var dequeue = true,
 				index = type != null && type + "queueHooks",
-				timers = jQuery.timers,
-				data = jQuery._data( this );
+				timers = EhQuery.timers,
+				data = EhQuery._data( this );
 
 			if ( index ) {
 				if ( data[ index ] && data[ index ].stop ) {
@@ -535,7 +535,7 @@ jQuery.fn.extend({
 			// timers currently will call their complete callbacks, which will dequeue
 			// but only if they were gotoEnd
 			if ( dequeue || !gotoEnd ) {
-				jQuery.dequeue( this, type );
+				EhQuery.dequeue( this, type );
 			}
 		});
 	},
@@ -545,17 +545,17 @@ jQuery.fn.extend({
 		}
 		return this.each(function() {
 			var index,
-				data = jQuery._data( this ),
+				data = EhQuery._data( this ),
 				queue = data[ type + "queue" ],
 				hooks = data[ type + "queueHooks" ],
-				timers = jQuery.timers,
+				timers = EhQuery.timers,
 				length = queue ? queue.length : 0;
 
 			// enable finishing flag on private data
 			data.finish = true;
 
 			// empty the queue first
-			jQuery.queue( this, type, [] );
+			EhQuery.queue( this, type, [] );
 
 			if ( hooks && hooks.cur && hooks.cur.finish ) {
 				hooks.cur.finish.call( this );
@@ -604,7 +604,7 @@ function genFx( type, includeWidth ) {
 }
 
 // Generate shortcuts for custom animations
-jQuery.each({
+EhQuery.each({
 	slideDown: genFx("show"),
 	slideUp: genFx("hide"),
 	slideToggle: genFx("toggle"),
@@ -612,21 +612,21 @@ jQuery.each({
 	fadeOut: { opacity: "hide" },
 	fadeToggle: { opacity: "toggle" }
 }, function( name, props ) {
-	jQuery.fn[ name ] = function( speed, easing, callback ) {
+	EhQuery.fn[ name ] = function( speed, easing, callback ) {
 		return this.animate( props, speed, easing, callback );
 	};
 });
 
-jQuery.speed = function( speed, easing, fn ) {
-	var opt = speed && typeof speed === "object" ? jQuery.extend( {}, speed ) : {
+EhQuery.speed = function( speed, easing, fn ) {
+	var opt = speed && typeof speed === "object" ? EhQuery.extend( {}, speed ) : {
 		complete: fn || !fn && easing ||
-			jQuery.isFunction( speed ) && speed,
+			EhQuery.isFunction( speed ) && speed,
 		duration: speed,
-		easing: fn && easing || easing && !jQuery.isFunction( easing ) && easing
+		easing: fn && easing || easing && !EhQuery.isFunction( easing ) && easing
 	};
 
-	opt.duration = jQuery.fx.off ? 0 : typeof opt.duration === "number" ? opt.duration :
-		opt.duration in jQuery.fx.speeds ? jQuery.fx.speeds[ opt.duration ] : jQuery.fx.speeds._default;
+	opt.duration = EhQuery.fx.off ? 0 : typeof opt.duration === "number" ? opt.duration :
+		opt.duration in EhQuery.fx.speeds ? EhQuery.fx.speeds[ opt.duration ] : EhQuery.fx.speeds._default;
 
 	// normalize opt.queue - true/undefined/null -> "fx"
 	if ( opt.queue == null || opt.queue === true ) {
@@ -637,19 +637,19 @@ jQuery.speed = function( speed, easing, fn ) {
 	opt.old = opt.complete;
 
 	opt.complete = function() {
-		if ( jQuery.isFunction( opt.old ) ) {
+		if ( EhQuery.isFunction( opt.old ) ) {
 			opt.old.call( this );
 		}
 
 		if ( opt.queue ) {
-			jQuery.dequeue( this, opt.queue );
+			EhQuery.dequeue( this, opt.queue );
 		}
 	};
 
 	return opt;
 };
 
-jQuery.easing = {
+EhQuery.easing = {
 	linear: function( p ) {
 		return p;
 	},
@@ -658,14 +658,14 @@ jQuery.easing = {
 	}
 };
 
-jQuery.timers = [];
-jQuery.fx = Tween.prototype.init;
-jQuery.fx.tick = function() {
+EhQuery.timers = [];
+EhQuery.fx = Tween.prototype.init;
+EhQuery.fx.tick = function() {
 	var timer,
-		timers = jQuery.timers,
+		timers = EhQuery.timers,
 		i = 0;
 
-	fxNow = jQuery.now();
+	fxNow = EhQuery.now();
 
 	for ( ; i < timers.length; i++ ) {
 		timer = timers[ i ];
@@ -676,31 +676,31 @@ jQuery.fx.tick = function() {
 	}
 
 	if ( !timers.length ) {
-		jQuery.fx.stop();
+		EhQuery.fx.stop();
 	}
 	fxNow = undefined;
 };
 
-jQuery.fx.timer = function( timer ) {
-	if ( timer() && jQuery.timers.push( timer ) ) {
-		jQuery.fx.start();
+EhQuery.fx.timer = function( timer ) {
+	if ( timer() && EhQuery.timers.push( timer ) ) {
+		EhQuery.fx.start();
 	}
 };
 
-jQuery.fx.interval = 13;
+EhQuery.fx.interval = 13;
 
-jQuery.fx.start = function() {
+EhQuery.fx.start = function() {
 	if ( !timerId ) {
-		timerId = setInterval( jQuery.fx.tick, jQuery.fx.interval );
+		timerId = setInterval( EhQuery.fx.tick, EhQuery.fx.interval );
 	}
 };
 
-jQuery.fx.stop = function() {
+EhQuery.fx.stop = function() {
 	clearInterval( timerId );
 	timerId = null;
 };
 
-jQuery.fx.speeds = {
+EhQuery.fx.speeds = {
 	slow: 600,
 	fast: 200,
 	// Default speed
@@ -708,11 +708,11 @@ jQuery.fx.speeds = {
 };
 
 // Back Compat <1.8 extension point
-jQuery.fx.step = {};
+EhQuery.fx.step = {};
 
-if ( jQuery.expr && jQuery.expr.filters ) {
-	jQuery.expr.filters.animated = function( elem ) {
-		return jQuery.grep(jQuery.timers, function( fn ) {
+if ( EhQuery.expr && EhQuery.expr.filters ) {
+	EhQuery.expr.filters.animated = function( elem ) {
+		return EhQuery.grep(EhQuery.timers, function( fn ) {
 			return elem === fn.elem;
 		}).length;
 	};

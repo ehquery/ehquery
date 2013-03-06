@@ -1,16 +1,16 @@
 /**
- * Allow the test suite to run with other libs or jQuery's.
+ * Allow the test suite to run with other libs or EhQuery's.
  */
-jQuery.noConflict();
+EhQuery.noConflict();
 
 // For checking globals pollution despite auto-created globals in various environments
-jQuery.each( [ jQuery.expando, "getInterface", "Packages", "java", "netscape" ], function( i, name ) {
+EhQuery.each( [ EhQuery.expando, "getInterface", "Packages", "java", "netscape" ], function( i, name ) {
 	window[ name ] = window[ name ];
 });
 
 // Expose Sizzle for Sizzle's selector tests
-// We remove Sizzle's globalization in jQuery
-var Sizzle = Sizzle || jQuery.find;
+// We remove Sizzle's globalization in EhQuery
+var Sizzle = Sizzle || EhQuery.find;
 
 // Allow subprojects to test against their own fixtures
 var qunitModule = QUnit.module,
@@ -47,7 +47,7 @@ function testSubproject( label, url, risTests ) {
 
 		// Find test function and wrap to require subproject fixture
 		for ( ; i >= 0; i-- ) {
-			if ( originaljQuery.isFunction( args[i] ) ) {
+			if ( originalEhQuery.isFunction( args[i] ) ) {
 				args[i] = requireFixture( args[i] );
 				break;
 			}
@@ -58,14 +58,14 @@ function testSubproject( label, url, risTests ) {
 
 	// Load tests and fixture from subproject
 	// Test order matters, so we must be synchronous and throw an error on load failure
-	originaljQuery.ajax( url, {
+	originalEhQuery.ajax( url, {
 		async: false,
 		dataType: "html",
 		error: function( jqXHR, status ) {
 			throw new Error( "Could not load: " + url + " (" + status + ")" );
 		},
 		success: function( data, status, jqXHR ) {
-			var page = originaljQuery.parseHTML(
+			var page = originalEhQuery.parseHTML(
 				// replace html/head with dummy elements so they are represented in the DOM
 				( data || "" ).replace( /<\/?((!DOCTYPE|html|head)\b.*?)>/gi, "[$1]" ),
 				document,
@@ -75,15 +75,15 @@ function testSubproject( label, url, risTests ) {
 			if ( !page || !page.length ) {
 				this.error( jqXHR, "no data" );
 			}
-			page = originaljQuery( page );
+			page = originalEhQuery( page );
 
 			// Include subproject tests
 			page.filter("script[src]").add( page.find("script[src]") ).each(function() {
-				var src = originaljQuery( this ).attr("src"),
+				var src = originalEhQuery( this ).attr("src"),
 					html = "<script src='" + url + src + "'></script>";
 				if ( risTests.test( src ) ) {
-					if ( originaljQuery.isReady ) {
-						originaljQuery("head").first().append( html );
+					if ( originalEhQuery.isReady ) {
+						originalEhQuery("head").first().append( html );
 					} else {
 						document.write( html );
 					}
@@ -111,7 +111,7 @@ function testSubproject( label, url, risTests ) {
 				}
 
 				// Replace the current fixture, including content outside of #qunit-fixture
-				var oldFixture = originaljQuery("#qunit-fixture");
+				var oldFixture = originalEhQuery("#qunit-fixture");
 				while ( oldFixture.length && !oldFixture.prevAll("[id='qunit']").length ) {
 					oldFixture = oldFixture.parent();
 				}
@@ -121,7 +121,7 @@ function testSubproject( label, url, risTests ) {
 				// WARNING: UNDOCUMENTED INTERFACE
 				QUnit.config.fixture = fixtureHTML;
 				QUnit.reset();
-				if ( originaljQuery("#qunit-fixture").html() !== fixtureHTML ) {
+				if ( originalEhQuery("#qunit-fixture").html() !== fixtureHTML ) {
 					ok( false, "Copied subproject fixture" );
 					return;
 				}
@@ -141,15 +141,15 @@ var Globals = (function() {
 	return {
 		register: function( name ) {
 			globals[ name ] = true;
-			jQuery.globalEval( "var " + name + " = undefined;" );
+			EhQuery.globalEval( "var " + name + " = undefined;" );
 		},
 		cleanup: function() {
 			var name,
 				current = globals;
 			globals = {};
 			for ( name in current ) {
-				jQuery.globalEval( "try { " +
-					"delete " + ( jQuery.support.deleteExpando ? "window['" + name + "']" : name ) +
+				EhQuery.globalEval( "try { " +
+					"delete " + ( EhQuery.support.deleteExpando ? "window['" + name + "']" : name ) +
 				"; } catch( x ) {}" );
 			}
 		}
@@ -178,7 +178,7 @@ var Globals = (function() {
 
 		splice = [].splice,
 		reset = QUnit.reset,
-		ajaxSettings = jQuery.ajaxSettings;
+		ajaxSettings = EhQuery.ajaxSettings;
 
 	function keys(o) {
 		var ret, key;
@@ -195,28 +195,28 @@ var Globals = (function() {
 	}
 
 	/**
-	 * @param {jQuery|HTMLElement|Object|Array} elems Target (or array of targets) for jQuery.data.
+	 * @param {EhQuery|HTMLElement|Object|Array} elems Target (or array of targets) for EhQuery.data.
 	 * @param {string} key
 	 */
 	QUnit.expectJqData = function( elems, key ) {
 		var i, elem, expando;
 
-		// As of jQuery 2.0, there will be no "cache"-data is
+		// As of EhQuery 2.0, there will be no "cache"-data is
 		// stored and managed completely below the API surface
-		if ( jQuery.cache ) {
+		if ( EhQuery.cache ) {
 			QUnit.current_testEnvironment.checkJqData = true;
 
 			if ( elems.jquery && elems.toArray ) {
 				elems = elems.toArray();
 			}
-			if ( !jQuery.isArray( elems ) ) {
+			if ( !EhQuery.isArray( elems ) ) {
 				elems = [ elems ];
 			}
 
 			for ( i = 0; i < elems.length; i++ ) {
 				elem = elems[i];
 
-				// jQuery.data only stores data for nodes in jQuery.cache,
+				// EhQuery.data only stores data for nodes in EhQuery.cache,
 				// for other data targets the data is stored in the object itself,
 				// in that case we can't test that target for memory leaks.
 				// But we don't have to since in that case the data will/must will
@@ -227,11 +227,11 @@ var Globals = (function() {
 					continue;
 				}
 
-				expando = elem[ jQuery.expando ];
+				expando = elem[ EhQuery.expando ];
 
 				if ( expando === undefined ) {
 					// In this case the element exists fine, but
-					// jQuery.data (or internal data) was never (in)directly
+					// EhQuery.data (or internal data) was never (in)directly
 					// called.
 					// Since this method was called it means some data was
 					// expected to be found, but since there is nothing, fail early
@@ -250,7 +250,7 @@ var Globals = (function() {
 	};
 	QUnit.config.urlConfig.push( {
 		id: "jqdata",
-		label: "Always check jQuery.data",
+		label: "Always check EhQuery.data",
 		tooltip: "Trigger QUnit.expectJqData detection for all tests instead of just the ones that call it"
 	} );
 
@@ -264,21 +264,21 @@ var Globals = (function() {
 			fragmentsLength = 0,
 			cacheLength = 0;
 
-		// Only look for jQuery data problems if this test actually
+		// Only look for EhQuery data problems if this test actually
 		// provided some information to compare against.
 		if ( QUnit.urlParams.jqdata || this.checkJqData ) {
-			for ( i in jQuery.cache ) {
+			for ( i in EhQuery.cache ) {
 				expectedKeys = expectedDataKeys[i];
-				actualKeys = jQuery.cache[i] ? keys( jQuery.cache[i] ) : jQuery.cache[i];
+				actualKeys = EhQuery.cache[i] ? keys( EhQuery.cache[i] ) : EhQuery.cache[i];
 				if ( !QUnit.equiv( expectedKeys, actualKeys ) ) {
-					deepEqual( actualKeys, expectedKeys, "Expected keys exist in jQuery.cache" );
+					deepEqual( actualKeys, expectedKeys, "Expected keys exist in EhQuery.cache" );
 				}
-				delete jQuery.cache[i];
+				delete EhQuery.cache[i];
 				delete expectedDataKeys[i];
 			}
 			// In case it was removed from cache before (or never there in the first place)
 			for ( i in expectedDataKeys ) {
-				deepEqual( expectedDataKeys[i], undefined, "No unexpected keys were left in jQuery.cache (#" + i + ")" );
+				deepEqual( expectedDataKeys[i], undefined, "No unexpected keys were left in EhQuery.cache (#" + i + ")" );
 				delete expectedDataKeys[i];
 			}
 		}
@@ -287,61 +287,61 @@ var Globals = (function() {
 		expectedDataKeys = {};
 
 		// Check for (and clean up, if possible) incomplete animations/requests/etc.
-		if ( jQuery.timers && jQuery.timers.length !== 0 ) {
-			equal( jQuery.timers.length, 0, "No timers are still running" );
-			splice.call( jQuery.timers, 0, jQuery.timers.length );
-			jQuery.fx.stop();
+		if ( EhQuery.timers && EhQuery.timers.length !== 0 ) {
+			equal( EhQuery.timers.length, 0, "No timers are still running" );
+			splice.call( EhQuery.timers, 0, EhQuery.timers.length );
+			EhQuery.fx.stop();
 		}
-		if ( jQuery.active !== undefined && jQuery.active !== oldActive ) {
-			equal( jQuery.active, oldActive, "No AJAX requests are still active" );
+		if ( EhQuery.active !== undefined && EhQuery.active !== oldActive ) {
+			equal( EhQuery.active, oldActive, "No AJAX requests are still active" );
 			if ( ajaxTest.abort ) {
 				ajaxTest.abort("active requests");
 			}
-			oldActive = jQuery.active;
+			oldActive = EhQuery.active;
 		}
 
 		// Allow QUnit.reset to clean up any attached elements before checking for leaks
 		QUnit.reset();
 
-		for ( i in jQuery.cache ) {
+		for ( i in EhQuery.cache ) {
 			++cacheLength;
 		}
 
-		jQuery.fragments = {};
+		EhQuery.fragments = {};
 
-		for ( i in jQuery.fragments ) {
+		for ( i in EhQuery.fragments ) {
 			++fragmentsLength;
 		}
 
 		// Because QUnit doesn't have a mechanism for retrieving the number of expected assertions for a test,
 		// if we unconditionally assert any of these, the test will fail with too many assertions :|
 		if ( cacheLength !== oldCacheLength ) {
-			equal( cacheLength, oldCacheLength, "No unit tests leak memory in jQuery.cache" );
+			equal( cacheLength, oldCacheLength, "No unit tests leak memory in EhQuery.cache" );
 			oldCacheLength = cacheLength;
 		}
 		if ( fragmentsLength !== oldFragmentsLength ) {
-			equal( fragmentsLength, oldFragmentsLength, "No unit tests leak memory in jQuery.fragments" );
+			equal( fragmentsLength, oldFragmentsLength, "No unit tests leak memory in EhQuery.fragments" );
 			oldFragmentsLength = fragmentsLength;
 		}
 	};
 
 	QUnit.done(function() {
 		// Remove our own fixtures outside #qunit-fixture
-		jQuery("#qunit ~ *").remove();
+		EhQuery("#qunit ~ *").remove();
 	});
 
-	// jQuery-specific QUnit.reset
+	// EhQuery-specific QUnit.reset
 	QUnit.reset = function() {
 
-		// Ensure jQuery events and data on the fixture are properly removed
-		jQuery("#qunit-fixture").empty();
+		// Ensure EhQuery events and data on the fixture are properly removed
+		EhQuery("#qunit-fixture").empty();
 
-		// Reset internal jQuery state
-		jQuery.event.global = {};
+		// Reset internal EhQuery state
+		EhQuery.event.global = {};
 		if ( ajaxSettings ) {
-			jQuery.ajaxSettings = jQuery.extend( true, {}, ajaxSettings );
+			EhQuery.ajaxSettings = EhQuery.extend( true, {}, ajaxSettings );
 		} else {
-			delete jQuery.ajaxSettings;
+			delete EhQuery.ajaxSettings;
 		}
 
 		// Cleanup globals

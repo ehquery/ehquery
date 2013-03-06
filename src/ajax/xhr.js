@@ -1,10 +1,10 @@
-jQuery.ajaxSettings.xhr = function() {
+EhQuery.ajaxSettings.xhr = function() {
 	try {
 		return new XMLHttpRequest();
 	} catch( e ) {}
 };
 
-var xhrSupported = jQuery.ajaxSettings.xhr(),
+var xhrSupported = EhQuery.ajaxSettings.xhr(),
 	xhrSuccessStatus = {
 		// file protocol always yields status code 0, assume 200
 		0: 200,
@@ -19,7 +19,7 @@ var xhrSupported = jQuery.ajaxSettings.xhr(),
 	xhrCallbacks = {};
 
 if ( window.ActiveXObject ) {
-	jQuery( window ).on( "unload", function() {
+	EhQuery( window ).on( "unload", function() {
 		for( var key in xhrCallbacks ) {
 			xhrCallbacks[ key ]();
 		}
@@ -27,13 +27,13 @@ if ( window.ActiveXObject ) {
 	});
 }
 
-jQuery.support.cors = !!xhrSupported && ( "withCredentials" in xhrSupported );
-jQuery.support.ajax = xhrSupported = !!xhrSupported;
+EhQuery.support.cors = !!xhrSupported && ( "withCredentials" in xhrSupported );
+EhQuery.support.ajax = xhrSupported = !!xhrSupported;
 
-jQuery.ajaxTransport(function( options ) {
+EhQuery.ajaxTransport(function( options ) {
 	var callback;
 	// Cross domain only allowed if supported through XMLHttpRequest
-	if ( jQuery.support.cors || xhrSupported && !options.crossDomain ) {
+	if ( EhQuery.support.cors || xhrSupported && !options.crossDomain ) {
 		return {
 			send: function( headers, complete ) {
 				var i, id,
@@ -98,7 +98,7 @@ jQuery.ajaxTransport(function( options ) {
 				callback = xhrCallbacks[( id = xhrId++ )] = callback("abort");
 				// Do send the request
 				// This may raise an exception which is actually
-				// handled in jQuery.ajax (so no try/catch here)
+				// handled in EhQuery.ajax (so no try/catch here)
 				xhr.send( options.hasContent && options.data || null );
 			},
 			abort: function() {

@@ -1,7 +1,7 @@
 /*
  * Optional (non-Sizzle) selector module for custom builds.
  *
- * Note that this DOES NOT SUPPORT many documented jQuery
+ * Note that this DOES NOT SUPPORT many documented EhQuery
  * features in exchange for its smaller size:
  *
  * Attribute not equal selector
@@ -43,10 +43,10 @@ var selector_hasDuplicate,
 			if ( compare & 1 ) {
 
 				// Choose the first element that is related to our document
-				if ( a === document || jQuery.contains(document, a) ) {
+				if ( a === document || EhQuery.contains(document, a) ) {
 					return -1;
 				}
-				if ( b === document || jQuery.contains(document, b) ) {
+				if ( b === document || EhQuery.contains(document, b) ) {
 					return 1;
 				}
 
@@ -61,7 +61,7 @@ var selector_hasDuplicate,
 		return a.compareDocumentPosition ? -1 : 1;
 	};
 
-jQuery.extend({
+EhQuery.extend({
 	find: function( selector, context, results, seed ) {
 		var elem,
 			i = 0;
@@ -71,12 +71,12 @@ jQuery.extend({
 
 		if ( seed ) {
 			while ( (elem = seed[i++]) ) {
-				if ( jQuery.find.matchesSelector(elem, selector) ) {
+				if ( EhQuery.find.matchesSelector(elem, selector) ) {
 					results.push( elem );
 				}
 			}
 		} else {
-			jQuery.merge( results, context.querySelectorAll(selector) );
+			EhQuery.merge( results, context.querySelectorAll(selector) );
 		}
 
 		return results;
@@ -113,7 +113,7 @@ jQuery.extend({
 			// If no nodeType, this is expected to be an array
 			while ( (node = elem[i++]) ) {
 				// Do not traverse comment nodes
-				ret += jQuery.text( node );
+				ret += EhQuery.text( node );
 			}
 		} else if ( nodeType === 1 || nodeType === 9 || nodeType === 11 ) {
 			// Use textContent for elements
@@ -140,9 +140,9 @@ jQuery.extend({
 	}
 });
 
-jQuery.extend( jQuery.find, {
+EhQuery.extend( EhQuery.find, {
 	matches: function( expr, elements ) {
-		return jQuery.find( expr, null, null, elements );
+		return EhQuery.find( expr, null, null, elements );
 	},
 	matchesSelector: function( elem, expr ) {
 		return matches.call( elem, expr );

@@ -13,7 +13,7 @@ test("Basic requirements", function() {
 	ok( document.getElementById, "getElementById" );
 	ok( document.getElementsByTagName, "getElementsByTagName" );
 	ok( RegExp, "RegExp" );
-	ok( jQuery, "jQuery" );
+	ok( EhQuery, "EhQuery" );
 	ok( $, "$" );
 });
 
@@ -21,16 +21,16 @@ testIframeWithCallback( "Conditional compilation compatibility (#13274)", "core/
 	expect( 3 );
 	ok( true, "JScript conditional compilation " + ( cc_on ? "supported" : "not supported" ) );
 	deepEqual( errors, [], "No errors" );
-	ok( $(), "jQuery executes" );
+	ok( $(), "EhQuery executes" );
 });
 
-test("jQuery()", function() {
+test("EhQuery()", function() {
 
 	var elem, i,
-		obj = jQuery("div"),
-		code = jQuery("<code/>"),
-		img = jQuery("<img/>"),
-		div = jQuery("<div/><hr/><code/><b/>"),
+		obj = EhQuery("div"),
+		code = EhQuery("<code/>"),
+		img = EhQuery("<img/>"),
+		div = EhQuery("<div/><hr/><code/><b/>"),
 		exec = false,
 		lng = "",
 		expected = 20,
@@ -42,23 +42,23 @@ test("jQuery()", function() {
 
 	// The $(html, props) signature can stealth-call any $.fn method, check for a
 	// few here but beware of modular builds where these methods may be excluded.
-	if ( jQuery.fn.click ) {
+	if ( EhQuery.fn.click ) {
 		expected++;
 		attrObj["click"] = function() { ok( exec, "Click executed." ); };
 	}
-	if ( jQuery.fn.width ) {
+	if ( EhQuery.fn.width ) {
 		expected++;
 		attrObj["width"] = 10;
 	}
-	if ( jQuery.fn.offset ) {
+	if ( EhQuery.fn.offset ) {
 		expected++;
 		attrObj["offset"] = { "top": 1, "left": 1 };
 	}
-	if ( jQuery.fn.css ) {
+	if ( EhQuery.fn.css ) {
 		expected += 2;
 		attrObj["css"] = { "paddingLeft": 1, "paddingRight": 1 };
 	}
-	if ( jQuery.fn.attr ) {
+	if ( EhQuery.fn.attr ) {
 		expected++;
 		attrObj.attr = { "desired": "very" };
 	}
@@ -66,34 +66,34 @@ test("jQuery()", function() {
 	expect( expected );
 
 	// Basic constructor's behavior
-	equal( jQuery().length, 0, "jQuery() === jQuery([])" );
-	equal( jQuery(undefined).length, 0, "jQuery(undefined) === jQuery([])" );
-	equal( jQuery(null).length, 0, "jQuery(null) === jQuery([])" );
-	equal( jQuery("").length, 0, "jQuery('') === jQuery([])" );
-	equal( jQuery("#").length, 0, "jQuery('#') === jQuery([])" );
+	equal( EhQuery().length, 0, "EhQuery() === EhQuery([])" );
+	equal( EhQuery(undefined).length, 0, "EhQuery(undefined) === EhQuery([])" );
+	equal( EhQuery(null).length, 0, "EhQuery(null) === EhQuery([])" );
+	equal( EhQuery("").length, 0, "EhQuery('') === EhQuery([])" );
+	equal( EhQuery("#").length, 0, "EhQuery('#') === EhQuery([])" );
 
-	equal( jQuery(obj).selector, "div", "jQuery(jQueryObj) == jQueryObj" );
+	equal( EhQuery(obj).selector, "div", "EhQuery(EhQueryObj) == EhQueryObj" );
 
 	// can actually yield more than one, when iframes are included, the window is an array as well
-	equal( jQuery(window).length, 1, "Correct number of elements generated for jQuery(window)" );
+	equal( EhQuery(window).length, 1, "Correct number of elements generated for EhQuery(window)" );
 
 /*
 	// disabled since this test was doing nothing. i tried to fix it but i'm not sure
 	// what the expected behavior should even be. FF returns "\n" for the text node
 	// make sure this is handled
-	var crlfContainer = jQuery('<p>\r\n</p>');
+	var crlfContainer = EhQuery('<p>\r\n</p>');
 	var x = crlfContainer.contents().get(0).nodeValue;
-	equal( x, what???, "Check for \\r and \\n in jQuery()" );
+	equal( x, what???, "Check for \\r and \\n in EhQuery()" );
 */
 
 	/* // Disabled until we add this functionality in
 	var pass = true;
 	try {
-		jQuery("<div>Testing</div>").appendTo(document.getElementById("iframe").contentDocument.body);
+		EhQuery("<div>Testing</div>").appendTo(document.getElementById("iframe").contentDocument.body);
 	} catch(e){
 		pass = false;
 	}
-	ok( pass, "jQuery('&lt;tag&gt;') needs optional document parameter to ease cross-frame DOM wrangling, see #968" );*/
+	ok( pass, "EhQuery('&lt;tag&gt;') needs optional document parameter to ease cross-frame DOM wrangling, see #968" );*/
 
 	equal( code.length, 1, "Correct number of elements generated for code" );
 	equal( code.parent().length, 0, "Make sure that the generated HTML has no parent." );
@@ -104,33 +104,33 @@ test("jQuery()", function() {
 	equal( div.length, 4, "Correct number of elements generated for div hr code b" );
 	equal( div.parent().length, 0, "Make sure that the generated HTML has no parent." );
 
-	equal( jQuery([1,2,3]).get(1), 2, "Test passing an array to the factory" );
+	equal( EhQuery([1,2,3]).get(1), 2, "Test passing an array to the factory" );
 
-	equal( jQuery(document.body).get(0), jQuery("body").get(0), "Test passing an html node to the factory" );
+	equal( EhQuery(document.body).get(0), EhQuery("body").get(0), "Test passing an html node to the factory" );
 
-	elem = jQuery("<div/>", attrObj );
+	elem = EhQuery("<div/>", attrObj );
 
-	if ( jQuery.fn.width ) {
-		equal( elem[0].style.width, "10px", "jQuery() quick setter width");
+	if ( EhQuery.fn.width ) {
+		equal( elem[0].style.width, "10px", "EhQuery() quick setter width");
 	}
 
-	if ( jQuery.fn.offset ) {
-		equal( elem[0].style.top, "1px", "jQuery() quick setter offset");
+	if ( EhQuery.fn.offset ) {
+		equal( elem[0].style.top, "1px", "EhQuery() quick setter offset");
 	}
 
-	if ( jQuery.fn.css ) {
-		equal( elem[0].style.paddingLeft, "1px", "jQuery quick setter css");
-		equal( elem[0].style.paddingRight, "1px", "jQuery quick setter css");
+	if ( EhQuery.fn.css ) {
+		equal( elem[0].style.paddingLeft, "1px", "EhQuery quick setter css");
+		equal( elem[0].style.paddingRight, "1px", "EhQuery quick setter css");
 	}
 
-	if ( jQuery.fn.attr ) {
-		equal( elem[0].getAttribute("desired"), "very", "jQuery quick setter attr");
+	if ( EhQuery.fn.attr ) {
+		equal( elem[0].getAttribute("desired"), "very", "EhQuery quick setter attr");
 	}
 
-	equal( elem[0].childNodes.length, 1, "jQuery quick setter text");
-	equal( elem[0].firstChild.nodeValue, "test", "jQuery quick setter text");
-	equal( elem[0].className, "test2", "jQuery() quick setter class");
-	equal( elem[0].id, "test3", "jQuery() quick setter id");
+	equal( elem[0].childNodes.length, 1, "EhQuery quick setter text");
+	equal( elem[0].firstChild.nodeValue, "test", "EhQuery quick setter text");
+	equal( elem[0].className, "test2", "EhQuery() quick setter class");
+	equal( elem[0].id, "test3", "EhQuery() quick setter id");
 
 	exec = true;
 	elem.trigger("click");
@@ -139,7 +139,7 @@ test("jQuery()", function() {
 	elem.remove();
 
 	for ( i = 0; i < 3; ++i ) {
-		elem = jQuery("<input type='text' value='TEST' />");
+		elem = EhQuery("<input type='text' value='TEST' />");
 	}
 	equal( elem[0].defaultValue, "TEST", "Ensure cached nodes are cloned properly (Bug #6655)" );
 
@@ -151,11 +151,11 @@ test("jQuery()", function() {
 	}
 });
 
-test("jQuery(selector, context)", function() {
+test("EhQuery(selector, context)", function() {
 	expect(3);
-	deepEqual( jQuery("div p", "#qunit-fixture").get(), q("sndp", "en", "sap"), "Basic selector with string as context" );
-	deepEqual( jQuery("div p", q("qunit-fixture")[0]).get(), q("sndp", "en", "sap"), "Basic selector with element as context" );
-	deepEqual( jQuery("div p", jQuery("#qunit-fixture")).get(), q("sndp", "en", "sap"), "Basic selector with jQuery object as context" );
+	deepEqual( EhQuery("div p", "#qunit-fixture").get(), q("sndp", "en", "sap"), "Basic selector with string as context" );
+	deepEqual( EhQuery("div p", q("qunit-fixture")[0]).get(), q("sndp", "en", "sap"), "Basic selector with element as context" );
+	deepEqual( EhQuery("div p", EhQuery("#qunit-fixture")).get(), q("sndp", "en", "sap"), "Basic selector with EhQuery object as context" );
 });
 
 test( "selector state", function() {
@@ -163,40 +163,40 @@ test( "selector state", function() {
 
 	var test;
 
-	test = jQuery( undefined );
-	equal( test.selector, "", "Empty jQuery Selector" );
-	equal( test.context, undefined, "Empty jQuery Context" );
+	test = EhQuery( undefined );
+	equal( test.selector, "", "Empty EhQuery Selector" );
+	equal( test.context, undefined, "Empty EhQuery Context" );
 
-	test = jQuery( document );
+	test = EhQuery( document );
 	equal( test.selector, "", "Document Selector" );
 	equal( test.context, document, "Document Context" );
 
-	test = jQuery( document.body );
+	test = EhQuery( document.body );
 	equal( test.selector, "", "Body Selector" );
 	equal( test.context, document.body, "Body Context" );
 
-	test = jQuery("#qunit-fixture");
+	test = EhQuery("#qunit-fixture");
 	equal( test.selector, "#qunit-fixture", "#qunit-fixture Selector" );
 	equal( test.context, document, "#qunit-fixture Context" );
 
-	test = jQuery("#notfoundnono");
+	test = EhQuery("#notfoundnono");
 	equal( test.selector, "#notfoundnono", "#notfoundnono Selector" );
 	equal( test.context, document, "#notfoundnono Context" );
 
-	test = jQuery( "#qunit-fixture", document );
+	test = EhQuery( "#qunit-fixture", document );
 	equal( test.selector, "#qunit-fixture", "#qunit-fixture Selector" );
 	equal( test.context, document, "#qunit-fixture Context" );
 
-	test = jQuery( "#qunit-fixture", document.body );
+	test = EhQuery( "#qunit-fixture", document.body );
 	equal( test.selector, "#qunit-fixture", "#qunit-fixture Selector" );
 	equal( test.context, document.body, "#qunit-fixture Context" );
 
 	// Test cloning
-	test = jQuery( test );
+	test = EhQuery( test );
 	equal( test.selector, "#qunit-fixture", "#qunit-fixture Selector" );
 	equal( test.context, document.body, "#qunit-fixture Context" );
 
-	test = jQuery( document.body ).find("#qunit-fixture");
+	test = EhQuery( document.body ).find("#qunit-fixture");
 	equal( test.selector, "#qunit-fixture", "#qunit-fixture find Selector" );
 	equal( test.context, document.body, "#qunit-fixture find Context" );
 });
@@ -205,33 +205,33 @@ test( "globalEval", function() {
 	expect( 3 );
 	Globals.register("globalEvalTest");
 
-	jQuery.globalEval("globalEvalTest = 1;");
+	EhQuery.globalEval("globalEvalTest = 1;");
 	equal( window.globalEvalTest, 1, "Test variable assignments are global" );
 
-	jQuery.globalEval("var globalEvalTest = 2;");
+	EhQuery.globalEval("var globalEvalTest = 2;");
 	equal( window.globalEvalTest, 2, "Test variable declarations are global" );
 
-	jQuery.globalEval("this.globalEvalTest = 3;");
+	EhQuery.globalEval("this.globalEvalTest = 3;");
 	equal( window.globalEvalTest, 3, "Test context (this) is the window object" );
 });
 
 test("noConflict", function() {
 	expect(7);
 
-	var $$ = jQuery;
+	var $$ = EhQuery;
 
-	strictEqual( jQuery, jQuery.noConflict(), "noConflict returned the jQuery object" );
-	strictEqual( window["jQuery"], $$, "Make sure jQuery wasn't touched." );
+	strictEqual( EhQuery, EhQuery.noConflict(), "noConflict returned the EhQuery object" );
+	strictEqual( window["EhQuery"], $$, "Make sure EhQuery wasn't touched." );
 	strictEqual( window["$"], original$, "Make sure $ was reverted." );
 
-	jQuery = $ = $$;
+	EhQuery = $ = $$;
 
-	strictEqual( jQuery.noConflict(true), $$, "noConflict returned the jQuery object" );
-	strictEqual( window["jQuery"], originaljQuery, "Make sure jQuery was reverted." );
+	strictEqual( EhQuery.noConflict(true), $$, "noConflict returned the EhQuery object" );
+	strictEqual( window["EhQuery"], originalEhQuery, "Make sure EhQuery was reverted." );
 	strictEqual( window["$"], original$, "Make sure $ was reverted." );
-	ok( $$().pushStack([]), "Make sure that jQuery still works." );
+	ok( $$().pushStack([]), "Make sure that EhQuery still works." );
 
-	window["jQuery"] = jQuery = $$;
+	window["EhQuery"] = EhQuery = $$;
 });
 
 test("trim", function() {
@@ -239,60 +239,60 @@ test("trim", function() {
 
 	var nbsp = String.fromCharCode(160);
 
-	equal( jQuery.trim("hello  "), "hello", "trailing space" );
-	equal( jQuery.trim("  hello"), "hello", "leading space" );
-	equal( jQuery.trim("  hello   "), "hello", "space on both sides" );
-	equal( jQuery.trim("  " + nbsp + "hello  " + nbsp + " "), "hello", "&nbsp;" );
+	equal( EhQuery.trim("hello  "), "hello", "trailing space" );
+	equal( EhQuery.trim("  hello"), "hello", "leading space" );
+	equal( EhQuery.trim("  hello   "), "hello", "space on both sides" );
+	equal( EhQuery.trim("  " + nbsp + "hello  " + nbsp + " "), "hello", "&nbsp;" );
 
-	equal( jQuery.trim(), "", "Nothing in." );
-	equal( jQuery.trim( undefined ), "", "Undefined" );
-	equal( jQuery.trim( null ), "", "Null" );
-	equal( jQuery.trim( 5 ), "5", "Number" );
-	equal( jQuery.trim( false ), "false", "Boolean" );
+	equal( EhQuery.trim(), "", "Nothing in." );
+	equal( EhQuery.trim( undefined ), "", "Undefined" );
+	equal( EhQuery.trim( null ), "", "Null" );
+	equal( EhQuery.trim( 5 ), "5", "Number" );
+	equal( EhQuery.trim( false ), "false", "Boolean" );
 
-	equal( jQuery.trim(" "), "", "space should be trimmed" );
-	equal( jQuery.trim("ipad\xA0"), "ipad", "nbsp should be trimmed" );
-	equal( jQuery.trim("\uFEFF"), "", "zwsp should be trimmed" );
-	equal( jQuery.trim("\uFEFF \xA0! | \uFEFF"), "! |", "leading/trailing should be trimmed" );
+	equal( EhQuery.trim(" "), "", "space should be trimmed" );
+	equal( EhQuery.trim("ipad\xA0"), "ipad", "nbsp should be trimmed" );
+	equal( EhQuery.trim("\uFEFF"), "", "zwsp should be trimmed" );
+	equal( EhQuery.trim("\uFEFF \xA0! | \uFEFF"), "! |", "leading/trailing should be trimmed" );
 });
 
 test("type", function() {
 	expect( 28 );
 
-	equal( jQuery.type(null), "null", "null" );
-	equal( jQuery.type(undefined), "undefined", "undefined" );
-	equal( jQuery.type(true), "boolean", "Boolean" );
-	equal( jQuery.type(false), "boolean", "Boolean" );
-	equal( jQuery.type(Boolean(true)), "boolean", "Boolean" );
-	equal( jQuery.type(0), "number", "Number" );
-	equal( jQuery.type(1), "number", "Number" );
-	equal( jQuery.type(Number(1)), "number", "Number" );
-	equal( jQuery.type(""), "string", "String" );
-	equal( jQuery.type("a"), "string", "String" );
-	equal( jQuery.type(String("a")), "string", "String" );
-	equal( jQuery.type({}), "object", "Object" );
-	equal( jQuery.type(/foo/), "regexp", "RegExp" );
-	equal( jQuery.type(new RegExp("asdf")), "regexp", "RegExp" );
-	equal( jQuery.type([1]), "array", "Array" );
-	equal( jQuery.type(new Date()), "date", "Date" );
-	equal( jQuery.type(new Function("return;")), "function", "Function" );
-	equal( jQuery.type(function(){}), "function", "Function" );
-	equal( jQuery.type(new Error()), "error", "Error" );
-	equal( jQuery.type(window), "object", "Window" );
-	equal( jQuery.type(document), "object", "Document" );
-	equal( jQuery.type(document.body), "object", "Element" );
-	equal( jQuery.type(document.createTextNode("foo")), "object", "TextNode" );
-	equal( jQuery.type(document.getElementsByTagName("*")), "object", "NodeList" );
+	equal( EhQuery.type(null), "null", "null" );
+	equal( EhQuery.type(undefined), "undefined", "undefined" );
+	equal( EhQuery.type(true), "boolean", "Boolean" );
+	equal( EhQuery.type(false), "boolean", "Boolean" );
+	equal( EhQuery.type(Boolean(true)), "boolean", "Boolean" );
+	equal( EhQuery.type(0), "number", "Number" );
+	equal( EhQuery.type(1), "number", "Number" );
+	equal( EhQuery.type(Number(1)), "number", "Number" );
+	equal( EhQuery.type(""), "string", "String" );
+	equal( EhQuery.type("a"), "string", "String" );
+	equal( EhQuery.type(String("a")), "string", "String" );
+	equal( EhQuery.type({}), "object", "Object" );
+	equal( EhQuery.type(/foo/), "regexp", "RegExp" );
+	equal( EhQuery.type(new RegExp("asdf")), "regexp", "RegExp" );
+	equal( EhQuery.type([1]), "array", "Array" );
+	equal( EhQuery.type(new Date()), "date", "Date" );
+	equal( EhQuery.type(new Function("return;")), "function", "Function" );
+	equal( EhQuery.type(function(){}), "function", "Function" );
+	equal( EhQuery.type(new Error()), "error", "Error" );
+	equal( EhQuery.type(window), "object", "Window" );
+	equal( EhQuery.type(document), "object", "Document" );
+	equal( EhQuery.type(document.body), "object", "Element" );
+	equal( EhQuery.type(document.createTextNode("foo")), "object", "TextNode" );
+	equal( EhQuery.type(document.getElementsByTagName("*")), "object", "NodeList" );
 
 	// Avoid Lint complaints
 	var MyString = String;
 	var MyNumber = Number;
 	var MyBoolean = Boolean;
 	var MyObject = Object;
-	equal( jQuery.type(new MyBoolean(true)), "boolean", "Boolean" );
-	equal( jQuery.type(new MyNumber(1)), "number", "Number" );
-	equal( jQuery.type(new MyString("a")), "string", "String" );
-	equal( jQuery.type(new MyObject()), "object", "Object" );
+	equal( EhQuery.type(new MyBoolean(true)), "boolean", "Boolean" );
+	equal( EhQuery.type(new MyNumber(1)), "number", "Number" );
+	equal( EhQuery.type(new MyString("a")), "string", "String" );
+	equal( EhQuery.type(new MyObject()), "object", "Object" );
 });
 
 asyncTest("isPlainObject", function() {
@@ -302,43 +302,43 @@ asyncTest("isPlainObject", function() {
 		fn = function() {};
 
 	// The use case that we want to match
-	ok( jQuery.isPlainObject({}), "{}" );
+	ok( EhQuery.isPlainObject({}), "{}" );
 
 	// Not objects shouldn't be matched
-	ok( !jQuery.isPlainObject(""), "string" );
-	ok( !jQuery.isPlainObject(0) && !jQuery.isPlainObject(1), "number" );
-	ok( !jQuery.isPlainObject(true) && !jQuery.isPlainObject(false), "boolean" );
-	ok( !jQuery.isPlainObject(null), "null" );
-	ok( !jQuery.isPlainObject(undefined), "undefined" );
+	ok( !EhQuery.isPlainObject(""), "string" );
+	ok( !EhQuery.isPlainObject(0) && !EhQuery.isPlainObject(1), "number" );
+	ok( !EhQuery.isPlainObject(true) && !EhQuery.isPlainObject(false), "boolean" );
+	ok( !EhQuery.isPlainObject(null), "null" );
+	ok( !EhQuery.isPlainObject(undefined), "undefined" );
 
 	// Arrays shouldn't be matched
-	ok( !jQuery.isPlainObject([]), "array" );
+	ok( !EhQuery.isPlainObject([]), "array" );
 
 	// Instantiated objects shouldn't be matched
-	ok( !jQuery.isPlainObject(new Date()), "new Date" );
+	ok( !EhQuery.isPlainObject(new Date()), "new Date" );
 
 	// Functions shouldn't be matched
-	ok( !jQuery.isPlainObject(fn), "fn" );
+	ok( !EhQuery.isPlainObject(fn), "fn" );
 
 	// Again, instantiated objects shouldn't be matched
-	ok( !jQuery.isPlainObject(new fn()), "new fn (no methods)" );
+	ok( !EhQuery.isPlainObject(new fn()), "new fn (no methods)" );
 
 	// Makes the function a little more realistic
 	// (and harder to detect, incidentally)
 	fn.prototype["someMethod"] = function(){};
 
 	// Again, instantiated objects shouldn't be matched
-	ok( !jQuery.isPlainObject(new fn()), "new fn" );
+	ok( !EhQuery.isPlainObject(new fn()), "new fn" );
 
 	// DOM Element
-	ok( !jQuery.isPlainObject( document.createElement("div") ), "DOM Element" );
+	ok( !EhQuery.isPlainObject( document.createElement("div") ), "DOM Element" );
 
 	// Window
-	ok( !jQuery.isPlainObject( window ), "window" );
+	ok( !EhQuery.isPlainObject( window ), "window" );
 
 	pass = false;
 	try {
-		jQuery.isPlainObject( window.location );
+		EhQuery.isPlainObject( window.location );
 		pass = true;
 	} catch ( e ) {}
 	ok( pass, "Does not throw exceptions on host objects" );
@@ -347,12 +347,12 @@ asyncTest("isPlainObject", function() {
 	window.iframeCallback = function( otherObject, detail ) {
 		window.iframeCallback = undefined;
 		iframe.parentNode.removeChild( iframe );
-		ok( jQuery.isPlainObject(new otherObject()), "new otherObject" + ( detail ? " - " + detail : "" ) );
+		ok( EhQuery.isPlainObject(new otherObject()), "new otherObject" + ( detail ? " - " + detail : "" ) );
 		start();
 	};
 
 	try {
-		iframe = jQuery("#qunit-fixture")[0].appendChild( document.createElement("iframe") );
+		iframe = EhQuery("#qunit-fixture")[0].appendChild( document.createElement("iframe") );
 		doc = iframe.contentDocument || iframe.contentWindow.document;
 		doc.open();
 		doc.write("<body onload='window.parent.iframeCallback(Object);'>");
@@ -366,53 +366,53 @@ test("isFunction", function() {
 	expect(19);
 
 	// Make sure that false values return false
-	ok( !jQuery.isFunction(), "No Value" );
-	ok( !jQuery.isFunction( null ), "null Value" );
-	ok( !jQuery.isFunction( undefined ), "undefined Value" );
-	ok( !jQuery.isFunction( "" ), "Empty String Value" );
-	ok( !jQuery.isFunction( 0 ), "0 Value" );
+	ok( !EhQuery.isFunction(), "No Value" );
+	ok( !EhQuery.isFunction( null ), "null Value" );
+	ok( !EhQuery.isFunction( undefined ), "undefined Value" );
+	ok( !EhQuery.isFunction( "" ), "Empty String Value" );
+	ok( !EhQuery.isFunction( 0 ), "0 Value" );
 
 	// Check built-ins
 	// Safari uses "(Internal Function)"
-	ok( jQuery.isFunction(String), "String Function("+String+")" );
-	ok( jQuery.isFunction(Array), "Array Function("+Array+")" );
-	ok( jQuery.isFunction(Object), "Object Function("+Object+")" );
-	ok( jQuery.isFunction(Function), "Function Function("+Function+")" );
+	ok( EhQuery.isFunction(String), "String Function("+String+")" );
+	ok( EhQuery.isFunction(Array), "Array Function("+Array+")" );
+	ok( EhQuery.isFunction(Object), "Object Function("+Object+")" );
+	ok( EhQuery.isFunction(Function), "Function Function("+Function+")" );
 
 	// When stringified, this could be misinterpreted
 	var mystr = "function";
-	ok( !jQuery.isFunction(mystr), "Function String" );
+	ok( !EhQuery.isFunction(mystr), "Function String" );
 
 	// When stringified, this could be misinterpreted
 	var myarr = [ "function" ];
-	ok( !jQuery.isFunction(myarr), "Function Array" );
+	ok( !EhQuery.isFunction(myarr), "Function Array" );
 
 	// When stringified, this could be misinterpreted
 	var myfunction = { "function": "test" };
-	ok( !jQuery.isFunction(myfunction), "Function Object" );
+	ok( !EhQuery.isFunction(myfunction), "Function Object" );
 
 	// Make sure normal functions still work
 	var fn = function(){};
-	ok( jQuery.isFunction(fn), "Normal Function" );
+	ok( EhQuery.isFunction(fn), "Normal Function" );
 
 	var obj = document.createElement("object");
 
 	// Firefox says this is a function
-	ok( !jQuery.isFunction(obj), "Object Element" );
+	ok( !EhQuery.isFunction(obj), "Object Element" );
 
 	// IE says this is an object
 	// Since 1.3, this isn't supported (#2968)
-	//ok( jQuery.isFunction(obj.getAttribute), "getAttribute Function" );
+	//ok( EhQuery.isFunction(obj.getAttribute), "getAttribute Function" );
 
 	var nodes = document.body.childNodes;
 
 	// Safari says this is a function
-	ok( !jQuery.isFunction(nodes), "childNodes Property" );
+	ok( !EhQuery.isFunction(nodes), "childNodes Property" );
 
 	var first = document.body.firstChild;
 
 	// Normal elements are reported ok everywhere
-	ok( !jQuery.isFunction(first), "A normal DOM Element" );
+	ok( !EhQuery.isFunction(first), "A normal DOM Element" );
 
 	var input = document.createElement("input");
 	input.type = "text";
@@ -420,7 +420,7 @@ test("isFunction", function() {
 
 	// IE says this is an object
 	// Since 1.3, this isn't supported (#2968)
-	//ok( jQuery.isFunction(input.focus), "A default function property" );
+	//ok( EhQuery.isFunction(input.focus), "A default function property" );
 
 	document.body.removeChild( input );
 
@@ -429,7 +429,7 @@ test("isFunction", function() {
 	document.body.appendChild( a );
 
 	// This serializes with the word 'function' in it
-	ok( !jQuery.isFunction(a), "Anchor Element" );
+	ok( !EhQuery.isFunction(a), "Anchor Element" );
 
 	document.body.removeChild( a );
 
@@ -439,7 +439,7 @@ test("isFunction", function() {
 			callback(response);
 		}
 
-		ok( jQuery.isFunction(fn), "Recursive Function Call" );
+		ok( EhQuery.isFunction(fn), "Recursive Function Call" );
 
 		fn({ some: "data" });
 	}
@@ -452,7 +452,7 @@ test("isFunction", function() {
 test( "isNumeric", function() {
 	expect( 36 );
 
-	var t = jQuery.isNumeric,
+	var t = EhQuery.isNumeric,
 		Traditionalists = /** @constructor */ function(n) {
 			this.value = n;
 			this.toString = function(){
@@ -506,18 +506,18 @@ test( "isNumeric", function() {
 test("isXMLDoc - HTML", function() {
 	expect(4);
 
-	ok( !jQuery.isXMLDoc( document ), "HTML document" );
-	ok( !jQuery.isXMLDoc( document.documentElement ), "HTML documentElement" );
-	ok( !jQuery.isXMLDoc( document.body ), "HTML Body Element" );
+	ok( !EhQuery.isXMLDoc( document ), "HTML document" );
+	ok( !EhQuery.isXMLDoc( document.documentElement ), "HTML documentElement" );
+	ok( !EhQuery.isXMLDoc( document.body ), "HTML Body Element" );
 
 	var iframe = document.createElement("iframe");
 	document.body.appendChild( iframe );
 
 	try {
-		var body = jQuery(iframe).contents()[0];
+		var body = EhQuery(iframe).contents()[0];
 
 		try {
-			ok( !jQuery.isXMLDoc( body ), "Iframe body element" );
+			ok( !EhQuery.isXMLDoc( body ), "Iframe body element" );
 		} catch(e) {
 			ok( false, "Iframe body element exception" );
 		}
@@ -533,60 +533,60 @@ test("XSS via location.hash", function() {
 	expect(1);
 
 	stop();
-	jQuery["_check9521"] = function(x){
+	EhQuery["_check9521"] = function(x){
 		ok( x, "script called from #id-like selector with inline handler" );
-		jQuery("#check9521").remove();
-		delete jQuery["_check9521"];
+		EhQuery("#check9521").remove();
+		delete EhQuery["_check9521"];
 		start();
 	};
 	try {
 		// This throws an error because it's processed like an id
-		jQuery( "#<img id='check9521' src='no-such-.gif' onerror='jQuery._check9521(false)'>" ).appendTo("#qunit-fixture");
+		EhQuery( "#<img id='check9521' src='no-such-.gif' onerror='EhQuery._check9521(false)'>" ).appendTo("#qunit-fixture");
 	} catch (err) {
-		jQuery["_check9521"](true);
+		EhQuery["_check9521"](true);
 	}
 });
 
 test("isXMLDoc - XML", function() {
 	expect(3);
 	var xml = createDashboardXML();
-	ok( jQuery.isXMLDoc( xml ), "XML document" );
-	ok( jQuery.isXMLDoc( xml.documentElement ), "XML documentElement" );
-	ok( jQuery.isXMLDoc( jQuery("tab", xml)[0] ), "XML Tab Element" );
+	ok( EhQuery.isXMLDoc( xml ), "XML document" );
+	ok( EhQuery.isXMLDoc( xml.documentElement ), "XML documentElement" );
+	ok( EhQuery.isXMLDoc( EhQuery("tab", xml)[0] ), "XML Tab Element" );
 });
 
 test("isWindow", function() {
 	expect( 14 );
 
-	ok( jQuery.isWindow(window), "window" );
-	ok( jQuery.isWindow(document.getElementsByTagName("iframe")[0].contentWindow), "iframe.contentWindow" );
-	ok( !jQuery.isWindow(), "empty" );
-	ok( !jQuery.isWindow(null), "null" );
-	ok( !jQuery.isWindow(undefined), "undefined" );
-	ok( !jQuery.isWindow(document), "document" );
-	ok( !jQuery.isWindow(document.documentElement), "documentElement" );
-	ok( !jQuery.isWindow(""), "string" );
-	ok( !jQuery.isWindow(1), "number" );
-	ok( !jQuery.isWindow(true), "boolean" );
-	ok( !jQuery.isWindow({}), "object" );
-	ok( !jQuery.isWindow({ setInterval: function(){} }), "fake window" );
-	ok( !jQuery.isWindow(/window/), "regexp" );
-	ok( !jQuery.isWindow(function(){}), "function" );
+	ok( EhQuery.isWindow(window), "window" );
+	ok( EhQuery.isWindow(document.getElementsByTagName("iframe")[0].contentWindow), "iframe.contentWindow" );
+	ok( !EhQuery.isWindow(), "empty" );
+	ok( !EhQuery.isWindow(null), "null" );
+	ok( !EhQuery.isWindow(undefined), "undefined" );
+	ok( !EhQuery.isWindow(document), "document" );
+	ok( !EhQuery.isWindow(document.documentElement), "documentElement" );
+	ok( !EhQuery.isWindow(""), "string" );
+	ok( !EhQuery.isWindow(1), "number" );
+	ok( !EhQuery.isWindow(true), "boolean" );
+	ok( !EhQuery.isWindow({}), "object" );
+	ok( !EhQuery.isWindow({ setInterval: function(){} }), "fake window" );
+	ok( !EhQuery.isWindow(/window/), "regexp" );
+	ok( !EhQuery.isWindow(function(){}), "function" );
 });
 
-test("jQuery('html')", function() {
+test("EhQuery('html')", function() {
 	expect( 15 );
 
 	QUnit.reset();
-	jQuery["foo"] = false;
-	var s = jQuery("<script>jQuery.foo='test';</script>")[0];
+	EhQuery["foo"] = false;
+	var s = EhQuery("<script>EhQuery.foo='test';</script>")[0];
 	ok( s, "Creating a script" );
-	ok( !jQuery["foo"], "Make sure the script wasn't executed prematurely" );
-	jQuery("body").append("<script>jQuery.foo='test';</script>");
-	ok( jQuery["foo"], "Executing a scripts contents in the right context" );
+	ok( !EhQuery["foo"], "Make sure the script wasn't executed prematurely" );
+	EhQuery("body").append("<script>EhQuery.foo='test';</script>");
+	ok( EhQuery["foo"], "Executing a scripts contents in the right context" );
 
 	// Test multi-line HTML
-	var div = jQuery("<div>\r\nsome text\n<p>some p</p>\nmore text\r\n</div>")[0];
+	var div = EhQuery("<div>\r\nsome text\n<p>some p</p>\nmore text\r\n</div>")[0];
 	equal( div.nodeName.toUpperCase(), "DIV", "Make sure we're getting a div." );
 	equal( div.firstChild.nodeType, 3, "Text node." );
 	equal( div.lastChild.nodeType, 3, "Text node." );
@@ -594,27 +594,27 @@ test("jQuery('html')", function() {
 	equal( div.childNodes[1].firstChild.nodeType, 3, "Paragraph text." );
 
 	QUnit.reset();
-	ok( jQuery("<link rel='stylesheet'/>")[0], "Creating a link" );
+	ok( EhQuery("<link rel='stylesheet'/>")[0], "Creating a link" );
 
-	ok( !jQuery("<script/>")[0].parentNode, "Create a script" );
+	ok( !EhQuery("<script/>")[0].parentNode, "Create a script" );
 
-	ok( jQuery("<input/>").attr("type", "hidden"), "Create an input and set the type." );
+	ok( EhQuery("<input/>").attr("type", "hidden"), "Create an input and set the type." );
 
-	var j = jQuery("<span>hi</span> there <!-- mon ami -->");
+	var j = EhQuery("<span>hi</span> there <!-- mon ami -->");
 	ok( j.length >= 2, "Check node,textnode,comment creation (some browsers delete comments)" );
 
-	ok( !jQuery("<option>test</option>")[0].selected, "Make sure that options are auto-selected #2050" );
+	ok( !EhQuery("<option>test</option>")[0].selected, "Make sure that options are auto-selected #2050" );
 
-	ok( jQuery("<div></div>")[0], "Create a div with closing tag." );
-	ok( jQuery("<table></table>")[0], "Create a table with closing tag." );
+	ok( EhQuery("<div></div>")[0], "Create a div with closing tag." );
+	ok( EhQuery("<table></table>")[0], "Create a table with closing tag." );
 
-	// equal( jQuery("element[attribute='<div></div>']").length, 0, "When html is within brackets, do not recognize as html." );
-	// equal( jQuery("element[attribute=<div></div>]").length, 0, "When html is within brackets, do not recognize as html." );
-	// equal( jQuery("element:not(<div></div>)").length, 0, "When html is within parens, do not recognize as html." );
-	// equal( jQuery("\\<div\\>").length, 0, "Ignore escaped html characters" );
+	// equal( EhQuery("element[attribute='<div></div>']").length, 0, "When html is within brackets, do not recognize as html." );
+	// equal( EhQuery("element[attribute=<div></div>]").length, 0, "When html is within brackets, do not recognize as html." );
+	// equal( EhQuery("element:not(<div></div>)").length, 0, "When html is within parens, do not recognize as html." );
+	// equal( EhQuery("\\<div\\>").length, 0, "Ignore escaped html characters" );
 });
 
-test("jQuery('massive html #7990')", function() {
+test("EhQuery('massive html #7990')", function() {
 	expect( 3 );
 
 	var i;
@@ -624,26 +624,26 @@ test("jQuery('massive html #7990')", function() {
 		html[html.length] = li;
 	}
 	html[html.length] = "</ul>";
-	html = jQuery(html.join(""))[0];
+	html = EhQuery(html.join(""))[0];
 	equal( html.nodeName.toLowerCase(), "ul");
 	equal( html.firstChild.nodeName.toLowerCase(), "li");
 	equal( html.childNodes.length, 30000 );
 });
 
-test("jQuery('html', context)", function() {
+test("EhQuery('html', context)", function() {
 	expect(1);
 
-	var $div = jQuery("<div/>")[0];
-	var $span = jQuery("<span/>", $div);
+	var $div = EhQuery("<div/>")[0];
+	var $span = EhQuery("<span/>", $div);
 	equal($span.length, 1, "Verify a span created with a div context works, #1763");
 });
 
-test("jQuery(selector, xml).text(str) - Loaded via XML document", function() {
+test("EhQuery(selector, xml).text(str) - Loaded via XML document", function() {
 	expect(2);
 
 	var xml = createDashboardXML();
 	// tests for #1419 where IE was a problem
-	var tab = jQuery("tab", xml).eq(0);
+	var tab = EhQuery("tab", xml).eq(0);
 	equal( tab.text(), "blabla", "Verify initial text correct" );
 	tab.text("newtext");
 	equal( tab.text(), "newtext", "Verify new text correct" );
@@ -651,34 +651,34 @@ test("jQuery(selector, xml).text(str) - Loaded via XML document", function() {
 
 test("end()", function() {
 	expect(3);
-	equal( "Yahoo", jQuery("#yahoo").parent().end().text(), "Check for end" );
-	ok( jQuery("#yahoo").end(), "Check for end with nothing to end" );
+	equal( "Yahoo", EhQuery("#yahoo").parent().end().text(), "Check for end" );
+	ok( EhQuery("#yahoo").end(), "Check for end with nothing to end" );
 
-	var x = jQuery("#yahoo");
+	var x = EhQuery("#yahoo");
 	x.parent();
-	equal( "Yahoo", jQuery("#yahoo").text(), "Check for non-destructive behaviour" );
+	equal( "Yahoo", EhQuery("#yahoo").text(), "Check for non-destructive behaviour" );
 });
 
 test("length", function() {
 	expect(1);
-	equal( jQuery("#qunit-fixture p").length, 6, "Get Number of Elements Found" );
+	equal( EhQuery("#qunit-fixture p").length, 6, "Get Number of Elements Found" );
 });
 
 test("size()", function() {
 	expect(1);
-	equal( jQuery("#qunit-fixture p").size(), 6, "Get Number of Elements Found" );
+	equal( EhQuery("#qunit-fixture p").size(), 6, "Get Number of Elements Found" );
 });
 
 test("get()", function() {
 	expect(1);
-	deepEqual( jQuery("#qunit-fixture p").get(), q("firstp","ap","sndp","en","sap","first"), "Get All Elements" );
+	deepEqual( EhQuery("#qunit-fixture p").get(), q("firstp","ap","sndp","en","sap","first"), "Get All Elements" );
 });
 
 test("toArray()", function() {
 	expect(1);
-	deepEqual( jQuery("#qunit-fixture p").toArray(),
+	deepEqual( EhQuery("#qunit-fixture p").toArray(),
 		q("firstp","ap","sndp","en","sap","first"),
-		"Convert jQuery object to an Array" );
+		"Convert EhQuery object to an Array" );
 });
 
 test("inArray()", function() {
@@ -692,46 +692,46 @@ test("inArray()", function() {
 		empty: []
 	},
 	tests = {
-		p:    { elem: jQuery("#ap")[0],           index: 2 },
-		em:   { elem: jQuery("#siblingfirst")[0], index: 1 },
-		div:  { elem: jQuery("#nothiddendiv")[0], index: 1 },
-		a:    { elem: jQuery("#simon1")[0],       index: 3 }
+		p:    { elem: EhQuery("#ap")[0],           index: 2 },
+		em:   { elem: EhQuery("#siblingfirst")[0], index: 1 },
+		div:  { elem: EhQuery("#nothiddendiv")[0], index: 1 },
+		a:    { elem: EhQuery("#simon1")[0],       index: 3 }
 	},
 	falseTests = {
-		p:  jQuery("#liveSpan1")[0],
-		em: jQuery("#nothiddendiv")[0],
+		p:  EhQuery("#liveSpan1")[0],
+		em: EhQuery("#nothiddendiv")[0],
 		empty: ""
 	};
 
-	jQuery.each( tests, function( key, obj ) {
-		equal( jQuery.inArray( obj.elem, selections[ key ] ), obj.index, "elem is in the array of selections of its tag" );
+	EhQuery.each( tests, function( key, obj ) {
+		equal( EhQuery.inArray( obj.elem, selections[ key ] ), obj.index, "elem is in the array of selections of its tag" );
 		// Third argument (fromIndex)
-		equal( !!~jQuery.inArray( obj.elem, selections[ key ], 5 ), false, "elem is NOT in the array of selections given a starting index greater than its position" );
-		equal( !!~jQuery.inArray( obj.elem, selections[ key ], 1 ), true, "elem is in the array of selections given a starting index less than or equal to its position" );
-		equal( !!~jQuery.inArray( obj.elem, selections[ key ], -3 ), true, "elem is in the array of selections given a negative index" );
+		equal( !!~EhQuery.inArray( obj.elem, selections[ key ], 5 ), false, "elem is NOT in the array of selections given a starting index greater than its position" );
+		equal( !!~EhQuery.inArray( obj.elem, selections[ key ], 1 ), true, "elem is in the array of selections given a starting index less than or equal to its position" );
+		equal( !!~EhQuery.inArray( obj.elem, selections[ key ], -3 ), true, "elem is in the array of selections given a negative index" );
 	});
 
-	jQuery.each( falseTests, function( key, elem ) {
-		equal( !!~jQuery.inArray( elem, selections[ key ] ), false, "elem is NOT in the array of selections" );
+	EhQuery.each( falseTests, function( key, elem ) {
+		equal( !!~EhQuery.inArray( elem, selections[ key ] ), false, "elem is NOT in the array of selections" );
 	});
 
 });
 
 test("get(Number)", function() {
 	expect(2);
-	equal( jQuery("#qunit-fixture p").get(0), document.getElementById("firstp"), "Get A Single Element" );
-	strictEqual( jQuery("#firstp").get(1), undefined, "Try get with index larger elements count" );
+	equal( EhQuery("#qunit-fixture p").get(0), document.getElementById("firstp"), "Get A Single Element" );
+	strictEqual( EhQuery("#firstp").get(1), undefined, "Try get with index larger elements count" );
 });
 
 test("get(-Number)",function() {
 	expect(2);
-	equal( jQuery("p").get(-1), document.getElementById("first"), "Get a single element with negative index" );
-	strictEqual( jQuery("#firstp").get(-2), undefined, "Try get with index negative index larger then elements count" );
+	equal( EhQuery("p").get(-1), document.getElementById("first"), "Get a single element with negative index" );
+	strictEqual( EhQuery("#firstp").get(-2), undefined, "Try get with index negative index larger then elements count" );
 });
 
 test("each(Function)", function() {
 	expect(1);
-	var div = jQuery("div");
+	var div = EhQuery("div");
 	div.each(function(){this.foo = "zoo";});
 	var pass = true;
 	for ( var i = 0; i < div.size(); i++ ) {
@@ -745,7 +745,7 @@ test("each(Function)", function() {
 test("slice()", function() {
 	expect(7);
 
-	var $links = jQuery("#ap a");
+	var $links = EhQuery("#ap a");
 
 	deepEqual( $links.slice(1,2).get(), q("groups"), "slice(1,2)" );
 	deepEqual( $links.slice(1).get(), q("groups", "anchor1", "mark"), "slice(1)" );
@@ -760,7 +760,7 @@ test("slice()", function() {
 test("first()/last()", function() {
 	expect(4);
 
-	var $links = jQuery("#ap a"), $none = jQuery("asdf");
+	var $links = EhQuery("#ap a"), $none = EhQuery("asdf");
 
 	deepEqual( $links.first().get(), q("google"), "first()" );
 	deepEqual( $links.last().get(), q("mark"), "last()" );
@@ -773,15 +773,15 @@ test("map()", function() {
 	expect( 2 );
 
 	deepEqual(
-		jQuery("#ap").map(function() {
-			return jQuery( this ).find("a").get();
+		EhQuery("#ap").map(function() {
+			return EhQuery( this ).find("a").get();
 		}).get(),
 		q( "google", "groups", "anchor1", "mark" ),
 		"Array Map"
 	);
 
 	deepEqual(
-		jQuery("#ap > a").map(function() {
+		EhQuery("#ap > a").map(function() {
 			return this.parentNode;
 		}).get(),
 		q( "ap","ap","ap" ),
@@ -789,37 +789,37 @@ test("map()", function() {
 	);
 });
 
-test("jQuery.map", function() {
+test("EhQuery.map", function() {
 	expect( 25 );
 
 	var i, label, result, callback;
 
-	result = jQuery.map( [ 3, 4, 5 ], function( v, k ) {
+	result = EhQuery.map( [ 3, 4, 5 ], function( v, k ) {
 		return k;
 	});
 	equal( result.join(""), "012", "Map the keys from an array" );
 
-	result = jQuery.map( [ 3, 4, 5 ], function( v, k ) {
+	result = EhQuery.map( [ 3, 4, 5 ], function( v, k ) {
 		return v;
 	});
 	equal( result.join(""), "345", "Map the values from an array" );
 
-	result = jQuery.map( { a: 1, b: 2 }, function( v, k ) {
+	result = EhQuery.map( { a: 1, b: 2 }, function( v, k ) {
 		return k;
 	});
 	equal( result.join(""), "ab", "Map the keys from an object" );
 
-	result = jQuery.map( { a: 1, b: 2 }, function( v, k ) {
+	result = EhQuery.map( { a: 1, b: 2 }, function( v, k ) {
 		return v;
 	});
 	equal( result.join(""), "12", "Map the values from an object" );
 
-	result = jQuery.map( [ "a", undefined, null, "b" ], function( v, k ) {
+	result = EhQuery.map( [ "a", undefined, null, "b" ], function( v, k ) {
 		return v;
 	});
 	equal( result.join(""), "ab", "Array iteration does not include undefined/null results" );
 
-	result = jQuery.map( { a: "a", b: undefined, c: null, d: "b" }, function( v, k ) {
+	result = EhQuery.map( { a: "a", b: undefined, c: null, d: "b" }, function( v, k ) {
 		return v;
 	});
 	equal( result.join(""), "ab", "Object iteration does not include undefined/null results" );
@@ -835,7 +835,7 @@ test("jQuery.map", function() {
 	for ( i in result ) {
 		label = i;
 		result[ i ].foo = "bar";
-		jQuery.map( result[ i ], callback );
+		EhQuery.map( result[ i ], callback );
 	}
 
 	result = {
@@ -854,7 +854,7 @@ test("jQuery.map", function() {
 	};
 	for ( i in result ) {
 		label = i;
-		jQuery.map( { length: result[ i ] }, callback );
+		EhQuery.map( { length: result[ i ] }, callback );
 	}
 
 	result = {
@@ -871,50 +871,50 @@ test("jQuery.map", function() {
 	};
 	for ( i in result ) {
 		label = i;
-		jQuery.map( result[ i ], callback );
+		EhQuery.map( result[ i ], callback );
 	}
 
 	result = false;
-	jQuery.map( { length: 0 }, function( v, k ) {
+	EhQuery.map( { length: 0 }, function( v, k ) {
 		result = true;
 	});
 	ok( !result, "length: 0 plain object treated like array" );
 
 	result = false;
-	jQuery.map( document.getElementsByTagName("asdf"), function( v, k ) {
+	EhQuery.map( document.getElementsByTagName("asdf"), function( v, k ) {
 		result = true;
 	});
 	ok( !result, "empty NodeList treated like array" );
 
-	result = jQuery.map( Array(4), function( v, k ){
+	result = EhQuery.map( Array(4), function( v, k ){
 		return k % 2 ? k : [k,k,k];
 	});
 	equal( result.join(""), "00012223", "Array results flattened (#2616)" );
 });
 
-test("jQuery.merge()", function() {
+test("EhQuery.merge()", function() {
 	expect(8);
 
-	deepEqual( jQuery.merge([],[]), [], "Empty arrays" );
+	deepEqual( EhQuery.merge([],[]), [], "Empty arrays" );
 
-	deepEqual( jQuery.merge([ 1 ],[ 2 ]), [ 1, 2 ], "Basic" );
-	deepEqual( jQuery.merge([ 1, 2 ], [ 3, 4 ]), [ 1, 2, 3, 4 ], "Basic" );
+	deepEqual( EhQuery.merge([ 1 ],[ 2 ]), [ 1, 2 ], "Basic" );
+	deepEqual( EhQuery.merge([ 1, 2 ], [ 3, 4 ]), [ 1, 2, 3, 4 ], "Basic" );
 
-	deepEqual( jQuery.merge([ 1, 2 ],[]), [ 1, 2 ], "Second empty" );
-	deepEqual( jQuery.merge([],[ 1, 2 ]), [ 1, 2 ], "First empty" );
+	deepEqual( EhQuery.merge([ 1, 2 ],[]), [ 1, 2 ], "Second empty" );
+	deepEqual( EhQuery.merge([],[ 1, 2 ]), [ 1, 2 ], "First empty" );
 
 	// Fixed at [5998], #3641
-	deepEqual( jQuery.merge([ -2, -1 ], [ 0, 1, 2 ]), [ -2, -1 , 0, 1, 2 ],
+	deepEqual( EhQuery.merge([ -2, -1 ], [ 0, 1, 2 ]), [ -2, -1 , 0, 1, 2 ],
 		"Second array including a zero (falsy)");
 
 	// After fixing #5527
-	deepEqual( jQuery.merge([], [ null, undefined ]), [ null, undefined ],
+	deepEqual( EhQuery.merge([], [ null, undefined ]), [ null, undefined ],
 		"Second array including null and undefined values");
-	deepEqual( jQuery.merge({ length: 0 }, [ 1, 2 ] ), { length: 2, 0: 1, 1: 2},
+	deepEqual( EhQuery.merge({ length: 0 }, [ 1, 2 ] ), { length: 2, 0: 1, 1: 2},
 		"First array like");
 });
 
-test("jQuery.extend(Object, Object)", function() {
+test("EhQuery.extend(Object, Object)", function() {
 	expect(28);
 
 	var settings = { "xnumber1": 5, "xnumber2": 7, "xstring1": "peter", "xstring2": "pan" },
@@ -929,33 +929,33 @@ test("jQuery.extend(Object, Object)", function() {
 		arr = [1, 2, 3],
 		nestedarray = { "arr": arr };
 
-	jQuery.extend(settings, options);
+	EhQuery.extend(settings, options);
 	deepEqual( settings, merged, "Check if extended: settings must be extended" );
 	deepEqual( options, optionsCopy, "Check if not modified: options must not be modified" );
 
-	jQuery.extend(settings, null, options);
+	EhQuery.extend(settings, null, options);
 	deepEqual( settings, merged, "Check if extended: settings must be extended" );
 	deepEqual( options, optionsCopy, "Check if not modified: options must not be modified" );
 
-	jQuery.extend(true, deep1, deep2);
+	EhQuery.extend(true, deep1, deep2);
 	deepEqual( deep1["foo"], deepmerged["foo"], "Check if foo: settings must be extended" );
 	deepEqual( deep2["foo"], deep2copy["foo"], "Check if not deep2: options must not be modified" );
 	equal( deep1["foo2"], document, "Make sure that a deep clone was not attempted on the document" );
 
-	ok( jQuery.extend(true, {}, nestedarray)["arr"] !== arr, "Deep extend of object must clone child array" );
+	ok( EhQuery.extend(true, {}, nestedarray)["arr"] !== arr, "Deep extend of object must clone child array" );
 
 	// #5991
-	ok( jQuery.isArray( jQuery.extend(true, { "arr": {} }, nestedarray)["arr"] ), "Cloned array have to be an Array" );
-	ok( jQuery.isPlainObject( jQuery.extend(true, { "arr": arr }, { "arr": {} })["arr"] ), "Cloned object have to be an plain object" );
+	ok( EhQuery.isArray( EhQuery.extend(true, { "arr": {} }, nestedarray)["arr"] ), "Cloned array have to be an Array" );
+	ok( EhQuery.isPlainObject( EhQuery.extend(true, { "arr": arr }, { "arr": {} })["arr"] ), "Cloned object have to be an plain object" );
 
 	var empty = {};
 	var optionsWithLength = { "foo": { "length": -1 } };
-	jQuery.extend(true, empty, optionsWithLength);
+	EhQuery.extend(true, empty, optionsWithLength);
 	deepEqual( empty["foo"], optionsWithLength["foo"], "The length property must copy correctly" );
 
 	empty = {};
 	var optionsWithDate = { "foo": { "date": new Date() } };
-	jQuery.extend(true, empty, optionsWithDate);
+	EhQuery.extend(true, empty, optionsWithDate);
 	deepEqual( empty["foo"], optionsWithDate["foo"], "Dates copy correctly" );
 
 	/** @constructor */
@@ -963,49 +963,49 @@ test("jQuery.extend(Object, Object)", function() {
 	var customObject = new myKlass();
 	var optionsWithCustomObject = { "foo": { "date": customObject } };
 	empty = {};
-	jQuery.extend(true, empty, optionsWithCustomObject);
+	EhQuery.extend(true, empty, optionsWithCustomObject);
 	ok( empty["foo"] && empty["foo"]["date"] === customObject, "Custom objects copy correctly (no methods)" );
 
 	// Makes the class a little more realistic
 	myKlass.prototype = { "someMethod": function(){} };
 	empty = {};
-	jQuery.extend(true, empty, optionsWithCustomObject);
+	EhQuery.extend(true, empty, optionsWithCustomObject);
 	ok( empty["foo"] && empty["foo"]["date"] === customObject, "Custom objects copy correctly" );
 
 	var MyNumber = Number;
-	var ret = jQuery.extend(true, { "foo": 4 }, { "foo": new MyNumber(5) } );
+	var ret = EhQuery.extend(true, { "foo": 4 }, { "foo": new MyNumber(5) } );
 	ok( ret.foo == 5, "Wrapped numbers copy correctly" );
 
 	var nullUndef;
-	nullUndef = jQuery.extend({}, options, { "xnumber2": null });
+	nullUndef = EhQuery.extend({}, options, { "xnumber2": null });
 	ok( nullUndef["xnumber2"] === null, "Check to make sure null values are copied");
 
-	nullUndef = jQuery.extend({}, options, { "xnumber2": undefined });
+	nullUndef = EhQuery.extend({}, options, { "xnumber2": undefined });
 	ok( nullUndef["xnumber2"] === options["xnumber2"], "Check to make sure undefined values are not copied");
 
-	nullUndef = jQuery.extend({}, options, { "xnumber0": null });
+	nullUndef = EhQuery.extend({}, options, { "xnumber0": null });
 	ok( nullUndef["xnumber0"] === null, "Check to make sure null values are inserted");
 
 	var target = {};
 	var recursive = { foo:target, bar:5 };
-	jQuery.extend(true, target, recursive);
+	EhQuery.extend(true, target, recursive);
 	deepEqual( target, { bar:5 }, "Check to make sure a recursive obj doesn't go never-ending loop by not copying it over" );
 
-	ret = jQuery.extend(true, { foo: [] }, { foo: [0] } ); // 1907
+	ret = EhQuery.extend(true, { foo: [] }, { foo: [0] } ); // 1907
 	equal( ret.foo.length, 1, "Check to make sure a value with coercion 'false' copies over when necessary to fix #1907" );
 
-	ret = jQuery.extend(true, { foo: "1,2,3" }, { foo: [1, 2, 3] } );
+	ret = EhQuery.extend(true, { foo: "1,2,3" }, { foo: [1, 2, 3] } );
 	ok( typeof ret.foo != "string", "Check to make sure values equal with coercion (but not actually equal) overwrite correctly" );
 
-	ret = jQuery.extend(true, { foo:"bar" }, { foo:null } );
+	ret = EhQuery.extend(true, { foo:"bar" }, { foo:null } );
 	ok( typeof ret.foo !== "undefined", "Make sure a null value doesn't crash with deep extend, for #1908" );
 
 	var obj = { foo:null };
-	jQuery.extend(true, obj, { foo:"notnull" } );
+	EhQuery.extend(true, obj, { foo:"notnull" } );
 	equal( obj.foo, "notnull", "Make sure a null value can be overwritten" );
 
 	function func() {}
-	jQuery.extend(func, { key: "value" } );
+	EhQuery.extend(func, { key: "value" } );
 	equal( func.key, "value", "Verify a function can be extended" );
 
 	var defaults = { xnumber1: 5, xnumber2: 7, xstring1: "peter", xstring2: "pan" },
@@ -1016,14 +1016,14 @@ test("jQuery.extend(Object, Object)", function() {
 		options2Copy = { xstring2: "xx", xxx: "newstringx" },
 		merged2 = { xnumber1: 5, xnumber2: 1, xstring1: "peter", xstring2: "xx", xxx: "newstringx" };
 
-	settings = jQuery.extend({}, defaults, options1, options2);
+	settings = EhQuery.extend({}, defaults, options1, options2);
 	deepEqual( settings, merged2, "Check if extended: settings must be extended" );
 	deepEqual( defaults, defaultsCopy, "Check if not modified: options1 must not be modified" );
 	deepEqual( options1, options1Copy, "Check if not modified: options1 must not be modified" );
 	deepEqual( options2, options2Copy, "Check if not modified: options2 must not be modified" );
 });
 
-test("jQuery.extend(true,{},{a:[], o:{}}); deep copy with array, followed by object", function() {
+test("EhQuery.extend(true,{},{a:[], o:{}}); deep copy with array, followed by object", function() {
 	expect(2);
 
 	var result, initial = {
@@ -1038,31 +1038,31 @@ test("jQuery.extend(true,{},{a:[], o:{}}); deep copy with array, followed by obj
 		object: {}
 	};
 
-	result = jQuery.extend( true, {}, initial );
+	result = EhQuery.extend( true, {}, initial );
 
 	deepEqual( result, initial, "The [result] and [initial] have equal shape and values" );
-	ok( !jQuery.isArray( result.object ), "result.object wasn't paved with an empty array" );
+	ok( !EhQuery.isArray( result.object ), "result.object wasn't paved with an empty array" );
 });
 
-test("jQuery.each(Object,Function)", function() {
+test("EhQuery.each(Object,Function)", function() {
 	expect( 23 );
 
 	var i, label, seen, callback;
 
 	seen = {};
-	jQuery.each( [ 3, 4, 5 ], function( k, v ) {
+	EhQuery.each( [ 3, 4, 5 ], function( k, v ) {
 		seen[ k ] = v;
 	});
 	deepEqual( seen, { "0": 3, "1": 4, "2": 5 }, "Array iteration" );
 
 	seen = {};
-	jQuery.each( { name: "name", lang: "lang" }, function( k, v ) {
+	EhQuery.each( { name: "name", lang: "lang" }, function( k, v ) {
 		seen[ k ] = v;
 	});
 	deepEqual( seen, { name: "name", lang: "lang" }, "Object iteration" );
 
 	seen = [];
-	jQuery.each( [ 1, 2, 3 ], function( k, v ) {
+	EhQuery.each( [ 1, 2, 3 ], function( k, v ) {
 		seen.push( v );
 		if ( k === 1 ) {
 			return false;
@@ -1071,7 +1071,7 @@ test("jQuery.each(Object,Function)", function() {
 	deepEqual( seen, [ 1, 2 ] , "Broken array iteration" );
 
 	seen = [];
-	jQuery.each( {"a": 1, "b": 2,"c": 3 }, function( k, v ) {
+	EhQuery.each( {"a": 1, "b": 2,"c": 3 }, function( k, v ) {
 		seen.push( v );
 		return false;
 	});
@@ -1088,7 +1088,7 @@ test("jQuery.each(Object,Function)", function() {
 	for ( i in seen ) {
 		label = i;
 		seen[ i ].foo = "bar";
-		jQuery.each( seen[ i ], callback );
+		EhQuery.each( seen[ i ], callback );
 	}
 
 	seen = {
@@ -1107,7 +1107,7 @@ test("jQuery.each(Object,Function)", function() {
 	};
 	for ( i in seen ) {
 		label = i;
-		jQuery.each( { length: seen[ i ] }, callback );
+		EhQuery.each( { length: seen[ i ] }, callback );
 	}
 
 	seen = {
@@ -1125,87 +1125,87 @@ test("jQuery.each(Object,Function)", function() {
 	};
 	for ( i in seen ) {
 		label = i;
-		jQuery.each( seen[ i ], callback );
+		EhQuery.each( seen[ i ], callback );
 	}
 
 	seen = false;
-	jQuery.each( { length: 0 }, function( k, v ) {
+	EhQuery.each( { length: 0 }, function( k, v ) {
 		seen = true;
 	});
 	ok( !seen, "length: 0 plain object treated like array" );
 
 	seen = false;
-	jQuery.each( document.getElementsByTagName("asdf"), function( k, v ) {
+	EhQuery.each( document.getElementsByTagName("asdf"), function( k, v ) {
 		seen = true;
 	});
 	ok( !seen, "empty NodeList treated like array" );
 
 	i = 0;
-	jQuery.each( document.styleSheets, function() {
+	EhQuery.each( document.styleSheets, function() {
 		i++;
 	});
 	equal( i, 2, "Iteration over document.styleSheets" );
 });
 
-test("jQuery.makeArray", function(){
+test("EhQuery.makeArray", function(){
 	expect(15);
 
-	equal( jQuery.makeArray(jQuery("html>*"))[0].nodeName.toUpperCase(), "HEAD", "Pass makeArray a jQuery object" );
+	equal( EhQuery.makeArray(EhQuery("html>*"))[0].nodeName.toUpperCase(), "HEAD", "Pass makeArray a EhQuery object" );
 
-	equal( jQuery.makeArray(document.getElementsByName("PWD")).slice(0,1)[0].name, "PWD", "Pass makeArray a nodelist" );
+	equal( EhQuery.makeArray(document.getElementsByName("PWD")).slice(0,1)[0].name, "PWD", "Pass makeArray a nodelist" );
 
-	equal( (function(arg1, arg2){ return jQuery.makeArray(arguments); })(1,2).join(""), "12", "Pass makeArray an arguments array" );
+	equal( (function(arg1, arg2){ return EhQuery.makeArray(arguments); })(1,2).join(""), "12", "Pass makeArray an arguments array" );
 
-	equal( jQuery.makeArray([1,2,3]).join(""), "123", "Pass makeArray a real array" );
+	equal( EhQuery.makeArray([1,2,3]).join(""), "123", "Pass makeArray a real array" );
 
-	equal( jQuery.makeArray().length, 0, "Pass nothing to makeArray and expect an empty array" );
+	equal( EhQuery.makeArray().length, 0, "Pass nothing to makeArray and expect an empty array" );
 
-	equal( jQuery.makeArray( 0 )[0], 0 , "Pass makeArray a number" );
+	equal( EhQuery.makeArray( 0 )[0], 0 , "Pass makeArray a number" );
 
-	equal( jQuery.makeArray( "foo" )[0], "foo", "Pass makeArray a string" );
+	equal( EhQuery.makeArray( "foo" )[0], "foo", "Pass makeArray a string" );
 
-	equal( jQuery.makeArray( true )[0].constructor, Boolean, "Pass makeArray a boolean" );
+	equal( EhQuery.makeArray( true )[0].constructor, Boolean, "Pass makeArray a boolean" );
 
-	equal( jQuery.makeArray( document.createElement("div") )[0].nodeName.toUpperCase(), "DIV", "Pass makeArray a single node" );
+	equal( EhQuery.makeArray( document.createElement("div") )[0].nodeName.toUpperCase(), "DIV", "Pass makeArray a single node" );
 
-	equal( jQuery.makeArray( {length:2, 0:"a", 1:"b"} ).join(""), "ab", "Pass makeArray an array like map (with length)" );
+	equal( EhQuery.makeArray( {length:2, 0:"a", 1:"b"} ).join(""), "ab", "Pass makeArray an array like map (with length)" );
 
-	ok( !!jQuery.makeArray( document.documentElement.childNodes ).slice(0,1)[0].nodeName, "Pass makeArray a childNodes array" );
+	ok( !!EhQuery.makeArray( document.documentElement.childNodes ).slice(0,1)[0].nodeName, "Pass makeArray a childNodes array" );
 
 	// function, is tricky as it has length
-	equal( jQuery.makeArray( function(){ return 1;} )[0](), 1, "Pass makeArray a function" );
+	equal( EhQuery.makeArray( function(){ return 1;} )[0](), 1, "Pass makeArray a function" );
 
 	//window, also has length
-	equal( jQuery.makeArray(window)[0], window, "Pass makeArray the window" );
+	equal( EhQuery.makeArray(window)[0], window, "Pass makeArray the window" );
 
-	equal( jQuery.makeArray(/a/)[0].constructor, RegExp, "Pass makeArray a regex" );
+	equal( EhQuery.makeArray(/a/)[0].constructor, RegExp, "Pass makeArray a regex" );
 
 	// Some nodes inherit traits of nodelists
-	ok( jQuery.makeArray(document.getElementById("form")).length >= 13,
+	ok( EhQuery.makeArray(document.getElementById("form")).length >= 13,
 		"Pass makeArray a form (treat as elements)" );
 });
 
-test("jQuery.inArray", function(){
+test("EhQuery.inArray", function(){
 	expect(3);
 
-	equal( jQuery.inArray( 0, false ), -1 , "Search in 'false' as array returns -1 and doesn't throw exception" );
+	equal( EhQuery.inArray( 0, false ), -1 , "Search in 'false' as array returns -1 and doesn't throw exception" );
 
-	equal( jQuery.inArray( 0, null ), -1 , "Search in 'null' as array returns -1 and doesn't throw exception" );
+	equal( EhQuery.inArray( 0, null ), -1 , "Search in 'null' as array returns -1 and doesn't throw exception" );
 
-	equal( jQuery.inArray( 0, undefined ), -1 , "Search in 'undefined' as array returns -1 and doesn't throw exception" );
+	equal( EhQuery.inArray( 0, undefined ), -1 , "Search in 'undefined' as array returns -1 and doesn't throw exception" );
 });
 
-test("jQuery.isEmptyObject", function(){
+test("EhQuery.isEmptyObject", function(){
 	expect(2);
 
-	equal(true, jQuery.isEmptyObject({}), "isEmptyObject on empty object literal" );
-	equal(false, jQuery.isEmptyObject({a:1}), "isEmptyObject on non-empty object literal" );
+	equal(true, EhQuery.isEmptyObject({}), "isEmptyObject on empty object literal" );
+	equal(false, EhQuery.isEmptyObject({a:1}), "isEmptyObject on non-empty object literal" );
 
 	// What about this ?
-	// equal(true, jQuery.isEmptyObject(null), "isEmptyObject on null" );
+	// equal(true, EhQuery.isEmptyObject(null), "isEmptyObject on null" );
 });
 
-test("jQuery.proxy", function(){
+test("EhQuery.proxy", function(){
 	expect( 9 );
 
 	var test = function(){ equal( this, thisObject, "Make sure that scope is set properly." ); };
@@ -1215,102 +1215,102 @@ test("jQuery.proxy", function(){
 	test.call( thisObject );
 
 	// Basic scoping
-	jQuery.proxy( test, thisObject )();
+	EhQuery.proxy( test, thisObject )();
 
 	// Another take on it
-	jQuery.proxy( thisObject, "method" )();
+	EhQuery.proxy( thisObject, "method" )();
 
 	// Make sure it doesn't freak out
-	equal( jQuery.proxy( null, thisObject ), undefined, "Make sure no function was returned." );
+	equal( EhQuery.proxy( null, thisObject ), undefined, "Make sure no function was returned." );
 
 	// Partial application
 	var test2 = function( a ){ equal( a, "pre-applied", "Ensure arguments can be pre-applied." ); };
-	jQuery.proxy( test2, null, "pre-applied" )();
+	EhQuery.proxy( test2, null, "pre-applied" )();
 
 	// Partial application w/ normal arguments
 	var test3 = function( a, b ){ equal( b, "normal", "Ensure arguments can be pre-applied and passed as usual." ); };
-	jQuery.proxy( test3, null, "pre-applied" )( "normal" );
+	EhQuery.proxy( test3, null, "pre-applied" )( "normal" );
 
 	// Test old syntax
 	var test4 = { "meth": function( a ){ equal( a, "boom", "Ensure old syntax works." ); } };
-	jQuery.proxy( test4, "meth" )( "boom" );
+	EhQuery.proxy( test4, "meth" )( "boom" );
 
-	// jQuery 1.9 improved currying with `this` object
+	// EhQuery 1.9 improved currying with `this` object
 	var fn = function() {
 		equal( Array.prototype.join.call( arguments, "," ), "arg1,arg2,arg3", "args passed" );
 		equal( this.foo, "bar", "this-object passed" );
 	};
-	var cb = jQuery.proxy( fn, null, "arg1", "arg2" );
+	var cb = EhQuery.proxy( fn, null, "arg1", "arg2" );
 	cb.call( thisObject, "arg3" );
 });
 
-test("jQuery.parseHTML", function() {
+test("EhQuery.parseHTML", function() {
 	expect( 17 );
 
 	var html, nodes;
 
-	equal( jQuery.parseHTML(), null, "Nothing in, null out." );
-	equal( jQuery.parseHTML( null ), null, "Null in, null out." );
-	equal( jQuery.parseHTML( "" ), null, "Empty string in, null out." );
+	equal( EhQuery.parseHTML(), null, "Nothing in, null out." );
+	equal( EhQuery.parseHTML( null ), null, "Null in, null out." );
+	equal( EhQuery.parseHTML( "" ), null, "Empty string in, null out." );
 	raises(function() {
-		jQuery.parseHTML( "<div></div>", document.getElementById("form") );
+		EhQuery.parseHTML( "<div></div>", document.getElementById("form") );
 	}, "Passing an element as the context raises an exception (context should be a document)");
 
-	nodes = jQuery.parseHTML( jQuery("body")[0].innerHTML );
+	nodes = EhQuery.parseHTML( EhQuery("body")[0].innerHTML );
 	ok( nodes.length > 4, "Parse a large html string" );
-	equal( jQuery.type( nodes ), "array", "parseHTML returns an array rather than a nodelist" );
+	equal( EhQuery.type( nodes ), "array", "parseHTML returns an array rather than a nodelist" );
 
 	html = "<script>undefined()</script>";
-	equal( jQuery.parseHTML( html ).length, 0, "Ignore scripts by default" );
-	equal( jQuery.parseHTML( html, true )[0].nodeName.toLowerCase(), "script", "Preserve scripts when requested" );
+	equal( EhQuery.parseHTML( html ).length, 0, "Ignore scripts by default" );
+	equal( EhQuery.parseHTML( html, true )[0].nodeName.toLowerCase(), "script", "Preserve scripts when requested" );
 
 	html += "<div></div>";
-	equal( jQuery.parseHTML( html )[0].nodeName.toLowerCase(), "div", "Preserve non-script nodes" );
-	equal( jQuery.parseHTML( html, true )[0].nodeName.toLowerCase(), "script", "Preserve script position");
+	equal( EhQuery.parseHTML( html )[0].nodeName.toLowerCase(), "div", "Preserve non-script nodes" );
+	equal( EhQuery.parseHTML( html, true )[0].nodeName.toLowerCase(), "script", "Preserve script position");
 
-	equal( jQuery.parseHTML("text")[0].nodeType, 3, "Parsing text returns a text node" );
-	equal( jQuery.parseHTML( "\t<div></div>" )[0].nodeValue, "\t", "Preserve leading whitespace" );
+	equal( EhQuery.parseHTML("text")[0].nodeType, 3, "Parsing text returns a text node" );
+	equal( EhQuery.parseHTML( "\t<div></div>" )[0].nodeValue, "\t", "Preserve leading whitespace" );
 
-	equal( jQuery.parseHTML(" <div/> ")[0].nodeType, 3, "Leading spaces are treated as text nodes (#11290)" );
+	equal( EhQuery.parseHTML(" <div/> ")[0].nodeType, 3, "Leading spaces are treated as text nodes (#11290)" );
 
-	html = jQuery.parseHTML( "<div>test div</div>" );
+	html = EhQuery.parseHTML( "<div>test div</div>" );
 
 	equal( html[ 0 ].parentNode.nodeType, 11, "parentNode should be documentFragment" );
 	equal( html[ 0 ].innerHTML, "test div", "Content should be preserved" );
 
-	equal( jQuery.parseHTML("<span><span>").length, 1, "Incorrect html-strings should not break anything" );
-	equal( jQuery.parseHTML("<td><td>")[ 1 ].parentNode.nodeType, 11,
+	equal( EhQuery.parseHTML("<span><span>").length, 1, "Incorrect html-strings should not break anything" );
+	equal( EhQuery.parseHTML("<td><td>")[ 1 ].parentNode.nodeType, 11,
 		"parentNode should be documentFragment for wrapMap (variable in manipulation module) elements too" );
 });
 
-test("jQuery.parseJSON", function(){
+test("EhQuery.parseJSON", function(){
 	expect( 9 );
 
-	equal( jQuery.parseJSON( null ), null, "Actual null returns null" );
-	equal( jQuery.isEmptyObject( jQuery.parseJSON("{}") ), true, "Empty object returns empty object" );
-	deepEqual( jQuery.parseJSON("{\"test\":1}"), { "test": 1 }, "Plain object parses" );
-	deepEqual( jQuery.parseJSON("\n{\"test\":1}"), { "test": 1 }, "Leading whitespaces are ignored." );
+	equal( EhQuery.parseJSON( null ), null, "Actual null returns null" );
+	equal( EhQuery.isEmptyObject( EhQuery.parseJSON("{}") ), true, "Empty object returns empty object" );
+	deepEqual( EhQuery.parseJSON("{\"test\":1}"), { "test": 1 }, "Plain object parses" );
+	deepEqual( EhQuery.parseJSON("\n{\"test\":1}"), { "test": 1 }, "Leading whitespaces are ignored." );
 	raises(function() {
-		jQuery.parseJSON();
+		EhQuery.parseJSON();
 	}, null, "Undefined raises an error" );
 	raises( function() {
-		jQuery.parseJSON( "" );
+		EhQuery.parseJSON( "" );
 	}, null, "Empty string raises an error" );
 	raises(function() {
-		jQuery.parseJSON("''");
+		EhQuery.parseJSON("''");
 	}, null, "Single-quoted string raises an error" );
 	raises(function() {
-		jQuery.parseJSON("{a:1}");
+		EhQuery.parseJSON("{a:1}");
 	}, null, "Unquoted property raises an error" );
 	raises(function() {
-		jQuery.parseJSON("{'a':1}");
+		EhQuery.parseJSON("{'a':1}");
 	}, null, "Single-quoted property raises an error" );
 });
 
-test("jQuery.parseXML", 8, function(){
+test("EhQuery.parseXML", 8, function(){
 	var xml, tmp;
 	try {
-		xml = jQuery.parseXML( "<p>A <b>well-formed</b> xml string</p>" );
+		xml = EhQuery.parseXML( "<p>A <b>well-formed</b> xml string</p>" );
 		tmp = xml.getElementsByTagName( "p" )[ 0 ];
 		ok( !!tmp, "<p> present in document" );
 		tmp = tmp.getElementsByTagName( "b" )[ 0 ];
@@ -1320,26 +1320,26 @@ test("jQuery.parseXML", 8, function(){
 		strictEqual( e, undefined, "unexpected error" );
 	}
 	try {
-		xml = jQuery.parseXML( "<p>Not a <<b>well-formed</b> xml string</p>" );
+		xml = EhQuery.parseXML( "<p>Not a <<b>well-formed</b> xml string</p>" );
 		ok( false, "invalid xml not detected" );
 	} catch( e ) {
 		strictEqual( e.message, "Invalid XML: <p>Not a <<b>well-formed</b> xml string</p>", "invalid xml detected" );
 	}
 	try {
-		xml = jQuery.parseXML( "" );
+		xml = EhQuery.parseXML( "" );
 		strictEqual( xml, null, "empty string => null document" );
-		xml = jQuery.parseXML();
+		xml = EhQuery.parseXML();
 		strictEqual( xml, null, "undefined string => null document" );
-		xml = jQuery.parseXML( null );
+		xml = EhQuery.parseXML( null );
 		strictEqual( xml, null, "null string => null document" );
-		xml = jQuery.parseXML( true );
+		xml = EhQuery.parseXML( true );
 		strictEqual( xml, null, "non-string => null document" );
 	} catch( e ) {
 		ok( false, "empty input throws exception" );
 	}
 });
 
-test("jQuery.camelCase()", function() {
+test("EhQuery.camelCase()", function() {
 
 	var tests = {
 		"foo-bar": "fooBar",
@@ -1353,7 +1353,7 @@ test("jQuery.camelCase()", function() {
 
 	expect(7);
 
-	jQuery.each( tests, function( key, val ) {
-		equal( jQuery.camelCase( key ), val, "Converts: " + key + " => " + val );
+	EhQuery.each( tests, function( key, val ) {
+		equal( EhQuery.camelCase( key ), val, "Converts: " + key + " => " + val );
 	});
 });

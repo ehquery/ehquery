@@ -9,7 +9,7 @@
 			return parent.postMessage( JSON.stringify(payload), "*" );
 		}
 
-		jQuery( window ).on( "beforeunload", function( event ) {
+		EhQuery( window ).on( "beforeunload", function( event ) {
 			report( event );
 		}).on( "load", function( event ) {
 			setTimeout(function() {

@@ -1,16 +1,16 @@
 (function() {
 
-if ( !jQuery.fn.offset ) {
+if ( !EhQuery.fn.offset ) {
 	return;
 }
 
 var supportsScroll, supportsFixedPosition,
-	forceScroll = jQuery("<div/>").css({ width: 2000, height: 2000 }),
+	forceScroll = EhQuery("<div/>").css({ width: 2000, height: 2000 }),
 	checkSupport = function() {
 		// Only run once
 		checkSupport = false;
 
-		var checkFixed = jQuery("<div/>").css({ position: "fixed", top: "20px" }).appendTo("#qunit-fixture");
+		var checkFixed = EhQuery("<div/>").css({ position: "fixed", top: "20px" }).appendTo("#qunit-fixture");
 
 		// Must append to body because #qunit-fixture is hidden and elements inside it don't have a scrollTop
 		forceScroll.appendTo("body");
@@ -36,23 +36,23 @@ module("offset", { setup: function(){
 }, teardown: moduleTeardown });
 
 /*
-	Closure-compiler will roll static methods off of the jQuery object and so they will
-	not be passed with the jQuery object across the windows. To differentiate this, the
-	testIframe callbacks use the "$" symbol to refer to the jQuery object passed from
-	the iframe window and the "jQuery" symbol is used to access any static methods.
+	Closure-compiler will roll static methods off of the EhQuery object and so they will
+	not be passed with the EhQuery object across the windows. To differentiate this, the
+	testIframe callbacks use the "$" symbol to refer to the EhQuery object passed from
+	the iframe window and the "EhQuery" symbol is used to access any static methods.
 */
 
 test("empty set", function() {
 	expect(2);
-	strictEqual( jQuery().offset(), undefined, "offset() returns undefined for empty set (#11962)" );
-	strictEqual( jQuery().position(), undefined, "position() returns undefined for empty set (#11962)" );
+	strictEqual( EhQuery().offset(), undefined, "offset() returns undefined for empty set (#11962)" );
+	strictEqual( EhQuery().position(), undefined, "position() returns undefined for empty set (#11962)" );
 });
 
 test("object without getBoundingClientRect", function() {
 	expect(2);
 
 	// Simulates a browser without gBCR on elements, we just want to return 0,0
-	var result = jQuery({ ownerDocument: document }).offset();
+	var result = EhQuery({ ownerDocument: document }).offset();
 	equal( result.top, 0, "Check top" );
 	equal( result.left, 0, "Check left" );
 });
@@ -60,7 +60,7 @@ test("object without getBoundingClientRect", function() {
 test("disconnected node", function() {
 	expect(2);
 
-	var result = jQuery( document.createElement("div") ).offset();
+	var result = EhQuery( document.createElement("div") ).offset();
 
 	equal( result.top, 0, "Check top" );
 	equal( result.left, 0, "Check left" );
@@ -76,9 +76,9 @@ testIframe("offset/absolute", "absolute", function($, iframe) {
 	tests = [
 		{ "id": "#absolute-1", "top": 1, "left": 1 }
 	];
-	jQuery.each( tests, function() {
-		equal( jQuery( this["id"], doc ).offset().top,  this["top"],  "jQuery('" + this["id"] + "').offset().top" );
-		equal( jQuery( this["id"], doc ).offset().left, this["left"], "jQuery('" + this["id"] + "').offset().left" );
+	EhQuery.each( tests, function() {
+		equal( EhQuery( this["id"], doc ).offset().top,  this["top"],  "EhQuery('" + this["id"] + "').offset().top" );
+		equal( EhQuery( this["id"], doc ).offset().left, this["left"], "EhQuery('" + this["id"] + "').offset().left" );
 	});
 
 
@@ -86,9 +86,9 @@ testIframe("offset/absolute", "absolute", function($, iframe) {
 	tests = [
 		{ "id": "#absolute-1", "top": 0, "left": 0 }
 	];
-	jQuery.each( tests, function() {
-		equal( jQuery( this["id"], doc ).position().top,  this["top"],  "jQuery('" + this["id"] + "').position().top" );
-		equal( jQuery( this["id"], doc ).position().left, this["left"], "jQuery('" + this["id"] + "').position().left" );
+	EhQuery.each( tests, function() {
+		equal( EhQuery( this["id"], doc ).position().top,  this["top"],  "EhQuery('" + this["id"] + "').position().top" );
+		equal( EhQuery( this["id"], doc ).position().left, this["left"], "EhQuery('" + this["id"] + "').position().left" );
 	});
 });
 
@@ -102,9 +102,9 @@ testIframe("offset/absolute", "absolute", function( $ ) {
 		{ "id": "#absolute-1-1-1", "top":  9, "left":  9 },
 		{ "id": "#absolute-2",     "top": 20, "left": 20 }
 	];
-	jQuery.each( tests, function() {
-		equal( $( this["id"] ).offset().top,  this["top"],  "jQuery('" + this["id"] + "').offset().top" );
-		equal( $( this["id"] ).offset().left, this["left"], "jQuery('" + this["id"] + "').offset().left" );
+	EhQuery.each( tests, function() {
+		equal( $( this["id"] ).offset().top,  this["top"],  "EhQuery('" + this["id"] + "').offset().top" );
+		equal( $( this["id"] ).offset().left, this["left"], "EhQuery('" + this["id"] + "').offset().left" );
 	});
 
 
@@ -115,9 +115,9 @@ testIframe("offset/absolute", "absolute", function( $ ) {
 		{ "id": "#absolute-1-1-1", "top":  1, "left":  1 },
 		{ "id": "#absolute-2",     "top": 19, "left": 19 }
 	];
-	jQuery.each( tests, function() {
-		equal( $( this["id"] ).position().top,  this["top"],  "jQuery('" + this["id"] + "').position().top" );
-		equal( $( this["id"] ).position().left, this["left"], "jQuery('" + this["id"] + "').position().left" );
+	EhQuery.each( tests, function() {
+		equal( $( this["id"] ).position().top,  this["top"],  "EhQuery('" + this["id"] + "').position().top" );
+		equal( $( this["id"] ).position().left, this["left"], "EhQuery('" + this["id"] + "').position().left" );
 	});
 
 	// test #5781
@@ -145,10 +145,10 @@ testIframe("offset/absolute", "absolute", function( $ ) {
 		{ "id": "#absolute-1",     "top": -1, "left": -1 },
 		{ "id": "#absolute-1",     "top":  1, "left":  1 }
 	];
-	jQuery.each( tests, function() {
+	EhQuery.each( tests, function() {
 		$( this["id"] ).offset({ "top": this["top"], "left": this["left"] });
-		equal( $( this["id"] ).offset().top,  this["top"],  "jQuery('" + this["id"] + "').offset({ top: "  + this["top"]  + " })" );
-		equal( $( this["id"] ).offset().left, this["left"], "jQuery('" + this["id"] + "').offset({ left: " + this["left"] + " })" );
+		equal( $( this["id"] ).offset().top,  this["top"],  "EhQuery('" + this["id"] + "').offset({ top: "  + this["top"]  + " })" );
+		equal( $( this["id"] ).offset().left, this["left"], "EhQuery('" + this["id"] + "').offset({ left: " + this["left"] + " })" );
 
 		var top = this["top"], left = this["left"];
 
@@ -157,8 +157,8 @@ testIframe("offset/absolute", "absolute", function( $ ) {
 			equal( val.left, left, "Verify incoming top position." );
 			return { "top": top + 1, "left": left + 1 };
 		});
-		equal( $( this["id"] ).offset().top,  this["top"]  + 1, "jQuery('" + this["id"] + "').offset({ top: "  + (this["top"]  + 1) + " })" );
-		equal( $( this["id"] ).offset().left, this["left"] + 1, "jQuery('" + this["id"] + "').offset({ left: " + (this["left"] + 1) + " })" );
+		equal( $( this["id"] ).offset().top,  this["top"]  + 1, "EhQuery('" + this["id"] + "').offset({ top: "  + (this["top"]  + 1) + " })" );
+		equal( $( this["id"] ).offset().left, this["left"] + 1, "EhQuery('" + this["id"] + "').offset({ left: " + (this["left"] + 1) + " })" );
 
 		$( this["id"] )
 			.offset({ "left": this["left"] + 2 })
@@ -172,8 +172,8 @@ testIframe("offset/absolute", "absolute", function( $ ) {
 				"left": props.left + 1
 			});
 		}});
-		equal( $( this["id"] ).offset().top,  this["top"]  + 1, "jQuery('" + this["id"] + "').offset({ top: "  + (this["top"]  + 1) + ", using: fn })" );
-		equal( $( this["id"] ).offset().left, this["left"] + 1, "jQuery('" + this["id"] + "').offset({ left: " + (this["left"] + 1) + ", using: fn })" );
+		equal( $( this["id"] ).offset().top,  this["top"]  + 1, "EhQuery('" + this["id"] + "').offset({ top: "  + (this["top"]  + 1) + ", using: fn })" );
+		equal( $( this["id"] ).offset().left, this["left"] + 1, "EhQuery('" + this["id"] + "').offset({ left: " + (this["left"] + 1) + ", using: fn })" );
 	});
 });
 
@@ -189,9 +189,9 @@ testIframe("offset/relative", "relative", function( $ ) {
 		{ "id": "#relative-1-1", "top": ie ?  13 :  15, "left": 15 },
 		{ "id": "#relative-2",   "top": ie ? 141 : 142, "left": 27 }
 	];
-	jQuery.each( tests, function() {
-		equal( $( this["id"] ).offset().top,  this["top"],  "jQuery('" + this["id"] + "').offset().top" );
-		equal( $( this["id"] ).offset().left, this["left"], "jQuery('" + this["id"] + "').offset().left" );
+	EhQuery.each( tests, function() {
+		equal( $( this["id"] ).offset().top,  this["top"],  "EhQuery('" + this["id"] + "').offset().top" );
+		equal( $( this["id"] ).offset().left, this["left"], "EhQuery('" + this["id"] + "').offset().left" );
 	});
 
 
@@ -201,9 +201,9 @@ testIframe("offset/relative", "relative", function( $ ) {
 		{ "id": "#relative-1-1", "top": ie ?   4 :   5, "left":  5 },
 		{ "id": "#relative-2",   "top": ie ? 140 : 141, "left": 26 }
 	];
-	jQuery.each( tests, function() {
-		equal( $( this["id"] ).position().top,  this["top"],  "jQuery('" + this["id"] + "').position().top" );
-		equal( $( this["id"] ).position().left, this["left"], "jQuery('" + this["id"] + "').position().left" );
+	EhQuery.each( tests, function() {
+		equal( $( this["id"] ).position().top,  this["top"],  "EhQuery('" + this["id"] + "').position().top" );
+		equal( $( this["id"] ).position().left, this["left"], "EhQuery('" + this["id"] + "').position().left" );
 	});
 
 
@@ -222,10 +222,10 @@ testIframe("offset/relative", "relative", function( $ ) {
 		{ "id": "#relative-1",   "top":  -1, "left":  -1 },
 		{ "id": "#relative-1",   "top":   7, "left":   7 }
 	];
-	jQuery.each( tests, function() {
+	EhQuery.each( tests, function() {
 		$( this["id"] ).offset({ "top": this["top"], "left": this["left"] });
-		equal( $( this["id"] ).offset().top,  this["top"],  "jQuery('" + this["id"] + "').offset({ top: "  + this["top"]  + " })" );
-		equal( $( this["id"] ).offset().left, this["left"], "jQuery('" + this["id"] + "').offset({ left: " + this["left"] + " })" );
+		equal( $( this["id"] ).offset().top,  this["top"],  "EhQuery('" + this["id"] + "').offset({ top: "  + this["top"]  + " })" );
+		equal( $( this["id"] ).offset().left, this["left"], "EhQuery('" + this["id"] + "').offset({ left: " + this["left"] + " })" );
 
 		$( this["id"] ).offset({ "top": this["top"], "left": this["left"], "using": function( props ) {
 			$( this ).css({
@@ -233,8 +233,8 @@ testIframe("offset/relative", "relative", function( $ ) {
 				"left": props.left + 1
 			});
 		}});
-		equal( $( this["id"] ).offset().top,  this["top"]  + 1, "jQuery('" + this["id"] + "').offset({ top: "  + (this["top"]  + 1) + ", using: fn })" );
-		equal( $( this["id"] ).offset().left, this["left"] + 1, "jQuery('" + this["id"] + "').offset({ left: " + (this["left"] + 1) + ", using: fn })" );
+		equal( $( this["id"] ).offset().top,  this["top"]  + 1, "EhQuery('" + this["id"] + "').offset({ top: "  + (this["top"]  + 1) + ", using: fn })" );
+		equal( $( this["id"] ).offset().left, this["left"] + 1, "EhQuery('" + this["id"] + "').offset({ left: " + (this["left"] + 1) + ", using: fn })" );
 	});
 });
 
@@ -252,9 +252,9 @@ testIframe("offset/static", "static", function( $ ) {
 		{ "id": "#static-1-1-1", "top": ie ?  20 :  23, "left": 23 },
 		{ "id": "#static-2", "top": ie ? 121 : 122, left: 7 }
 	];
-	jQuery.each( tests, function() {
-		equal( $( this["id"] ).offset().top,  this["top"],  "jQuery('" + this["id"] + "').offset().top" );
-		equal( $( this["id"] ).offset().left, this["left"], "jQuery('" + this["id"] + "').offset().left" );
+	EhQuery.each( tests, function() {
+		equal( $( this["id"] ).offset().top,  this["top"],  "EhQuery('" + this["id"] + "').offset().top" );
+		equal( $( this["id"] ).offset().left, this["left"], "EhQuery('" + this["id"] + "').offset().left" );
 	});
 
 
@@ -265,9 +265,9 @@ testIframe("offset/static", "static", function( $ ) {
 		{ "id": "#static-1-1-1", "top": ie ?  19 :  22, "left": 22 },
 		{ "id": "#static-2", "top": ie ? 120 : 121, "left": 6 }
 	];
-	jQuery.each( tests, function() {
-		equal( $( this["id"] ).position().top,  this["top"],  "jQuery('" + this["top"]  + "').position().top" );
-		equal( $( this["id"] ).position().left, this["left"], "jQuery('" + this["left"] +"').position().left" );
+	EhQuery.each( tests, function() {
+		equal( $( this["id"] ).position().top,  this["top"],  "EhQuery('" + this["top"]  + "').position().top" );
+		equal( $( this["id"] ).position().left, this["left"], "EhQuery('" + this["left"] +"').position().left" );
 	});
 
 
@@ -290,10 +290,10 @@ testIframe("offset/static", "static", function( $ ) {
 		{ "id": "#static-1",     "top":  -2, "left":  -2 },
 		{ "id": "#static-1",     "top":   7, "left":   7 }
 	];
-	jQuery.each( tests, function() {
+	EhQuery.each( tests, function() {
 		$( this["id"] ).offset({ "top": this["top"], "left": this["left"] });
-		equal( $( this["id"] ).offset().top,  this["top"],  "jQuery('" + this["id"] + "').offset({ top: "  + this["top"]  + " })" );
-		equal( $( this["id"] ).offset().left, this["left"], "jQuery('" + this["id"] + "').offset({ left: " + this["left"] + " })" );
+		equal( $( this["id"] ).offset().top,  this["top"],  "EhQuery('" + this["id"] + "').offset({ top: "  + this["top"]  + " })" );
+		equal( $( this["id"] ).offset().left, this["left"], "EhQuery('" + this["id"] + "').offset({ left: " + this["left"] + " })" );
 
 		$( this["id"] ).offset({ "top": this["top"], "left": this["left"], "using": function( props ) {
 			$( this ).css({
@@ -301,8 +301,8 @@ testIframe("offset/static", "static", function( $ ) {
 				"left": props.left + 1
 			});
 		}});
-		equal( $( this["id"] ).offset().top,  this["top"]  + 1, "jQuery('" + this["id"] + "').offset({ top: "  + (this["top"]  + 1) + ", using: fn })" );
-		equal( $( this["id"] ).offset().left, this["left"] + 1, "jQuery('" + this["id"] + "').offset({ left: " + (this["left"] + 1) + ", using: fn })" );
+		equal( $( this["id"] ).offset().top,  this["top"]  + 1, "EhQuery('" + this["id"] + "').offset({ top: "  + (this["top"]  + 1) + ", using: fn })" );
+		equal( $( this["id"] ).offset().left, this["left"] + 1, "EhQuery('" + this["id"] + "').offset({ left: " + (this["left"] + 1) + ", using: fn })" );
 	});
 });
 
@@ -329,7 +329,7 @@ testIframe("offset/fixed", "fixed", function( $ ) {
 		}
 	];
 
-	jQuery.each( tests, function() {
+	EhQuery.each( tests, function() {
 		if ( !window.supportsScroll ) {
 			ok( true, "Browser doesn't support scroll position." );
 			ok( true, "Browser doesn't support scroll position." );
@@ -337,10 +337,10 @@ testIframe("offset/fixed", "fixed", function( $ ) {
 			ok( true, "Browser doesn't support scroll position." );
 
 		} else if ( window.supportsFixedPosition ) {
-			equal( $( this["id"] ).offset().top,  this["offsetTop"],  "jQuery('" + this["id"] + "').offset().top" );
-			equal( $( this["id"] ).position().top,  this["positionTop"],  "jQuery('" + this["id"] + "').position().top" );
-			equal( $( this["id"] ).offset().left, this["offsetLeft"], "jQuery('" + this["id"] + "').offset().left" );
-			equal( $( this["id"] ).position().left,  this["positionLeft"],  "jQuery('" + this["id"] + "').position().left" );
+			equal( $( this["id"] ).offset().top,  this["offsetTop"],  "EhQuery('" + this["id"] + "').offset().top" );
+			equal( $( this["id"] ).position().top,  this["positionTop"],  "EhQuery('" + this["id"] + "').position().top" );
+			equal( $( this["id"] ).offset().left, this["offsetLeft"], "EhQuery('" + this["id"] + "').offset().left" );
+			equal( $( this["id"] ).position().left,  this["positionLeft"],  "EhQuery('" + this["id"] + "').position().left" );
 		} else {
 			// need to have same number of assertions
 			ok( true, "Fixed position is not supported" );
@@ -359,11 +359,11 @@ testIframe("offset/fixed", "fixed", function( $ ) {
 		{ "id": "#fixed-2", "top":  -5, "left":  -5 }
 	];
 
-	jQuery.each( tests, function() {
+	EhQuery.each( tests, function() {
 		if ( window.supportsFixedPosition ) {
 			$( this["id"] ).offset({ "top": this["top"], "left": this["left"] });
-			equal( $( this["id"] ).offset().top,  this["top"],  "jQuery('" + this["id"] + "').offset({ top: "  + this["top"]  + " })" );
-			equal( $( this["id"] ).offset().left, this["left"], "jQuery('" + this["id"] + "').offset({ left: " + this["left"] + " })" );
+			equal( $( this["id"] ).offset().top,  this["top"],  "EhQuery('" + this["id"] + "').offset({ top: "  + this["top"]  + " })" );
+			equal( $( this["id"] ).offset().left, this["left"], "EhQuery('" + this["id"] + "').offset({ left: " + this["left"] + " })" );
 
 			$( this["id"] ).offset({ "top": this["top"], "left": this["left"], "using": function( props ) {
 				$( this ).css({
@@ -371,8 +371,8 @@ testIframe("offset/fixed", "fixed", function( $ ) {
 					"left": props.left + 1
 				});
 			}});
-			equal( $( this["id"] ).offset().top,  this["top"]  + 1, "jQuery('" + this["id"] + "').offset({ top: "  + (this["top"]  + 1) + ", using: fn })" );
-			equal( $( this["id"] ).offset().left, this["left"] + 1, "jQuery('" + this["id"] + "').offset({ left: " + (this["left"] + 1) + ", using: fn })" );
+			equal( $( this["id"] ).offset().top,  this["top"]  + 1, "EhQuery('" + this["id"] + "').offset({ top: "  + (this["top"]  + 1) + ", using: fn })" );
+			equal( $( this["id"] ).offset().left, this["left"] + 1, "EhQuery('" + this["id"] + "').offset({ left: " + (this["left"] + 1) + ", using: fn })" );
 		} else {
 			// need to have same number of assertions
 			ok( true, "Fixed position is not supported" );
@@ -397,11 +397,11 @@ testIframe("offset/fixed", "fixed", function( $ ) {
 testIframe("offset/table", "table", function( $ ) {
 	expect(4);
 
-	equal( $("#table-1").offset().top, 6, "jQuery('#table-1').offset().top" );
-	equal( $("#table-1").offset().left, 6, "jQuery('#table-1').offset().left" );
+	equal( $("#table-1").offset().top, 6, "EhQuery('#table-1').offset().top" );
+	equal( $("#table-1").offset().left, 6, "EhQuery('#table-1').offset().left" );
 
-	equal( $("#th-1").offset().top, 10, "jQuery('#th-1').offset().top" );
-	equal( $("#th-1").offset().left, 10, "jQuery('#th-1').offset().left" );
+	equal( $("#th-1").offset().top, 10, "EhQuery('#th-1').offset().top" );
+	equal( $("#th-1").offset().left, 10, "EhQuery('#th-1').offset().left" );
 });
 
 testIframe("offset/scroll", "scroll", function( $, win ) {
@@ -413,23 +413,23 @@ testIframe("offset/scroll", "scroll", function( $, win ) {
 	if ( ie ) {
 		ok( true, "TestSwarm's iframe has hosed this test in oldIE, we surrender" );
 	} else {
-		equal( $("#scroll-1").offset().top, 7, "jQuery('#scroll-1').offset().top" );
+		equal( $("#scroll-1").offset().top, 7, "EhQuery('#scroll-1').offset().top" );
 	}
-	equal( $("#scroll-1").offset().left, 7, "jQuery('#scroll-1').offset().left" );
+	equal( $("#scroll-1").offset().left, 7, "EhQuery('#scroll-1').offset().left" );
 
 	if ( ie ) {
 		ok( true, "TestSwarm's iframe has hosed this test in oldIE, we surrender" );
 	} else {
-		equal( $("#scroll-1-1").offset().top, 11, "jQuery('#scroll-1-1').offset().top" );
+		equal( $("#scroll-1-1").offset().top, 11, "EhQuery('#scroll-1-1').offset().top" );
 	}
-	equal( $("#scroll-1-1").offset().left, 11, "jQuery('#scroll-1-1').offset().left" );
+	equal( $("#scroll-1-1").offset().left, 11, "EhQuery('#scroll-1-1').offset().left" );
 
 	// scroll offset tests .scrollTop/Left
-	equal( $("#scroll-1").scrollTop(), 5, "jQuery('#scroll-1').scrollTop()" );
-	equal( $("#scroll-1").scrollLeft(), 5, "jQuery('#scroll-1').scrollLeft()" );
+	equal( $("#scroll-1").scrollTop(), 5, "EhQuery('#scroll-1').scrollTop()" );
+	equal( $("#scroll-1").scrollLeft(), 5, "EhQuery('#scroll-1').scrollLeft()" );
 
-	equal( $("#scroll-1-1").scrollTop(), 0, "jQuery('#scroll-1-1').scrollTop()" );
-	equal( $("#scroll-1-1").scrollLeft(), 0, "jQuery('#scroll-1-1').scrollLeft()" );
+	equal( $("#scroll-1-1").scrollTop(), 0, "EhQuery('#scroll-1-1').scrollTop()" );
+	equal( $("#scroll-1-1").scrollLeft(), 0, "EhQuery('#scroll-1-1').scrollLeft()" );
 
 	// scroll method chaining
 	equal( $("#scroll-1").scrollTop(undefined).scrollTop(), 5, ".scrollTop(undefined) is chainable (#5571)" );
@@ -444,35 +444,35 @@ testIframe("offset/scroll", "scroll", function( $, win ) {
 		ok( true, "Browser doesn't support scroll position." );
 		ok( true, "Browser doesn't support scroll position." );
 	} else {
-		equal( $(win).scrollTop(), 1000, "jQuery(window).scrollTop()" );
-		equal( $(win).scrollLeft(), 1000, "jQuery(window).scrollLeft()" );
+		equal( $(win).scrollTop(), 1000, "EhQuery(window).scrollTop()" );
+		equal( $(win).scrollLeft(), 1000, "EhQuery(window).scrollLeft()" );
 
-		equal( $(win.document).scrollTop(), 1000, "jQuery(document).scrollTop()" );
-		equal( $(win.document).scrollLeft(), 1000, "jQuery(document).scrollLeft()" );
+		equal( $(win.document).scrollTop(), 1000, "EhQuery(document).scrollTop()" );
+		equal( $(win.document).scrollLeft(), 1000, "EhQuery(document).scrollLeft()" );
 	}
 
-	// test jQuery using parent window/document
-	// jQuery reference here is in the iframe
+	// test EhQuery using parent window/document
+	// EhQuery reference here is in the iframe
 	window.scrollTo(0,0);
-	equal( $(window).scrollTop(), 0, "jQuery(window).scrollTop() other window" );
-	equal( $(window).scrollLeft(), 0, "jQuery(window).scrollLeft() other window" );
-	equal( $(document).scrollTop(), 0, "jQuery(window).scrollTop() other document" );
-	equal( $(document).scrollLeft(), 0, "jQuery(window).scrollLeft() other document" );
+	equal( $(window).scrollTop(), 0, "EhQuery(window).scrollTop() other window" );
+	equal( $(window).scrollLeft(), 0, "EhQuery(window).scrollLeft() other window" );
+	equal( $(document).scrollTop(), 0, "EhQuery(window).scrollTop() other document" );
+	equal( $(document).scrollLeft(), 0, "EhQuery(window).scrollLeft() other document" );
 
 	// Tests scrollTop/Left with empty jquery objects
-	notEqual( $().scrollTop(100), null, "jQuery().scrollTop(100) testing setter on empty jquery object" );
-	notEqual( $().scrollLeft(100), null, "jQuery().scrollLeft(100) testing setter on empty jquery object" );
-	notEqual( $().scrollTop(null), null, "jQuery().scrollTop(null) testing setter on empty jquery object" );
-	notEqual( $().scrollLeft(null), null, "jQuery().scrollLeft(null) testing setter on empty jquery object" );
-	strictEqual( $().scrollTop(), null, "jQuery().scrollTop(100) testing setter on empty jquery object" );
-	strictEqual( $().scrollLeft(), null, "jQuery().scrollLeft(100) testing setter on empty jquery object" );
+	notEqual( $().scrollTop(100), null, "EhQuery().scrollTop(100) testing setter on empty jquery object" );
+	notEqual( $().scrollLeft(100), null, "EhQuery().scrollLeft(100) testing setter on empty jquery object" );
+	notEqual( $().scrollTop(null), null, "EhQuery().scrollTop(null) testing setter on empty jquery object" );
+	notEqual( $().scrollLeft(null), null, "EhQuery().scrollLeft(null) testing setter on empty jquery object" );
+	strictEqual( $().scrollTop(), null, "EhQuery().scrollTop(100) testing setter on empty jquery object" );
+	strictEqual( $().scrollLeft(), null, "EhQuery().scrollLeft(100) testing setter on empty jquery object" );
 });
 
 testIframe("offset/body", "body", function( $ ) {
 	expect(4);
 
-	equal( $("body").offset().top, 1, "jQuery('#body').offset().top" );
-	equal( $("body").offset().left, 1, "jQuery('#body').offset().left" );
+	equal( $("body").offset().top, 1, "EhQuery('#body').offset().top" );
+	equal( $("body").offset().left, 1, "EhQuery('#body').offset().left" );
 	equal( $("#firstElement").position().left, 5, "$('#firstElement').position().left" );
 	equal( $("#firstElement").position().top, 5, "$('#firstElement').position().top" );
 });
@@ -480,41 +480,41 @@ testIframe("offset/body", "body", function( $ ) {
 test("chaining", function() {
 	expect(3);
 	var coords = { "top":  1, "left":  1 };
-	equal( jQuery("#absolute-1").offset(coords).selector, "#absolute-1", "offset(coords) returns jQuery object" );
-	equal( jQuery("#non-existent").offset(coords).selector, "#non-existent", "offset(coords) with empty jQuery set returns jQuery object" );
-	equal( jQuery("#absolute-1").offset(undefined).selector, "#absolute-1", "offset(undefined) returns jQuery object (#5571)" );
+	equal( EhQuery("#absolute-1").offset(coords).selector, "#absolute-1", "offset(coords) returns EhQuery object" );
+	equal( EhQuery("#non-existent").offset(coords).selector, "#non-existent", "offset(coords) with empty EhQuery set returns EhQuery object" );
+	equal( EhQuery("#absolute-1").offset(undefined).selector, "#absolute-1", "offset(undefined) returns EhQuery object (#5571)" );
 });
 
 test("offsetParent", function(){
 	expect(13);
 
-	var body = jQuery("body").offsetParent();
+	var body = EhQuery("body").offsetParent();
 	equal( body.length, 1, "Only one offsetParent found." );
 	equal( body[0], document.documentElement, "The html element is the offsetParent of the body." );
 
-	var header = jQuery("#qunit").offsetParent();
+	var header = EhQuery("#qunit").offsetParent();
 	equal( header.length, 1, "Only one offsetParent found." );
 	equal( header[0], document.documentElement, "The html element is the offsetParent of #qunit." );
 
-	var div = jQuery("#nothiddendivchild").offsetParent();
+	var div = EhQuery("#nothiddendivchild").offsetParent();
 	equal( div.length, 1, "Only one offsetParent found." );
 	equal( div[0], document.getElementById("qunit-fixture"), "The #qunit-fixture is the offsetParent of #nothiddendivchild." );
 
-	jQuery("#nothiddendiv").css("position", "relative");
+	EhQuery("#nothiddendiv").css("position", "relative");
 
-	div = jQuery("#nothiddendivchild").offsetParent();
+	div = EhQuery("#nothiddendivchild").offsetParent();
 	equal( div.length, 1, "Only one offsetParent found." );
-	equal( div[0], jQuery("#nothiddendiv")[0], "The div is the offsetParent." );
+	equal( div[0], EhQuery("#nothiddendiv")[0], "The div is the offsetParent." );
 
-	div = jQuery("body, #nothiddendivchild").offsetParent();
+	div = EhQuery("body, #nothiddendivchild").offsetParent();
 	equal( div.length, 2, "Two offsetParent found." );
 	equal( div[0], document.documentElement, "The html element is the offsetParent of the body." );
-	equal( div[1], jQuery("#nothiddendiv")[0], "The div is the offsetParent." );
+	equal( div[1], EhQuery("#nothiddendiv")[0], "The div is the offsetParent." );
 
-	var area = jQuery("#imgmap area").offsetParent();
+	var area = EhQuery("#imgmap area").offsetParent();
 	equal( area[0], document.documentElement, "The html element is the offsetParent of the body." );
 
-	div = jQuery("<div>").css({ "position": "absolute" }).appendTo("body");
+	div = EhQuery("<div>").css({ "position": "absolute" }).appendTo("body");
 	equal( div.offsetParent()[0], document.documentElement, "Absolutely positioned div returns html as offset parent, see #12139" );
 
 	div.remove();
@@ -523,10 +523,10 @@ test("offsetParent", function(){
 test("fractions (see #7730 and #7885)", function() {
 	expect(2);
 
-	jQuery("body").append("<div id='fractions'/>");
+	EhQuery("body").append("<div id='fractions'/>");
 
 	var expected = { "top": 1000, "left": 1000 };
-	var div = jQuery("#fractions");
+	var div = EhQuery("#fractions");
 
 	div.css({
 		"position": "absolute",

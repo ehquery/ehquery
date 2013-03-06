@@ -6,7 +6,7 @@
 <script src="../../jquery.js"></script>
 <script type="text/javascript">
 window.onunload = function() {};
-jQuery(function() {
+EhQuery(function() {
 	setTimeout(function() {
 		var parent = window.parent;
 		document.write("");
@@ -14,7 +14,7 @@ jQuery(function() {
 	}, 200 );
 	var number = 50;
 	while( number-- ) {
-		jQuery.ajax("../name.php?wait=600");
+		EhQuery.ajax("../name.php?wait=600");
 	}
 });
 </script>

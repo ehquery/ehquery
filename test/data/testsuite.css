@@ -124,7 +124,7 @@ div#fx-tests div.noback {
     display: none;
 }
 
-/* tests to ensure jQuery can determine the native display mode of elements
+/* tests to ensure EhQuery can determine the native display mode of elements
    that have been set as display: none in stylesheets */
 div#show-tests * { display: none; }
 

@@ -15,7 +15,7 @@ var data_user, data_priv,
 
 function Data() {
 	this.cache = {};
-	this.expando = jQuery.expando + Math.random();
+	this.expando = EhQuery.expando + Math.random();
 }
 
 Data.uid = 1;
@@ -39,7 +39,7 @@ Data.prototype = {
 			// Fallback to a less secure definition
 			} catch ( e ) {
 				descriptor[ this.expando ] = unlock;
-				jQuery.extend( owner, descriptor );
+				EhQuery.extend( owner, descriptor );
 			}
 		}
 
@@ -69,7 +69,7 @@ Data.prototype = {
 			// reference, instead of having properties and values copied.
 			// Note, this will kill the connection between
 			// "this.cache[ unlock ]" and "cache"
-			if ( jQuery.isEmptyObject( cache ) ) {
+			if ( EhQuery.isEmptyObject( cache ) ) {
 				this.cache[ unlock ] = data;
 			// Otherwise, copy the properties one-by-one to the cache object
 			} else {
@@ -129,14 +129,14 @@ Data.prototype = {
 			this.cache[ unlock ] = {};
 		} else {
 			// Support array or space separated string of keys
-			if ( jQuery.isArray( key ) ) {
+			if ( EhQuery.isArray( key ) ) {
 				// If "name" is an array of keys...
 				// When data is initially created, via ("key", "val") signature,
 				// keys will be converted to camelCase.
 				// Since there is no way to tell _how_ a key was added, remove
 				// both plain key and camelCase key. #12786
 				// This will only penalize the array argument path.
-				name = key.concat( key.map( jQuery.camelCase ) );
+				name = key.concat( key.map( EhQuery.camelCase ) );
 			} else {
 				// Try the string as a key before any manipulation
 				if ( key in cache ) {
@@ -144,7 +144,7 @@ Data.prototype = {
 				} else {
 					// If a key with the spaces exists, use it.
 					// Otherwise, create an array by matching non-whitespace
-					name = jQuery.camelCase( key );
+					name = EhQuery.camelCase( key );
 					name = name in cache ?
 						[ name ] : ( name.match( core_rnotwhite ) || [] );
 				}
@@ -157,7 +157,7 @@ Data.prototype = {
 		}
 	},
 	hasData: function( owner ) {
-		return !jQuery.isEmptyObject(
+		return !EhQuery.isEmptyObject(
 			this.cache[ this.key( owner ) ]
 		);
 	},
@@ -175,14 +175,14 @@ function data_discard( owner ) {
 	data_priv.discard( owner );
 }
 
-// These may be used throughout the jQuery core codebase
+// These may be used throughout the EhQuery core codebase
 data_user = new Data();
 data_priv = new Data();
 
 
-jQuery.extend({
-	// This is no longer relevant to jQuery core, but must remain
-	// supported for the sake of jQuery 1.9.x API surface compatibility.
+EhQuery.extend({
+	// This is no longer relevant to EhQuery core, but must remain
+	// supported for the sake of EhQuery 1.9.x API surface compatibility.
 	acceptData: function() {
 		return true;
 	},
@@ -215,7 +215,7 @@ jQuery.extend({
 	}
 });
 
-jQuery.fn.extend({
+EhQuery.fn.extend({
 	data: function( key, value ) {
 		var attrs, name,
 			elem = this[0],
@@ -233,7 +233,7 @@ jQuery.fn.extend({
 						name = attrs[i].name;
 
 						if ( name.indexOf( "data-" ) === 0 ) {
-							name = jQuery.camelCase( name.substring(5) );
+							name = EhQuery.camelCase( name.substring(5) );
 							dataAttr( elem, name, data[ name ] );
 						}
 					}
@@ -251,13 +251,13 @@ jQuery.fn.extend({
 			});
 		}
 
-		return jQuery.access( this, function( value ) {
+		return EhQuery.access( this, function( value ) {
 			var data,
-					camelKey = jQuery.camelCase( key );
+					camelKey = EhQuery.camelCase( key );
 
-			// The calling jQuery object (element matches) is not empty
+			// The calling EhQuery object (element matches) is not empty
 			// (and therefore has an element appears at this[0]) and the
-			// `value` parameter was not undefined. An empty jQuery object
+			// `value` parameter was not undefined. An empty EhQuery object
 			// will result in `undefined` for elem = this[0] which will
 			// throw an exception if an attempt to read a data cache is made.
 			if ( elem && value === undefined ) {

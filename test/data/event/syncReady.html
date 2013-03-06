@@ -2,14 +2,14 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<title>Test case for jQuery ticket #10067</title>
+<title>Test case for EhQuery ticket #10067</title>
 <script src="../../jquery.js"></script>
 </head>
 <body>
 
 <script type="text/javascript">
-jQuery( document ).ready(function () {
-	window.parent.iframeCallback( jQuery('#container').length === 1 );
+EhQuery( document ).ready(function () {
+	window.parent.iframeCallback( EhQuery('#container').length === 1 );
 });
 </script>
 

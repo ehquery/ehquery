@@ -1,20 +1,20 @@
-[jQuery](http://jquery.com/) - New Wave JavaScript
+[EhQuery](http://ehquery.com/) - New Wave JavaScript
 ==================================================
 
 Contribution Guides
 --------------------------------------
 
-In the spirit of open source software development, jQuery always encourages community code contribution. To help you get started and before you jump into writing code, be sure to read these important contribution guidelines thoroughly:
+In the spirit of open source software development, EhQuery always encourages community code contribution. To help you get started and before you jump into writing code, be sure to read these important contribution guidelines thoroughly:
 
-1. [Getting Involved](http://docs.jquery.com/Getting_Involved)
-2. [Core Style Guide](http://docs.jquery.com/JQuery_Core_Style_Guidelines)
-3. [Tips For Bug Patching](http://docs.jquery.com/Tips_for_jQuery_Bug_Patching)
+1. [Getting Involved](http://docs.ehquery.com/Getting_Involved)
+2. [Core Style Guide](http://docs.ehquery.com/JQuery_Core_Style_Guidelines)
+3. [Tips For Bug Patching](http://docs.ehquery.com/Tips_for_EhQuery_Bug_Patching)
 
 
-What you need to build your own jQuery
+What you need to build your own EhQuery
 --------------------------------------
 
-In order to build jQuery, you need to have Node.js/npm latest and git 1.7 or later.
+In order to build EhQuery, you need to have Node.js/npm latest and git 1.7 or later.
 (Earlier versions might work OK, but are not tested.)
 
 Windows users have two options:
@@ -34,13 +34,13 @@ Linux/BSD users should use their appropriate package managers to install git and
 if you swing that way. Easy-peasy.
 
 
-How to build your own jQuery
+How to build your own EhQuery
 ----------------------------
 
-First, clone a copy of the main jQuery git repo by running:
+First, clone a copy of the main EhQuery git repo by running:
 
 ```bash
-git clone git://github.com/jquery/jquery.git
+git clone git://github.com/ehquery/ehquery.git
 ```
 
 Install the grunt-cli package so that you will have the correct version of grunt available from any project that needs it. This should be done as a global install:
@@ -49,10 +49,10 @@ Install the grunt-cli package so that you will have the correct version of grunt
 npm install -g grunt-cli
 ```
 
-Enter the jquery directory and install the Node dependencies, this time *without* specifying a global install:
+Enter the ehquery directory and install the Node dependencies, this time *without* specifying a global install:
 
 ```bash
-cd jquery && npm install
+cd ehquery && npm install
 ```
 
 Make sure you have `grunt` installed by testing:
@@ -61,19 +61,19 @@ Make sure you have `grunt` installed by testing:
 grunt -version
 ```
 
-Then, to get a complete, minified (w/ Uglify.js), linted (w/ JSHint) version of jQuery, type the following:
+Then, to get a complete, minified (w/ Uglify.js), linted (w/ JSHint) version of EhQuery, type the following:
 
 ```bash
 grunt
 ```
 
-The built version of jQuery will be put in the `dist/` subdirectory, along with the minified copy and associated map file.
+The built version of EhQuery will be put in the `dist/` subdirectory, along with the minified copy and associated map file.
 
 
 ### Modules
 
-Special builds can be created that exclude subsets of jQuery functionality.
-This allows for smaller custom builds when the builder is certain that those parts of jQuery are not being used.
+Special builds can be created that exclude subsets of EhQuery functionality.
+This allows for smaller custom builds when the builder is certain that those parts of EhQuery are not being used.
 For example, an app that only used JSONP for `$.ajax()` and did not need to calculate offsets or positions of elements could exclude the offset and ajax/xhr modules. The current modules that can be excluded are:
 
 - **ajax**: All AJAX functionality: `$.ajax()`, `$.get()`, `$.post()`, `$.ajaxSetup()`, `.load()`, transports, and ajax event shorthands such as `.ajaxStart()`.
@@ -83,10 +83,10 @@ For example, an app that only used JSONP for `$.ajax()` and did not need to calc
 - **css**: The `.css()` method plus non-animated `.show()`, `.hide()` and `.toggle()`.
 - **deprecated**: Methods documented as deprecated but not yet removed; currently only `.andSelf()`.
 - **dimensions**: The `.width()` and `.height()` methods, including `inner-` and `outer-` variations.
-- **effects**: The `.animate()` method and its shorthands such as `.slideUp()` or `.hide("slow")`. 
+- **effects**: The `.animate()` method and its shorthands such as `.slideUp()` or `.hide("slow")`.
 - **event-alias**: All event attaching/triggering shorthands like `.click()` or `.mouseover()`.
 - **offset**: The `.offset()`, `.position()`, `.offsetParent()`, `.scrollLeft()`, and `.scrollTop()` methods.
-- **sizzle**: The Sizzle selector engine. When this module is excluded, it is replaced by a rudimentary selector engine based on the browser's `querySelectorAll` method that does not support jQuery selector extensions or enhanced semantics. See the selector-native.js file for details.
+- **sizzle**: The Sizzle selector engine. When this module is excluded, it is replaced by a rudimentary selector engine based on the browser's `querySelectorAll` method that does not support EhQuery selector extensions or enhanced semantics. See the selector-native.js file for details.
 
 The grunt build process is aware of dependencies across modules. If you explicitly remove a module, its dependent modules will be removed as well. For example, excluding the css module also excludes effects, since the effects module uses `.css()` to animate CSS properties. These dependencies are listed in Gruntfile.js and the build process shows a message for each dependent module it excludes.
 
@@ -122,15 +122,15 @@ Exclude **all** optional modules and use the `querySelectorAll`-based selector e
 grunt custom:-ajax,-css,-deprecated,-dimensions,-effects,-event-alias,-offset,-sizzle
 ```
 
-For questions or requests regarding custom builds, please start a thread on the [Developing jQuery Core](https://forum.jquery.com/developing-jquery-core) section of the forum. Due to the combinatorics and custom nature of these builds, they are not regularly tested in jQuery's unit test process. The non-Sizzle selector engine currently does not pass unit tests because it is missing too much essential functionality.
+For questions or requests regarding custom builds, please start a thread on the [Developing EhQuery Core](https://forum.ehquery.com/developing-ehquery-core) section of the forum. Due to the combinatorics and custom nature of these builds, they are not regularly tested in EhQuery's unit test process. The non-Sizzle selector engine currently does not pass unit tests because it is missing too much essential functionality.
 
 Running the Unit Tests
 --------------------------------------
 
-Start grunt to auto-build jQuery as you work:
+Start grunt to auto-build EhQuery as you work:
 
 ```bash
-cd jquery && grunt watch
+cd ehquery && grunt watch
 ```
 
 
@@ -147,7 +147,7 @@ Run the unit tests with a local server that supports PHP. Ensure that you run th
 Building to a different directory
 ---------------------------------
 
-To copy the built jQuery files from `/dist` to another directory:
+To copy the built EhQuery files from `/dist` to another directory:
 
 ```bash
 grunt && grunt dist:/path/to/special/location/
@@ -155,8 +155,8 @@ grunt && grunt dist:/path/to/special/location/
 With this example, the output files would be:
 
 ```bash
-/path/to/special/location/jquery.js
-/path/to/special/location/jquery.min.js
+/path/to/special/location/ehquery.js
+/path/to/special/location/ehquery.min.js
 ```
 
 To add a permanent copy destination, create a file in `dist/` called ".destination.json". Inside the file, paste and customize the following:
@@ -198,8 +198,8 @@ be able to work with them manually.
 Following are the steps to manually get the submodules:
 
 ```bash
-git clone https://github.com/jquery/jquery.git
-cd jquery
+git clone https://github.com/ehquery/ehquery.git
+cd ehquery
 git submodule init
 git submodule update
 ```
@@ -207,16 +207,16 @@ git submodule update
 Or:
 
 ```bash
-git clone https://github.com/jquery/jquery.git
-cd jquery
+git clone https://github.com/ehquery/ehquery.git
+cd ehquery
 git submodule update --init
 ```
 
 Or:
 
 ```bash
-git clone --recursive https://github.com/jquery/jquery.git
-cd jquery
+git clone --recursive https://github.com/ehquery/ehquery.git
+cd ehquery
 ```
 
 If you want to work inside a submodule, it is possible, but first you need to checkout a branch:
@@ -226,8 +226,8 @@ cd src/sizzle
 git checkout master
 ```
 
-After you've committed your changes to the submodule, you'll update the jquery project to point to the new commit,
-but remember to push the submodule changes before pushing the new jquery commit:
+After you've committed your changes to the submodule, you'll update the ehquery project to point to the new commit,
+but remember to push the submodule changes before pushing the new ehquery commit:
 
 ```bash
 cd src/sizzle
@@ -272,7 +272,7 @@ Following are some commands that can be used there:
 * `Ctrl + S` - save
 * `Ctrl + Q` - quit
 
-[QUnit](http://docs.jquery.com/QUnit) Reference
+[QUnit](http://docs.ehquery.com/QUnit) Reference
 -----------------
 
 ### Test methods ###
@@ -301,7 +301,7 @@ raises( block, [expected], [message] );
 ```
 
 
-Test Suite Convenience Methods Reference (See [test/data/testinit.js](https://github.com/jquery/jquery/blob/master/test/data/testinit.js))
+Test Suite Convenience Methods Reference (See [test/data/testinit.js](https://github.com/ehquery/ehquery/blob/master/test/data/testinit.js))
 ------------------------------
 
 ### Returns an array of elements with the given IDs ###
@@ -332,7 +332,7 @@ t("Check for something", "//[a]", ["foo", "baar"]);
 
 
 
-### Fires a native DOM event without going through jQuery ###
+### Fires a native DOM event without going through EhQuery ###
 
 ```js
 fireNative( node, eventType )
@@ -341,7 +341,7 @@ fireNative( node, eventType )
 Example:
 
 ```js
-fireNative( jQuery("#elem")[0], "click" );
+fireNative( EhQuery("#elem")[0], "click" );
 ```
 
 ### Add random number to url to stop caching ###
@@ -367,8 +367,8 @@ url("data/test.php?foo=bar");
 ### Load tests in an iframe ###
 
 Loads a given page constructing a url with fileName: `"./data/" + fileName + ".html"`
-and fires the given callback on jQuery ready (using the jQuery loading from that page)
-and passes the iFrame's jQuery to the callback.
+and fires the given callback on EhQuery ready (using the EhQuery loading from that page)
+and passes the iFrame's EhQuery to the callback.
 
 ```js
 testIframe( fileName, testName, callback );
@@ -377,7 +377,7 @@ testIframe( fileName, testName, callback );
 Callback arguments:
 
 ```js
-callback( jQueryFromIFrame, iFrameWindow, iFrameDocument );
+callback( EhQueryFromIFrame, iFrameWindow, iFrameDocument );
 ```
 
 ### Load tests in an iframe (window.iframeCallback) ###
@@ -395,4 +395,4 @@ Questions?
 ----------
 
 If you have any questions, please feel free to ask on the
-[Developing jQuery Core forum](http://forum.jquery.com/developing-jquery-core) or in #jquery on irc.freenode.net.
+[Developing EhQuery Core forum](http://forum.ehquery.com/developing-ehquery-core) or in #ehquery on irc.freenode.net.

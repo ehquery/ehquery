@@ -1,17 +1,17 @@
-if ( jQuery.css ) {
+if ( EhQuery.css ) {
 
 module("css", { teardown: moduleTeardown });
 
 test("css(String|Hash)", function() {
 	expect( 40 );
 
-	equal( jQuery("#qunit-fixture").css("display"), "block", "Check for css property \"display\"" );
+	equal( EhQuery("#qunit-fixture").css("display"), "block", "Check for css property \"display\"" );
 
-	var $child = jQuery("#nothiddendivchild").css({ "width": "20%", "height": "20%" });
+	var $child = EhQuery("#nothiddendivchild").css({ "width": "20%", "height": "20%" });
 	notEqual( $child.css("width"), "20px", "Retrieving a width percentage on the child of a hidden div returns percentage" );
 	notEqual( $child.css("height"), "20px", "Retrieving a height percentage on the child of a hidden div returns percentage" );
 
-	var div = jQuery( "<div>" );
+	var div = EhQuery( "<div>" );
 
 	// These should be "auto" (or some better value)
 	// temporarily provide "0px" for backwards compat
@@ -23,7 +23,7 @@ test("css(String|Hash)", function() {
 	equal( div.css("width"), "4px", "Width on disconnected node." );
 	equal( div.css("height"), "4px", "Height on disconnected node." );
 
-	var div2 = jQuery( "<div style='display:none;'><input type='text' style='height:20px;'/><textarea style='height:20px;'/><div style='height:20px;'></div></div>").appendTo("body");
+	var div2 = EhQuery( "<div style='display:none;'><input type='text' style='height:20px;'/><textarea style='height:20px;'/><div style='height:20px;'></div></div>").appendTo("body");
 
 	equal( div2.find("input").css("height"), "20px", "Height on hidden input." );
 	equal( div2.find("textarea").css("height"), "20px", "Height on hidden textarea." );
@@ -32,35 +32,35 @@ test("css(String|Hash)", function() {
 	div2.remove();
 
 	// handle negative numbers by setting to zero #11604
-	jQuery("#nothiddendiv").css( {"width": 1, "height": 1} );
+	EhQuery("#nothiddendiv").css( {"width": 1, "height": 1} );
 
-	var width = parseFloat(jQuery("#nothiddendiv").css("width")), height = parseFloat(jQuery("#nothiddendiv").css("height"));
-	jQuery("#nothiddendiv").css({ "overflow":"hidden", "width": -1, "height": -1 });
-	equal( parseFloat(jQuery("#nothiddendiv").css("width")), 0, "Test negative width set to 0");
-	equal( parseFloat(jQuery("#nothiddendiv").css("height")), 0, "Test negative height set to 0");
+	var width = parseFloat(EhQuery("#nothiddendiv").css("width")), height = parseFloat(EhQuery("#nothiddendiv").css("height"));
+	EhQuery("#nothiddendiv").css({ "overflow":"hidden", "width": -1, "height": -1 });
+	equal( parseFloat(EhQuery("#nothiddendiv").css("width")), 0, "Test negative width set to 0");
+	equal( parseFloat(EhQuery("#nothiddendiv").css("height")), 0, "Test negative height set to 0");
 
-	equal( jQuery("<div style='display: none;'>").css("display"), "none", "Styles on disconnected nodes");
+	equal( EhQuery("<div style='display: none;'>").css("display"), "none", "Styles on disconnected nodes");
 
-	jQuery("#floatTest").css({"float": "right"});
-	equal( jQuery("#floatTest").css("float"), "right", "Modified CSS float using \"float\": Assert float is right");
-	jQuery("#floatTest").css({"font-size": "30px"});
-	equal( jQuery("#floatTest").css("font-size"), "30px", "Modified CSS font-size: Assert font-size is 30px");
-	jQuery.each("0,0.25,0.5,0.75,1".split(","), function(i, n) {
-		jQuery("#foo").css({"opacity": n});
+	EhQuery("#floatTest").css({"float": "right"});
+	equal( EhQuery("#floatTest").css("float"), "right", "Modified CSS float using \"float\": Assert float is right");
+	EhQuery("#floatTest").css({"font-size": "30px"});
+	equal( EhQuery("#floatTest").css("font-size"), "30px", "Modified CSS font-size: Assert font-size is 30px");
+	EhQuery.each("0,0.25,0.5,0.75,1".split(","), function(i, n) {
+		EhQuery("#foo").css({"opacity": n});
 
-		equal( jQuery("#foo").css("opacity"), parseFloat(n), "Assert opacity is " + parseFloat(n) + " as a String" );
-		jQuery("#foo").css({"opacity": parseFloat(n)});
-		equal( jQuery("#foo").css("opacity"), parseFloat(n), "Assert opacity is " + parseFloat(n) + " as a Number" );
+		equal( EhQuery("#foo").css("opacity"), parseFloat(n), "Assert opacity is " + parseFloat(n) + " as a String" );
+		EhQuery("#foo").css({"opacity": parseFloat(n)});
+		equal( EhQuery("#foo").css("opacity"), parseFloat(n), "Assert opacity is " + parseFloat(n) + " as a Number" );
 	});
-	jQuery("#foo").css({"opacity": ""});
-	equal( jQuery("#foo").css("opacity"), "1", "Assert opacity is 1 when set to an empty String" );
+	EhQuery("#foo").css({"opacity": ""});
+	equal( EhQuery("#foo").css("opacity"), "1", "Assert opacity is 1 when set to an empty String" );
 
-	equal( jQuery("#empty").css("opacity"), "0", "Assert opacity is accessible via filter property set in stylesheet in IE" );
-	jQuery("#empty").css({ "opacity": "1" });
-	equal( jQuery("#empty").css("opacity"), "1", "Assert opacity is taken from style attribute when set vs stylesheet in IE with filters" );
+	equal( EhQuery("#empty").css("opacity"), "0", "Assert opacity is accessible via filter property set in stylesheet in IE" );
+	EhQuery("#empty").css({ "opacity": "1" });
+	equal( EhQuery("#empty").css("opacity"), "1", "Assert opacity is taken from style attribute when set vs stylesheet in IE with filters" );
 
-	div = jQuery("#nothiddendiv");
-	var child = jQuery("#nothiddendivchild");
+	div = EhQuery("#nothiddendiv");
+	var child = EhQuery("#nothiddendivchild");
 
 	equal( parseInt(div.css("fontSize"), 10), 16, "Verify fontSize px set." );
 	equal( parseInt(div.css("font-size"), 10), 16, "Verify fontSize px set." );
@@ -108,7 +108,7 @@ test("css(String|Hash)", function() {
 
 test("css() explicit and relative values", function() {
 	expect(29);
-	var $elem = jQuery("#nothiddendiv");
+	var $elem = EhQuery("#nothiddendiv");
 
 	$elem.css({ "width": 1, "height": 1, "paddingLeft": "1px", "opacity": 1 });
 	equal( $elem.css("width"), "1px", "Initial css set or width/height works (hash)" );
@@ -197,32 +197,32 @@ test("css() explicit and relative values", function() {
 test("css(String, Object)", function() {
 	expect( 19 );
 
-	jQuery("#nothiddendiv").css("top", "-1em");
-	ok( jQuery("#nothiddendiv").css("top"), -16, "Check negative number in EMs." );
+	EhQuery("#nothiddendiv").css("top", "-1em");
+	ok( EhQuery("#nothiddendiv").css("top"), -16, "Check negative number in EMs." );
 
-	jQuery("#floatTest").css("float", "left");
-	equal( jQuery("#floatTest").css("float"), "left", "Modified CSS float using \"float\": Assert float is left");
-	jQuery("#floatTest").css("font-size", "20px");
-	equal( jQuery("#floatTest").css("font-size"), "20px", "Modified CSS font-size: Assert font-size is 20px");
+	EhQuery("#floatTest").css("float", "left");
+	equal( EhQuery("#floatTest").css("float"), "left", "Modified CSS float using \"float\": Assert float is left");
+	EhQuery("#floatTest").css("font-size", "20px");
+	equal( EhQuery("#floatTest").css("font-size"), "20px", "Modified CSS font-size: Assert font-size is 20px");
 
-	jQuery.each("0,0.25,0.5,0.75,1".split(","), function(i, n) {
-		jQuery("#foo").css("opacity", n);
-		equal( jQuery("#foo").css("opacity"), parseFloat(n), "Assert opacity is " + parseFloat(n) + " as a String" );
-		jQuery("#foo").css("opacity", parseFloat(n));
-		equal( jQuery("#foo").css("opacity"), parseFloat(n), "Assert opacity is " + parseFloat(n) + " as a Number" );
+	EhQuery.each("0,0.25,0.5,0.75,1".split(","), function(i, n) {
+		EhQuery("#foo").css("opacity", n);
+		equal( EhQuery("#foo").css("opacity"), parseFloat(n), "Assert opacity is " + parseFloat(n) + " as a String" );
+		EhQuery("#foo").css("opacity", parseFloat(n));
+		equal( EhQuery("#foo").css("opacity"), parseFloat(n), "Assert opacity is " + parseFloat(n) + " as a Number" );
 	});
-	jQuery("#foo").css("opacity", "");
-	equal( jQuery("#foo").css("opacity"), "1", "Assert opacity is 1 when set to an empty String" );
+	EhQuery("#foo").css("opacity", "");
+	equal( EhQuery("#foo").css("opacity"), "1", "Assert opacity is 1 when set to an empty String" );
 
 	// using contents will get comments regular, text, and comment nodes
-	var j = jQuery("#nonnodes").contents();
+	var j = EhQuery("#nonnodes").contents();
 	j.css("overflow", "visible");
 	equal( j.css("overflow"), "visible", "Check node,textnode,comment css works" );
 	// opera sometimes doesn't update 'display' correctly, see #2037
-	jQuery("#t2037")[0].innerHTML = jQuery("#t2037")[0].innerHTML;
-	equal( jQuery("#t2037 .hidden").css("display"), "none", "Make sure browser thinks it is hidden" );
+	EhQuery("#t2037")[0].innerHTML = EhQuery("#t2037")[0].innerHTML;
+	equal( EhQuery("#t2037 .hidden").css("display"), "none", "Make sure browser thinks it is hidden" );
 
-	var div = jQuery("#nothiddendiv"),
+	var div = EhQuery("#nothiddendiv"),
 		display = div.css("display"),
 		ret = div.css("display", undefined);
 
@@ -232,7 +232,7 @@ test("css(String, Object)", function() {
 	// Test for Bug #5509
 	var success = true;
 	try {
-		jQuery("#foo").css("backgroundColor", "rgba(0, 0, 0, 0.1)");
+		EhQuery("#foo").css("backgroundColor", "rgba(0, 0, 0, 0.1)");
 	}
 	catch (e) {
 		success = false;
@@ -250,7 +250,7 @@ test( "css(Array)", function() {
 		expectedSingle = {
 			"width": "16px"
 		},
-		elem = jQuery("<div></div>").appendTo("#qunit-fixture");
+		elem = EhQuery("<div></div>").appendTo("#qunit-fixture");
 
 	deepEqual( elem.css( expectedMany ).css([ "overflow", "width" ]), expectedMany, "Getting multiple element array" );
 	deepEqual( elem.css( expectedSingle ).css([ "width" ]), expectedSingle, "Getting single element array" );
@@ -261,14 +261,14 @@ test("css(String, Function)", function() {
 
 	var sizes = ["10px", "20px", "30px"];
 
-	jQuery("<div id='cssFunctionTest'><div class='cssFunction'></div>" +
+	EhQuery("<div id='cssFunctionTest'><div class='cssFunction'></div>" +
 				 "<div class='cssFunction'></div>" +
 				 "<div class='cssFunction'></div></div>")
 		.appendTo("body");
 
 	var index = 0;
 
-	jQuery("#cssFunctionTest div").css("font-size", function() {
+	EhQuery("#cssFunctionTest div").css("font-size", function() {
 		var size = sizes[index];
 		index++;
 		return size;
@@ -276,14 +276,14 @@ test("css(String, Function)", function() {
 
 	index = 0;
 
-	jQuery("#cssFunctionTest div").each(function() {
-		var computedSize = jQuery(this).css("font-size");
+	EhQuery("#cssFunctionTest div").each(function() {
+		var computedSize = EhQuery(this).css("font-size");
 		var expectedSize = sizes[index];
 		equal( computedSize, expectedSize, "Div #" + index + " should be " + expectedSize );
 		index++;
 	});
 
-	jQuery("#cssFunctionTest").remove();
+	EhQuery("#cssFunctionTest").remove();
 });
 
 test("css(String, Function) with incoming value", function() {
@@ -291,14 +291,14 @@ test("css(String, Function) with incoming value", function() {
 
 	var sizes = ["10px", "20px", "30px"];
 
-	jQuery("<div id='cssFunctionTest'><div class='cssFunction'></div>" +
+	EhQuery("<div id='cssFunctionTest'><div class='cssFunction'></div>" +
 				 "<div class='cssFunction'></div>" +
 				 "<div class='cssFunction'></div></div>")
 		.appendTo("body");
 
 	var index = 0;
 
-	jQuery("#cssFunctionTest div").css("font-size", function() {
+	EhQuery("#cssFunctionTest div").css("font-size", function() {
 		var size = sizes[index];
 		index++;
 		return size;
@@ -306,14 +306,14 @@ test("css(String, Function) with incoming value", function() {
 
 	index = 0;
 
-	jQuery("#cssFunctionTest div").css("font-size", function(i, computedSize) {
+	EhQuery("#cssFunctionTest div").css("font-size", function(i, computedSize) {
 		var expectedSize = sizes[index];
 		equal( computedSize, expectedSize, "Div #" + index + " should be " + expectedSize );
 		index++;
 		return computedSize;
 	});
 
-	jQuery("#cssFunctionTest").remove();
+	EhQuery("#cssFunctionTest").remove();
 });
 
 test("css(Object) where values are Functions", function() {
@@ -321,14 +321,14 @@ test("css(Object) where values are Functions", function() {
 
 	var sizes = ["10px", "20px", "30px"];
 
-	jQuery("<div id='cssFunctionTest'><div class='cssFunction'></div>" +
+	EhQuery("<div id='cssFunctionTest'><div class='cssFunction'></div>" +
 				 "<div class='cssFunction'></div>" +
 				 "<div class='cssFunction'></div></div>")
 		.appendTo("body");
 
 	var index = 0;
 
-	jQuery("#cssFunctionTest div").css({"fontSize": function() {
+	EhQuery("#cssFunctionTest div").css({"fontSize": function() {
 		var size = sizes[index];
 		index++;
 		return size;
@@ -336,14 +336,14 @@ test("css(Object) where values are Functions", function() {
 
 	index = 0;
 
-	jQuery("#cssFunctionTest div").each(function() {
-		var computedSize = jQuery(this).css("font-size");
+	EhQuery("#cssFunctionTest div").each(function() {
+		var computedSize = EhQuery(this).css("font-size");
 		var expectedSize = sizes[index];
 		equal( computedSize, expectedSize, "Div #" + index + " should be " + expectedSize );
 		index++;
 	});
 
-	jQuery("#cssFunctionTest").remove();
+	EhQuery("#cssFunctionTest").remove();
 });
 
 test("css(Object) where values are Functions with incoming values", function() {
@@ -351,14 +351,14 @@ test("css(Object) where values are Functions with incoming values", function() {
 
 	var sizes = ["10px", "20px", "30px"];
 
-	jQuery("<div id='cssFunctionTest'><div class='cssFunction'></div>" +
+	EhQuery("<div id='cssFunctionTest'><div class='cssFunction'></div>" +
 				 "<div class='cssFunction'></div>" +
 				 "<div class='cssFunction'></div></div>")
 		.appendTo("body");
 
 	var index = 0;
 
-	jQuery("#cssFunctionTest div").css({"fontSize": function() {
+	EhQuery("#cssFunctionTest div").css({"fontSize": function() {
 		var size = sizes[index];
 		index++;
 		return size;
@@ -366,46 +366,46 @@ test("css(Object) where values are Functions with incoming values", function() {
 
 	index = 0;
 
-	jQuery("#cssFunctionTest div").css({"font-size": function(i, computedSize) {
+	EhQuery("#cssFunctionTest div").css({"font-size": function(i, computedSize) {
 		var expectedSize = sizes[index];
 		equal( computedSize, expectedSize, "Div #" + index + " should be " + expectedSize );
 		index++;
 		return computedSize;
 	}});
 
-	jQuery("#cssFunctionTest").remove();
+	EhQuery("#cssFunctionTest").remove();
 });
 
 test("show(); hide()", function() {
 	expect(22);
 
-	var hiddendiv = jQuery("div.hidden");
+	var hiddendiv = EhQuery("div.hidden");
 	hiddendiv.hide();
 	equal( hiddendiv.css("display"), "none", "Non-detached div hidden" );
 	hiddendiv.show();
 	equal( hiddendiv.css("display"), "block", "Pre-hidden div shown" );
 
-	var div = jQuery("<div>").hide();
+	var div = EhQuery("<div>").hide();
 	equal( div.css("display"), "none", "Detached div hidden" );
 	div.appendTo("#qunit-fixture").show();
 	equal( div.css("display"), "block", "Pre-hidden div shown" );
 
 	QUnit.reset();
 
-	hiddendiv = jQuery("div.hidden");
+	hiddendiv = EhQuery("div.hidden");
 
-	equal(jQuery.css( hiddendiv[0], "display"), "none", "hiddendiv is display: none");
+	equal(EhQuery.css( hiddendiv[0], "display"), "none", "hiddendiv is display: none");
 
 	hiddendiv.css("display", "block");
-	equal(jQuery.css( hiddendiv[0], "display"), "block", "hiddendiv is display: block");
+	equal(EhQuery.css( hiddendiv[0], "display"), "block", "hiddendiv is display: block");
 
 	hiddendiv.show();
-	equal(jQuery.css( hiddendiv[0], "display"), "block", "hiddendiv is display: block");
+	equal(EhQuery.css( hiddendiv[0], "display"), "block", "hiddendiv is display: block");
 
 	hiddendiv.css("display","");
 
 	var pass = true;
-	div = jQuery("#qunit-fixture div");
+	div = EhQuery("#qunit-fixture div");
 	div.show().each(function(){
 		if ( this.style.display == "none" ) {
 			pass = false;
@@ -414,10 +414,10 @@ test("show(); hide()", function() {
 	ok( pass, "Show" );
 
 	// #show-tests * is set display: none in CSS
-	jQuery("#qunit-fixture").append("<div id='show-tests'><div><p><a href='#'></a></p><code></code><pre></pre><span></span></div><table><thead><tr><th></th></tr></thead><tbody><tr><td></td></tr></tbody></table><ul><li></li></ul></div><table id='test-table'></table>");
+	EhQuery("#qunit-fixture").append("<div id='show-tests'><div><p><a href='#'></a></p><code></code><pre></pre><span></span></div><table><thead><tr><th></th></tr></thead><tbody><tr><td></td></tr></tbody></table><ul><li></li></ul></div><table id='test-table'></table>");
 
-	var old = jQuery("#test-table").show().css("display") !== "table";
-	jQuery("#test-table").remove();
+	var old = EhQuery("#test-table").show().css("display") !== "table";
+	EhQuery("#test-table").remove();
 
 	var test = {
 		"div"      : "block",
@@ -436,25 +436,25 @@ test("show(); hide()", function() {
 		"li"       : old ? "block" : "list-item"
 	};
 
-	jQuery.each(test, function(selector, expected) {
-		var elem = jQuery(selector, "#show-tests").show();
+	EhQuery.each(test, function(selector, expected) {
+		var elem = EhQuery(selector, "#show-tests").show();
 		equal( elem.css("display"), expected, "Show using correct display type for " + selector );
 	});
 
 	// Make sure that showing or hiding a text node doesn't cause an error
-	jQuery("<div>test</div> text <span>test</span>").show().remove();
-	jQuery("<div>test</div> text <span>test</span>").hide().remove();
+	EhQuery("<div>test</div> text <span>test</span>").show().remove();
+	EhQuery("<div>test</div> text <span>test</span>").hide().remove();
 });
 
 test("show() resolves correct default display #8099", function() {
 	expect(7);
-	var tt8099 = jQuery("<tt/>").appendTo("body"),
-			dfn8099 = jQuery("<dfn/>", { "html": "foo"}).appendTo("body");
+	var tt8099 = EhQuery("<tt/>").appendTo("body"),
+			dfn8099 = EhQuery("<dfn/>", { "html": "foo"}).appendTo("body");
 
 	equal( tt8099.css("display"), "none", "default display override for all tt" );
 	equal( tt8099.show().css("display"), "inline", "Correctly resolves display:inline" );
 
-	equal( jQuery("#foo").hide().show().css("display"), "block", "Correctly resolves display:block after hide/show" );
+	equal( EhQuery("#foo").hide().show().css("display"), "block", "Correctly resolves display:block after hide/show" );
 
 	equal( tt8099.hide().css("display"), "none", "default display override for all tt" );
 	equal( tt8099.show().css("display"), "inline", "Correctly resolves display:inline" );
@@ -471,64 +471,64 @@ test( "show() resolves correct default display for detached nodes", function(){
 
 	var div, span, tr, trDisplay;
 
-	div = jQuery("<div class='hidden'>");
+	div = EhQuery("<div class='hidden'>");
 	div.show().appendTo("#qunit-fixture");
 	equal( div.css("display"), "block", "Make sure a detached, pre-hidden( through stylesheets ) div is visible." );
 
-	div = jQuery("<div style='display: none'>");
+	div = EhQuery("<div style='display: none'>");
 	div.show().appendTo("#qunit-fixture");
 	equal( div.css("display"), "block", "Make sure a detached, pre-hidden( through inline style ) div is visible." );
 
-	span = jQuery("<span class='hidden'/>");
+	span = EhQuery("<span class='hidden'/>");
 	span.show().appendTo("#qunit-fixture");
 	equal( span.css("display"), "inline", "Make sure a detached, pre-hidden( through stylesheets ) span has default display." );
 
-	span = jQuery("<span style='display: inline'/>");
+	span = EhQuery("<span style='display: inline'/>");
 	span.show().appendTo("#qunit-fixture");
 	equal( span.css("display"), "inline", "Make sure a detached, pre-hidden( through inline style ) span has default display." );
 
-	div = jQuery("<div><div class='hidden'></div></div>").children("div");
+	div = EhQuery("<div><div class='hidden'></div></div>").children("div");
 	div.show().appendTo("#qunit-fixture");
 	equal( div.css("display"), "block", "Make sure a detached, pre-hidden( through stylesheets ) div inside another visible div is visible." );
 
-	div = jQuery("<div><div style='display: none'></div></div>").children("div");
+	div = EhQuery("<div><div style='display: none'></div></div>").children("div");
 	div.show().appendTo("#qunit-fixture");
 	equal( div.css("display"), "block", "Make sure a detached, pre-hidden( through inline style ) div inside another visible div is visible." );
 
-	div = jQuery("div.hidden");
+	div = EhQuery("div.hidden");
 	div.detach().show();
 	equal( div.css("display"), "block", "Make sure a detached( through detach() ), pre-hidden div is visible." );
 	div.remove();
 
-	span = jQuery("<span>");
+	span = EhQuery("<span>");
 	span.appendTo("#qunit-fixture").detach().show().appendTo("#qunit-fixture" );
 	equal( span.css("display"), "inline", "Make sure a detached( through detach() ), pre-hidden span has default display." );
 	span.remove();
 
-	div = jQuery("<div>");
+	div = EhQuery("<div>");
 	div.show().appendTo("#qunit-fixture");
 	ok( !!div.get( 0 ).style.display, "Make sure not hidden div has a inline style." );
 	div.remove();
 
-	div = jQuery( document.createElement("div") );
+	div = EhQuery( document.createElement("div") );
 	div.show().appendTo("#qunit-fixture");
 	equal( div.css("display"), "block", "Make sure a pre-created element has default display." );
 	div.remove();
 
-	div = jQuery("<div style='display: inline'/>");
+	div = EhQuery("<div style='display: inline'/>");
 	div.show().appendTo("#qunit-fixture");
 	equal( div.css("display"), "inline", "Make sure that element has same display when it was created." );
 	div.remove();
 
-	tr = jQuery("<tr/>");
-	jQuery("#table").append( tr );
+	tr = EhQuery("<tr/>");
+	EhQuery("#table").append( tr );
 	trDisplay = tr.css( "display" );
 	tr.detach().hide().show();
 
 	equal( tr[ 0 ].style.display, trDisplay, "For detached tr elements, display should always be like for attached trs" );
 	tr.remove();
 
-	span = span = jQuery("<span/>").hide().show();
+	span = span = EhQuery("<span/>").hide().show();
 	equal( span[ 0 ].style.display, "inline", "For detached span elements, display should always be inline" );
 	span.remove();
 });
@@ -536,7 +536,7 @@ test( "show() resolves correct default display for detached nodes", function(){
 test("show() resolves correct default display #10227", function() {
 	expect(2);
 
-	var body = jQuery("body");
+	var body = EhQuery("body");
 	body.append(
 		"<p id='ddisplay'>a<style>body{display:none}</style></p>"
 	);
@@ -546,14 +546,14 @@ test("show() resolves correct default display #10227", function() {
 	body.show();
 	equal( body.css("display"), "block", "Correct display: block" );
 
-	jQuery("#ddisplay").remove();
+	EhQuery("#ddisplay").remove();
 	QUnit.expectJqData( body[0], "olddisplay" );
 });
 
 test("show() resolves correct default display when iframe display:none #12904", function() {
 	expect(2);
 
-	var ddisplay = jQuery(
+	var ddisplay = EhQuery(
 		"<p id='ddisplay'>a<style>p{display:none}iframe{display:none !important}</style></p>"
 	).appendTo("body");
 
@@ -568,7 +568,7 @@ test("show() resolves correct default display when iframe display:none #12904", 
 test("toggle()", function() {
 	expect(9);
 	var div,
-		x = jQuery("#foo");
+		x = EhQuery("#foo");
 
 	ok( x.is(":visible"), "is visible" );
 	x.toggle();
@@ -583,45 +583,45 @@ test("toggle()", function() {
 	x.toggle(true);
 	ok( x.is(":visible"), "is visible again" );
 
-	div = jQuery("<div style='display:none'><div></div></div>").appendTo("#qunit-fixture");
+	div = EhQuery("<div style='display:none'><div></div></div>").appendTo("#qunit-fixture");
 	x = div.find("div");
 	strictEqual( x.toggle().css( "display" ), "none", "is hidden" );
 	strictEqual( x.toggle().css( "display" ), "block", "is visible" );
 
 	// Ensure hide() is called when toggled (#12148)
-	var oldHide = jQuery.fn.hide;
-	jQuery.fn.hide = function() {
+	var oldHide = EhQuery.fn.hide;
+	EhQuery.fn.hide = function() {
 		ok( true, name + " method called on toggle" );
 		return oldHide.apply( this, arguments );
 	};
 	x.toggle( name === "show" );
-	jQuery.fn.hide = oldHide;
+	EhQuery.fn.hide = oldHide;
 });
 
 test("hide hidden elements (bug #7141)", function() {
 	expect(3);
 	QUnit.reset();
 
-	var div = jQuery("<div style='display:none'></div>").appendTo("#qunit-fixture");
+	var div = EhQuery("<div style='display:none'></div>").appendTo("#qunit-fixture");
 	equal( div.css("display"), "none", "Element is hidden by default" );
 	div.hide();
-	ok( !jQuery._data(div, "olddisplay"), "olddisplay is undefined after hiding an already-hidden element" );
+	ok( !EhQuery._data(div, "olddisplay"), "olddisplay is undefined after hiding an already-hidden element" );
 	div.show();
 	equal( div.css("display"), "block", "Show a double-hidden element" );
 
 	div.remove();
 });
 
-test("jQuery.css(elem, 'height') doesn't clear radio buttons (bug #1095)", function () {
+test("EhQuery.css(elem, 'height') doesn't clear radio buttons (bug #1095)", function () {
 	expect(4);
 
-	var $checkedtest = jQuery("#checkedtest");
-	jQuery.css($checkedtest[0], "height");
+	var $checkedtest = EhQuery("#checkedtest");
+	EhQuery.css($checkedtest[0], "height");
 
-	ok( jQuery("input[type='radio']", $checkedtest).first().attr("checked"), "Check first radio still checked." );
-	ok( !jQuery("input[type='radio']", $checkedtest).last().attr("checked"), "Check last radio still NOT checked." );
-	ok( jQuery("input[type='checkbox']", $checkedtest).first().attr("checked"), "Check first checkbox still checked." );
-	ok( !jQuery("input[type='checkbox']", $checkedtest).last().attr("checked"), "Check last checkbox still NOT checked." );
+	ok( EhQuery("input[type='radio']", $checkedtest).first().attr("checked"), "Check first radio still checked." );
+	ok( !EhQuery("input[type='radio']", $checkedtest).last().attr("checked"), "Check last radio still NOT checked." );
+	ok( EhQuery("input[type='checkbox']", $checkedtest).first().attr("checked"), "Check first checkbox still checked." );
+	ok( !EhQuery("input[type='checkbox']", $checkedtest).last().attr("checked"), "Check last checkbox still NOT checked." );
 });
 
 test("internal ref to elem.runtimeStyle (bug #7608)", function () {
@@ -629,7 +629,7 @@ test("internal ref to elem.runtimeStyle (bug #7608)", function () {
 	var result = true;
 
 	try {
-		jQuery("#foo").css( { "width": "0%" } ).css("width");
+		EhQuery("#foo").css( { "width": "0%" } ).css("width");
 	} catch (e) {
 		result = false;
 	}
@@ -640,7 +640,7 @@ test("internal ref to elem.runtimeStyle (bug #7608)", function () {
 test("marginRight computed style (bug #3333)", function() {
 	expect(1);
 
-	var $div = jQuery("#foo");
+	var $div = EhQuery("#foo");
 	$div.css({
 		"width": "1px",
 		"marginRight": 0
@@ -652,33 +652,33 @@ test("marginRight computed style (bug #3333)", function() {
 test("box model properties incorrectly returning % instead of px, see #10639 and #12088", function() {
 	expect( 2 );
 
-	var container = jQuery("<div/>").width( 400 ).appendTo("#qunit-fixture"),
-		el = jQuery("<div/>").css({ "width": "50%", "marginRight": "50%" }).appendTo( container ),
-		el2 = jQuery("<div/>").css({ "width": "50%", "minWidth": "300px", "marginLeft": "25%" }).appendTo( container );
+	var container = EhQuery("<div/>").width( 400 ).appendTo("#qunit-fixture"),
+		el = EhQuery("<div/>").css({ "width": "50%", "marginRight": "50%" }).appendTo( container ),
+		el2 = EhQuery("<div/>").css({ "width": "50%", "minWidth": "300px", "marginLeft": "25%" }).appendTo( container );
 
 	equal( el.css("marginRight"), "200px", "css('marginRight') returning % instead of px, see #10639" );
 	equal( el2.css("marginLeft"), "100px", "css('marginLeft') returning incorrect pixel value, see #12088" );
 });
 
-test("jQuery.cssProps behavior, (bug #8402)", function() {
+test("EhQuery.cssProps behavior, (bug #8402)", function() {
 	expect( 2 );
 
-	var div = jQuery( "<div>" ).appendTo(document.body).css({
+	var div = EhQuery( "<div>" ).appendTo(document.body).css({
 		"position": "absolute",
 		"top": 0,
 		"left": 10
 	});
-	jQuery.cssProps.top = "left";
+	EhQuery.cssProps.top = "left";
 	equal( div.css("top"), "10px", "the fixed property is used when accessing the computed style");
 	div.css("top", "100px");
 	equal( div[0].style.left, "100px", "the fixed property is used when setting the style");
-	// cleanup jQuery.cssProps
-	jQuery.cssProps.top = undefined;
+	// cleanup EhQuery.cssProps
+	EhQuery.cssProps.top = undefined;
 });
 
 test("widows & orphans #8936", function () {
 
-	var $p = jQuery("<p>").appendTo("#qunit-fixture");
+	var $p = EhQuery("<p>").appendTo("#qunit-fixture");
 
 	if ( "widows" in $p[0].style ) {
 		expect(4);
@@ -687,20 +687,20 @@ test("widows & orphans #8936", function () {
 			"orphans": 0
 		});
 
-		equal( $p.css("widows") || jQuery.style( $p[0], "widows" ), 0, "widows correctly start with value 0");
-		equal( $p.css("orphans") || jQuery.style( $p[0], "orphans" ), 0, "orphans correctly start with value 0");
+		equal( $p.css("widows") || EhQuery.style( $p[0], "widows" ), 0, "widows correctly start with value 0");
+		equal( $p.css("orphans") || EhQuery.style( $p[0], "orphans" ), 0, "orphans correctly start with value 0");
 
 		$p.css({
 			"widows": 3,
 			"orphans": 3
 		});
 
-		equal( $p.css("widows") || jQuery.style( $p[0], "widows" ), 3, "widows correctly set to 3");
-		equal( $p.css("orphans") || jQuery.style( $p[0], "orphans" ), 3, "orphans correctly set to 3");
+		equal( $p.css("widows") || EhQuery.style( $p[0], "widows" ), 3, "widows correctly set to 3");
+		equal( $p.css("orphans") || EhQuery.style( $p[0], "orphans" ), 3, "orphans correctly set to 3");
 	} else {
 
 		expect(1);
-		ok( true, "jQuery does not attempt to test for style props that definitely don't exist in older versions of IE");
+		ok( true, "EhQuery does not attempt to test for style props that definitely don't exist in older versions of IE");
 	}
 
 
@@ -709,15 +709,15 @@ test("widows & orphans #8936", function () {
 
 test("can't get css for disconnected in IE<9, see #10254 and #8388", function() {
 	expect( 2 );
-	var span = jQuery( "<span/>" ).css( "background-image", "url(data/1x1.jpg)" );
+	var span = EhQuery( "<span/>" ).css( "background-image", "url(data/1x1.jpg)" );
 	notEqual( span.css( "background-image" ), null, "can't get background-image in IE<9, see #10254" );
 
-	var div = jQuery( "<div/>" ).css( "top", 10 );
+	var div = EhQuery( "<div/>" ).css( "top", 10 );
 	equal( div.css( "top" ), "10px", "can't get top in IE<9, see #8388" );
 });
 
 test("can't get background-position in IE<9, see #10796", function() {
-	var div = jQuery( "<div/>" ).appendTo( "#qunit-fixture" ),
+	var div = EhQuery( "<div/>" ).appendTo( "#qunit-fixture" ),
 		units = [
 			"0 0",
 			"12px 12px",
@@ -741,15 +741,15 @@ test("can't get background-position in IE<9, see #10796", function() {
 
 test("percentage properties for bottom and right in IE<9 should not be incorrectly transformed to pixels, see #11311", function() {
 	expect( 1 );
-	var div = jQuery("<div style='position: absolute; width: 1px; height: 20px; bottom:50%;'></div>").appendTo( "#qunit-fixture" );
+	var div = EhQuery("<div style='position: absolute; width: 1px; height: 20px; bottom:50%;'></div>").appendTo( "#qunit-fixture" );
 	ok( window.getComputedStyle || div.css( "bottom" ) === "50%", "position properties get incorrectly transformed in IE<8, see #11311" );
 });
 
-if ( jQuery.fn.offset ) {
+if ( EhQuery.fn.offset ) {
 	test("percentage properties for left and top should be transformed to pixels, see #9505", function() {
 		expect( 2 );
-		var parent = jQuery("<div style='position:relative;width:200px;height:200px;margin:0;padding:0;border-width:0'></div>").appendTo( "#qunit-fixture" ),
-			div = jQuery("<div style='position: absolute; width: 20px; height: 20px; top:50%; left:50%'></div>").appendTo( parent );
+		var parent = EhQuery("<div style='position:relative;width:200px;height:200px;margin:0;padding:0;border-width:0'></div>").appendTo( "#qunit-fixture" ),
+			div = EhQuery("<div style='position: absolute; width: 20px; height: 20px; top:50%; left:50%'></div>").appendTo( parent );
 
 		equal( div.css("top"), "100px", "position properties not transformed to pixels, see #9505" );
 		equal( div.css("left"), "100px", "position properties not transformed to pixels, see #9505" );
@@ -759,7 +759,7 @@ if ( jQuery.fn.offset ) {
 test("Do not append px (#9548, #12990)", function() {
 	expect( 2 );
 
-	var $div = jQuery("<div>").appendTo("#qunit-fixture");
+	var $div = EhQuery("<div>").appendTo("#qunit-fixture");
 
 	$div.css( "fill-opacity", 1 );
 	equal( $div.css("fill-opacity"), 1, "Do not append px to 'fill-opacity'" );
@@ -775,7 +775,7 @@ test("Do not append px (#9548, #12990)", function() {
 test("css('width') and css('height') should respect box-sizing, see #11004", function() {
 	expect( 4 );
 
-	var el_dis = jQuery("<div style='width:300px;height:300px;margin:2px;padding:2px;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;'>test</div>"),
+	var el_dis = EhQuery("<div style='width:300px;height:300px;margin:2px;padding:2px;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;'>test</div>"),
 		el = el_dis.clone().appendTo("#qunit-fixture");
 
 	equal( el.css("width"), el.css("width", el.css("width")).css("width"), "css('width') is not respecting box-sizing, see #11004");
@@ -787,16 +787,16 @@ test("css('width') and css('height') should respect box-sizing, see #11004", fun
 test("certain css values of 'normal' should be convertable to a number, see #8627", function() {
 	expect ( 2 );
 
-	var el = jQuery("<div style='letter-spacing:normal;font-weight:normal;'>test</div>").appendTo("#qunit-fixture");
+	var el = EhQuery("<div style='letter-spacing:normal;font-weight:normal;'>test</div>").appendTo("#qunit-fixture");
 
-	ok( jQuery.isNumeric( parseFloat( el.css("letterSpacing") ) ), "css('letterSpacing') not convertable to number, see #8627" );
-	ok( jQuery.isNumeric( parseFloat( el.css("fontWeight") ) ), "css('fontWeight') not convertable to number, see #8627" );
+	ok( EhQuery.isNumeric( parseFloat( el.css("letterSpacing") ) ), "css('letterSpacing') not convertable to number, see #8627" );
+	ok( EhQuery.isNumeric( parseFloat( el.css("fontWeight") ) ), "css('fontWeight') not convertable to number, see #8627" );
 });
 
 // only run this test in IE9
 if ( document.documentMode === 9 ) {
 	test( ".css('filter') returns a string in IE9, see #12537", 1, function() {
-		equal( jQuery("<div style='-ms-filter:\"progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFF, endColorstr=#ECECEC)\";'></div>").css("filter"), "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFF, endColorstr=#ECECEC)", "IE9 returns the correct value from css('filter')." );
+		equal( EhQuery("<div style='-ms-filter:\"progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFF, endColorstr=#ECECEC)\";'></div>").css("filter"), "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFF, endColorstr=#ECECEC)", "IE9 returns the correct value from css('filter')." );
 	});
 }
 
@@ -809,16 +809,16 @@ test( "cssHooks - expand", function() {
 			padding: [ "paddingTop", "paddingRight", "paddingBottom", "paddingLeft" ]
 		};
 
-	jQuery.each( properties, function( property, keys ) {
-		var hook = jQuery.cssHooks[ property ],
+	EhQuery.each( properties, function( property, keys ) {
+		var hook = EhQuery.cssHooks[ property ],
 			expected = {};
-		jQuery.each( keys, function( _, key ) {
+		EhQuery.each( keys, function( _, key ) {
 			expected[ key ] = 10;
 		});
 		result = hook.expand( 10 );
 		deepEqual( result, expected, property + " expands properly with a number" );
 
-		jQuery.each( keys, function( _, key ) {
+		EhQuery.each( keys, function( _, key ) {
 			expected[ key ] = "10px";
 		});
 		result = hook.expand( "10px" );
@@ -843,9 +843,9 @@ test( "cssHooks - expand", function() {
 test( "css opacity consistency across browsers (#12685)", function() {
 	expect( 4 );
 
-	var fixture = jQuery("#qunit-fixture"),
-		style = jQuery("<style>.opacityWithSpaces_t12685 { opacity: 0.1; filter: alpha(opacity = 10); } .opacityNoSpaces_t12685 { opacity: 0.2; filter: alpha(opacity=20); }</style>").appendTo(fixture),
-		el = jQuery("<div class='opacityWithSpaces_t12685'></div>").appendTo(fixture);
+	var fixture = EhQuery("#qunit-fixture"),
+		style = EhQuery("<style>.opacityWithSpaces_t12685 { opacity: 0.1; filter: alpha(opacity = 10); } .opacityNoSpaces_t12685 { opacity: 0.2; filter: alpha(opacity=20); }</style>").appendTo(fixture),
+		el = EhQuery("<div class='opacityWithSpaces_t12685'></div>").appendTo(fixture);
 
 	equal( Math.round( el.css("opacity") * 100 ), 10, "opacity from style sheet (filter:alpha with spaces)" );
 	el.removeClass("opacityWithSpaces_t12685").addClass("opacityNoSpaces_t12685");
@@ -859,31 +859,31 @@ test( "css opacity consistency across browsers (#12685)", function() {
 test( ":visible/:hidden selectors", function() {
 	expect( 13 );
 
-	ok( jQuery("#nothiddendiv").is(":visible"), "Modifying CSS display: Assert element is visible" );
-	jQuery("#nothiddendiv").css({ display: "none" });
-	ok( !jQuery("#nothiddendiv").is(":visible"), "Modified CSS display: Assert element is hidden" );
-	jQuery("#nothiddendiv").css({"display": "block"});
-	ok( jQuery("#nothiddendiv").is(":visible"), "Modified CSS display: Assert element is visible");
-	ok( jQuery(window).is(":visible"), "Calling is(':visible') on window does not throw an error in IE.");
-	ok( jQuery(document).is(":visible"), "Calling is(':visible') on document does not throw an error in IE.");
+	ok( EhQuery("#nothiddendiv").is(":visible"), "Modifying CSS display: Assert element is visible" );
+	EhQuery("#nothiddendiv").css({ display: "none" });
+	ok( !EhQuery("#nothiddendiv").is(":visible"), "Modified CSS display: Assert element is hidden" );
+	EhQuery("#nothiddendiv").css({"display": "block"});
+	ok( EhQuery("#nothiddendiv").is(":visible"), "Modified CSS display: Assert element is visible");
+	ok( EhQuery(window).is(":visible"), "Calling is(':visible') on window does not throw an error in IE.");
+	ok( EhQuery(document).is(":visible"), "Calling is(':visible') on document does not throw an error in IE.");
 
-	ok( jQuery("#nothiddendiv").is(":visible"), "Modifying CSS display: Assert element is visible");
-	jQuery("#nothiddendiv").css("display", "none");
-	ok( !jQuery("#nothiddendiv").is(":visible"), "Modified CSS display: Assert element is hidden");
-	jQuery("#nothiddendiv").css("display", "block");
-	ok( jQuery("#nothiddendiv").is(":visible"), "Modified CSS display: Assert element is visible");
+	ok( EhQuery("#nothiddendiv").is(":visible"), "Modifying CSS display: Assert element is visible");
+	EhQuery("#nothiddendiv").css("display", "none");
+	ok( !EhQuery("#nothiddendiv").is(":visible"), "Modified CSS display: Assert element is hidden");
+	EhQuery("#nothiddendiv").css("display", "block");
+	ok( EhQuery("#nothiddendiv").is(":visible"), "Modified CSS display: Assert element is visible");
 
-	// ok( !jQuery("#siblingspan").is(":visible"), "Span with no content not visible (#13132)" );
-	// var $newDiv = jQuery("<div><span></span></div>").appendTo("#qunit-fixture");
+	// ok( !EhQuery("#siblingspan").is(":visible"), "Span with no content not visible (#13132)" );
+	// var $newDiv = EhQuery("<div><span></span></div>").appendTo("#qunit-fixture");
 	// equal( $newDiv.find(":visible").length, 0, "Span with no content not visible (#13132)" );
-	// var $br = jQuery("<br/>").appendTo("#qunit-fixture");
+	// var $br = EhQuery("<br/>").appendTo("#qunit-fixture");
 	// ok( !$br.is(":visible"), "br element not visible (#10406)");
 
-	var $table = jQuery("#table");
+	var $table = EhQuery("#table");
 	$table.html("<tr><td style='display:none'>cell</td><td>cell</td></tr>");
-	equal(jQuery("#table td:visible").length, 1, "hidden cell is not perceived as visible (#4512). Works on table elements");
+	equal(EhQuery("#table td:visible").length, 1, "hidden cell is not perceived as visible (#4512). Works on table elements");
 	$table.css("display", "none").html("<tr><td>cell</td><td>cell</td></tr>");
-	equal(jQuery("#table td:visible").length, 0, "hidden cell children not perceived as visible (#4512)");
+	equal(EhQuery("#table td:visible").length, 0, "hidden cell children not perceived as visible (#4512)");
 
 	t( "Is Visible", "#qunit-fixture div:visible:lt(2)", ["foo", "nothiddendiv"] );
 	t( "Is Not Hidden", "#qunit-fixture:hidden", [] );
@@ -928,9 +928,9 @@ asyncTest( "Clearing a Cloned Element's Style Shouldn't Clear the Original Eleme
 			expected: [ "auto auto" ]
 	}];
 
-	jQuery.each(styles, function( index, style ) {
+	EhQuery.each(styles, function( index, style ) {
 		var $clone, $clonedChildren,
-			$source = jQuery( "#firstp" ),
+			$source = EhQuery( "#firstp" ),
 			source = $source[ 0 ],
 			$children = $source.children();
 
@@ -955,12 +955,12 @@ asyncTest( "Clearing a Cloned Element's Style Shouldn't Clear the Original Eleme
 		window.setTimeout(function() {
 			notEqual( $clone.css( style.name ), style.value[ 0 ], "Cloned css was changed" );
 
-			ok( jQuery.inArray( $source.css( style.name ) !== -1, style.value ),
+			ok( EhQuery.inArray( $source.css( style.name ) !== -1, style.value ),
 				"Clearing clone.css() doesn't affect source.css(): " + style.name +
 				"; result: " + $source.css( style.name ) +
 				"; expected: " + style.value.join( "," ) );
 
-			ok( jQuery.inArray( $children.css( style.name ) !== -1, style.value ),
+			ok( EhQuery.inArray( $children.css( style.name ) !== -1, style.value ),
 				"Clearing clonedChildren.css() doesn't affect children.css(): " + style.name +
 				"; result: " + $children.css( style.name ) +
 				"; expected: " + style.value.join( "," ) );
@@ -971,14 +971,14 @@ asyncTest( "Clearing a Cloned Element's Style Shouldn't Clear the Original Eleme
 });
 
 asyncTest( "Make sure initialized display value for disconnected nodes is correct (#13310)", 4, function() {
-	var display = jQuery("#display").css("display"),
-		div = jQuery("<div/>");
+	var display = EhQuery("#display").css("display"),
+		div = EhQuery("<div/>");
 
 	equal( div.css( "display", "inline" ).hide().show().appendTo("body").css( "display" ), "inline", "Initialized display value has returned" );
 	div.remove();
 
 	div.css( "display", "none" ).hide();
-	equal( jQuery._data( div[ 0 ], "olddisplay" ), undefined, "olddisplay is undefined after hiding a detached and hidden element" );
+	equal( EhQuery._data( div[ 0 ], "olddisplay" ), undefined, "olddisplay is undefined after hiding a detached and hidden element" );
 	div.remove();
 
 	div.css( "display", "inline-block" ).hide().appendTo("body").fadeIn(function() {
@@ -988,9 +988,9 @@ asyncTest( "Make sure initialized display value for disconnected nodes is correc
 		start();
 	});
 
-	equal( jQuery._data( jQuery("#display").css( "display", "inline" ).hide()[ 0 ], "olddisplay" ), display,
+	equal( EhQuery._data( EhQuery("#display").css( "display", "inline" ).hide()[ 0 ], "olddisplay" ), display,
 	"display: * !Important value should used as initialized display" );
-	jQuery._removeData( jQuery("#display")[ 0 ] );
+	EhQuery._removeData( EhQuery("#display")[ 0 ] );
 });
 
 }

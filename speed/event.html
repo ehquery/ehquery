@@ -4,16 +4,16 @@
 	<title>Test Event Handling Performance</title>
 	<script src="benchmark.js"></script>
 	<script src="jquery-basis.js"></script>
-	<script>var old = jQuery.noConflict(true);</script>
+	<script>var old = EhQuery.noConflict(true);</script>
 	<script src="../dist/jquery.js"></script>
 	<script>
-	jQuery(function(){
-	
+	EhQuery(function(){
+
 	});
 
 	var events = [], num = 400, exec = false;
 
-	jQuery(document).mousemove(function(e){
+	EhQuery(document).mousemove(function(e){
 		if ( exec ) {
 			return;
 		}
@@ -34,19 +34,19 @@
 
 			for ( var n = 0; n < 5; n++ ) {
 				for ( var i = 0; i < num; i++ ) {
-					jQuery.event.handle.call( document, events[i] );
+					EhQuery.event.handle.call( document, events[i] );
 				}
 			}
 
 			var curNum = (new Date).getTime() - s;
 
-			jQuery("#num").text( old.fn.jquery + ": " + oldNum + " " + jQuery.fn.jquery + ": " + curNum );
+			EhQuery("#num").text( old.fn.jquery + ": " + oldNum + " " + EhQuery.fn.jquery + ": " + curNum );
 
-			jQuery(this).unbind( "mousemove", e.handler );
+			EhQuery(this).unbind( "mousemove", e.handler );
 
 		} else {
 			events.push( e.originalEvent );
-			jQuery("#num").text( events.length + " / " + num );
+			EhQuery("#num").text( events.length + " / " + num );
 		}
 	});
 	</script>

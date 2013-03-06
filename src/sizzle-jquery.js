@@ -1,9 +1,9 @@
 // Override sizzle attribute retrieval
-Sizzle.attr = jQuery.attr;
-jQuery.find = Sizzle;
-jQuery.expr = Sizzle.selectors;
-jQuery.expr[":"] = jQuery.expr.pseudos;
-jQuery.unique = Sizzle.uniqueSort;
-jQuery.text = Sizzle.getText;
-jQuery.isXMLDoc = Sizzle.isXML;
-jQuery.contains = Sizzle.contains;
+Sizzle.attr = EhQuery.attr;
+EhQuery.find = Sizzle;
+EhQuery.expr = Sizzle.selectors;
+EhQuery.expr[":"] = EhQuery.expr.pseudos;
+EhQuery.unique = Sizzle.uniqueSort;
+EhQuery.text = Sizzle.getText;
+EhQuery.isXMLDoc = Sizzle.isXML;
+EhQuery.contains = Sizzle.contains;

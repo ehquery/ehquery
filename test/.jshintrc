@@ -17,7 +17,7 @@
 
 	"predef": [
 		"DOMParser",
-		"jQuery",
+		"EhQuery",
 		"QUnit",
 		"module",
 		"ok",
@@ -47,7 +47,7 @@
 		"Globals",
 		"hasPHP",
 		"isLocal",
-		"originaljQuery",
+		"originalEhQuery",
 		"$",
 		"original$",
 		"externalHost"

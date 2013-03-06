@@ -1,6 +1,6 @@
 var
-	// A central reference to the root jQuery(document)
-	rootjQuery,
+	// A central reference to the root EhQuery(document)
+	rootEhQuery,
 
 	// The deferred used on DOM ready
 	readyList,
@@ -14,8 +14,8 @@ var
 	document = window.document,
 	docElem = document.documentElement,
 
-	// Map over jQuery in case of overwrite
-	_jQuery = window.jQuery,
+	// Map over EhQuery in case of overwrite
+	_EhQuery = window.EhQuery,
 
 	// Map over the $ in case of overwrite
 	_$ = window.$,
@@ -37,10 +37,10 @@ var
 	core_hasOwn = class2type.hasOwnProperty,
 	core_trim = core_version.trim,
 
-	// Define a local copy of jQuery
-	jQuery = function( selector, context ) {
-		// The jQuery object is actually just the init constructor 'enhanced'
-		return new jQuery.fn.init( selector, context, rootjQuery );
+	// Define a local copy of EhQuery
+	EhQuery = function( selector, context ) {
+		// The EhQuery object is actually just the init constructor 'enhanced'
+		return new EhQuery.fn.init( selector, context, rootEhQuery );
 	},
 
 	// Used for matching numbers
@@ -61,7 +61,7 @@ var
 	rmsPrefix = /^-ms-/,
 	rdashAlpha = /-([\da-z])/gi,
 
-	// Used by jQuery.camelCase as callback to replace()
+	// Used by EhQuery.camelCase as callback to replace()
 	fcamelCase = function( all, letter ) {
 		return letter.toUpperCase();
 	},
@@ -70,15 +70,15 @@ var
 	completed = function() {
 		document.removeEventListener( "DOMContentLoaded", completed, false );
 		window.removeEventListener( "load", completed, false );
-		jQuery.ready();
+		EhQuery.ready();
 	};
 
-jQuery.fn = jQuery.prototype = {
-	// The current version of jQuery being used
+EhQuery.fn = EhQuery.prototype = {
+	// The current version of EhQuery being used
 	jquery: core_version,
 
-	constructor: jQuery,
-	init: function( selector, context, rootjQuery ) {
+	constructor: EhQuery,
+	init: function( selector, context, rootEhQuery ) {
 		var match, elem;
 
 		// HANDLE: $(""), $(null), $(undefined), $(false)
@@ -101,20 +101,20 @@ jQuery.fn = jQuery.prototype = {
 
 				// HANDLE: $(html) -> $(array)
 				if ( match[1] ) {
-					context = context instanceof jQuery ? context[0] : context;
+					context = context instanceof EhQuery ? context[0] : context;
 
 					// scripts is true for back-compat
-					jQuery.merge( this, jQuery.parseHTML(
+					EhQuery.merge( this, EhQuery.parseHTML(
 						match[1],
 						context && context.nodeType ? context.ownerDocument || context : document,
 						true
 					) );
 
 					// HANDLE: $(html, props)
-					if ( rsingleTag.test( match[1] ) && jQuery.isPlainObject( context ) ) {
+					if ( rsingleTag.test( match[1] ) && EhQuery.isPlainObject( context ) ) {
 						for ( match in context ) {
 							// Properties of context are called as methods if possible
-							if ( jQuery.isFunction( this[ match ] ) ) {
+							if ( EhQuery.isFunction( this[ match ] ) ) {
 								this[ match ]( context[ match ] );
 
 							// ...and otherwise set as attributes
@@ -136,10 +136,10 @@ jQuery.fn = jQuery.prototype = {
 						// Handle the case where IE and Opera return items
 						// by name instead of ID
 						if ( elem.id !== match[2] ) {
-							return rootjQuery.find( selector );
+							return rootEhQuery.find( selector );
 						}
 
-						// Otherwise, we inject the element directly into the jQuery object
+						// Otherwise, we inject the element directly into the EhQuery object
 						this.length = 1;
 						this[0] = elem;
 					}
@@ -151,7 +151,7 @@ jQuery.fn = jQuery.prototype = {
 
 			// HANDLE: $(expr, $(...))
 			} else if ( !context || context.jquery ) {
-				return ( context || rootjQuery ).find( selector );
+				return ( context || rootEhQuery ).find( selector );
 
 			// HANDLE: $(expr, context)
 			// (which is just equivalent to: $(context).find(expr)
@@ -167,8 +167,8 @@ jQuery.fn = jQuery.prototype = {
 
 		// HANDLE: $(function)
 		// Shortcut for document ready
-		} else if ( jQuery.isFunction( selector ) ) {
-			return rootjQuery.ready( selector );
+		} else if ( EhQuery.isFunction( selector ) ) {
+			return rootEhQuery.ready( selector );
 		}
 
 		if ( selector.selector !== undefined ) {
@@ -176,13 +176,13 @@ jQuery.fn = jQuery.prototype = {
 			this.context = selector.context;
 		}
 
-		return jQuery.makeArray( selector, this );
+		return EhQuery.makeArray( selector, this );
 	},
 
 	// Start with an empty selector
 	selector: "",
 
-	// The default length of a jQuery object is 0
+	// The default length of a EhQuery object is 0
 	length: 0,
 
 	// The number of elements contained in the matched element set
@@ -210,8 +210,8 @@ jQuery.fn = jQuery.prototype = {
 	// (returning the new matched element set)
 	pushStack: function( elems ) {
 
-		// Build a new jQuery matched element set
-		var ret = jQuery.merge( this.constructor(), elems );
+		// Build a new EhQuery matched element set
+		var ret = EhQuery.merge( this.constructor(), elems );
 
 		// Add the old object onto the stack (as a reference)
 		ret.prevObject = this;
@@ -225,12 +225,12 @@ jQuery.fn = jQuery.prototype = {
 	// (You can seed the arguments with an array of args, but this is
 	// only used internally.)
 	each: function( callback, args ) {
-		return jQuery.each( this, callback, args );
+		return EhQuery.each( this, callback, args );
 	},
 
 	ready: function( fn ) {
 		// Add the callback
-		jQuery.ready.promise().done( fn );
+		EhQuery.ready.promise().done( fn );
 
 		return this;
 	},
@@ -254,7 +254,7 @@ jQuery.fn = jQuery.prototype = {
 	},
 
 	map: function( callback ) {
-		return this.pushStack( jQuery.map(this, function( elem, i ) {
+		return this.pushStack( EhQuery.map(this, function( elem, i ) {
 			return callback.call( elem, i, elem );
 		}));
 	},
@@ -264,16 +264,16 @@ jQuery.fn = jQuery.prototype = {
 	},
 
 	// For internal use only.
-	// Behaves like an Array's method, not like a jQuery method.
+	// Behaves like an Array's method, not like a EhQuery method.
 	push: core_push,
 	sort: [].sort,
 	splice: [].splice
 };
 
-// Give the init function the jQuery prototype for later instantiation
-jQuery.fn.init.prototype = jQuery.fn;
+// Give the init function the EhQuery prototype for later instantiation
+EhQuery.fn.init.prototype = EhQuery.fn;
 
-jQuery.extend = jQuery.fn.extend = function() {
+EhQuery.extend = EhQuery.fn.extend = function() {
 	var options, name, src, copy, copyIsArray, clone,
 		target = arguments[0] || {},
 		i = 1,
@@ -289,11 +289,11 @@ jQuery.extend = jQuery.fn.extend = function() {
 	}
 
 	// Handle case when target is a string or something (possible in deep copy)
-	if ( typeof target !== "object" && !jQuery.isFunction(target) ) {
+	if ( typeof target !== "object" && !EhQuery.isFunction(target) ) {
 		target = {};
 	}
 
-	// extend jQuery itself if only one argument is passed
+	// extend EhQuery itself if only one argument is passed
 	if ( length === i ) {
 		target = this;
 		--i;
@@ -313,17 +313,17 @@ jQuery.extend = jQuery.fn.extend = function() {
 				}
 
 				// Recurse if we're merging plain objects or arrays
-				if ( deep && copy && ( jQuery.isPlainObject(copy) || (copyIsArray = jQuery.isArray(copy)) ) ) {
+				if ( deep && copy && ( EhQuery.isPlainObject(copy) || (copyIsArray = EhQuery.isArray(copy)) ) ) {
 					if ( copyIsArray ) {
 						copyIsArray = false;
-						clone = src && jQuery.isArray(src) ? src : [];
+						clone = src && EhQuery.isArray(src) ? src : [];
 
 					} else {
-						clone = src && jQuery.isPlainObject(src) ? src : {};
+						clone = src && EhQuery.isPlainObject(src) ? src : {};
 					}
 
 					// Never move original objects, clone them
-					target[ name ] = jQuery.extend( deep, clone, copy );
+					target[ name ] = EhQuery.extend( deep, clone, copy );
 
 				// Don't bring in undefined values
 				} else if ( copy !== undefined ) {
@@ -337,20 +337,20 @@ jQuery.extend = jQuery.fn.extend = function() {
 	return target;
 };
 
-jQuery.extend({
-	// Unique for each copy of jQuery on the page
-	expando: "jQuery" + ( core_version + Math.random() ).replace( /\D/g, "" ),
+EhQuery.extend({
+	// Unique for each copy of EhQuery on the page
+	expando: "EhQuery" + ( core_version + Math.random() ).replace( /\D/g, "" ),
 
 	noConflict: function( deep ) {
-		if ( window.$ === jQuery ) {
+		if ( window.$ === EhQuery ) {
 			window.$ = _$;
 		}
 
-		if ( deep && window.jQuery === jQuery ) {
-			window.jQuery = _jQuery;
+		if ( deep && window.EhQuery === EhQuery ) {
+			window.EhQuery = _EhQuery;
 		}
 
-		return jQuery;
+		return EhQuery;
 	},
 
 	// Is the DOM ready to be used? Set to true once it occurs.
@@ -363,9 +363,9 @@ jQuery.extend({
 	// Hold (or release) the ready event
 	holdReady: function( hold ) {
 		if ( hold ) {
-			jQuery.readyWait++;
+			EhQuery.readyWait++;
 		} else {
-			jQuery.ready( true );
+			EhQuery.ready( true );
 		}
 	},
 
@@ -373,24 +373,24 @@ jQuery.extend({
 	ready: function( wait ) {
 
 		// Abort if there are pending holds or we're already ready
-		if ( wait === true ? --jQuery.readyWait : jQuery.isReady ) {
+		if ( wait === true ? --EhQuery.readyWait : EhQuery.isReady ) {
 			return;
 		}
 
 		// Remember that the DOM is ready
-		jQuery.isReady = true;
+		EhQuery.isReady = true;
 
 		// If a normal DOM Ready event fired, decrement, and wait if need be
-		if ( wait !== true && --jQuery.readyWait > 0 ) {
+		if ( wait !== true && --EhQuery.readyWait > 0 ) {
 			return;
 		}
 
 		// If there are functions bound, to execute
-		readyList.resolveWith( document, [ jQuery ] );
+		readyList.resolveWith( document, [ EhQuery ] );
 
 		// Trigger any bound ready events
-		if ( jQuery.fn.trigger ) {
-			jQuery( document ).trigger("ready").off("ready");
+		if ( EhQuery.fn.trigger ) {
+			EhQuery( document ).trigger("ready").off("ready");
 		}
 	},
 
@@ -398,7 +398,7 @@ jQuery.extend({
 	// Since version 1.3, DOM methods and functions like alert
 	// aren't supported. They return false on IE (#2968).
 	isFunction: function( obj ) {
-		return jQuery.type(obj) === "function";
+		return EhQuery.type(obj) === "function";
 	},
 
 	isArray: Array.isArray,
@@ -426,7 +426,7 @@ jQuery.extend({
 		// - Any object or value whose internal [[Class]] property is not "[object Object]"
 		// - DOM nodes
 		// - window
-		if ( jQuery.type( obj ) !== "object" || obj.nodeType || jQuery.isWindow( obj ) ) {
+		if ( EhQuery.type( obj ) !== "object" || obj.nodeType || EhQuery.isWindow( obj ) ) {
 			return false;
 		}
 
@@ -480,13 +480,13 @@ jQuery.extend({
 			return [ context.createElement( parsed[1] ) ];
 		}
 
-		parsed = jQuery.buildFragment( [ data ], context, scripts );
+		parsed = EhQuery.buildFragment( [ data ], context, scripts );
 
 		if ( scripts ) {
-			jQuery( scripts ).remove();
+			EhQuery( scripts ).remove();
 		}
 
-		return jQuery.merge( [], parsed.childNodes );
+		return EhQuery.merge( [], parsed.childNodes );
 	},
 
 	parseJSON: JSON.parse,
@@ -507,7 +507,7 @@ jQuery.extend({
 		}
 
 		if ( !xml || xml.getElementsByTagName( "parsererror" ).length ) {
-			jQuery.error( "Invalid XML: " + data );
+			EhQuery.error( "Invalid XML: " + data );
 		}
 		return xml;
 	},
@@ -517,7 +517,7 @@ jQuery.extend({
 	// Evaluates a script in a global context
 	globalEval: function( data ) {
 		var indirect = eval;
-		if ( jQuery.trim( data ) ) {
+		if ( EhQuery.trim( data ) ) {
 			indirect( data + ";" );
 		}
 	},
@@ -592,7 +592,7 @@ jQuery.extend({
 
 		if ( arr != null ) {
 			if ( isArraylike( Object(arr) ) ) {
-				jQuery.merge( ret,
+				EhQuery.merge( ret,
 					typeof arr === "string" ?
 					[ arr ] : arr
 				);
@@ -696,7 +696,7 @@ jQuery.extend({
 
 		// Quick check to determine if target is callable, in the spec
 		// this throws a TypeError, but we will just return undefined.
-		if ( !jQuery.isFunction( fn ) ) {
+		if ( !EhQuery.isFunction( fn ) ) {
 			return undefined;
 		}
 
@@ -707,7 +707,7 @@ jQuery.extend({
 		};
 
 		// Set the guid of unique handler to the same of original handler, so it can be removed
-		proxy.guid = fn.guid = fn.guid || jQuery.guid++;
+		proxy.guid = fn.guid = fn.guid || EhQuery.guid++;
 
 		return proxy;
 	},
@@ -720,17 +720,17 @@ jQuery.extend({
 			bulk = key == null;
 
 		// Sets many values
-		if ( jQuery.type( key ) === "object" ) {
+		if ( EhQuery.type( key ) === "object" ) {
 			chainable = true;
 			for ( i in key ) {
-				jQuery.access( elems, fn, i, key[i], true, emptyGet, raw );
+				EhQuery.access( elems, fn, i, key[i], true, emptyGet, raw );
 			}
 
 		// Sets one value
 		} else if ( value !== undefined ) {
 			chainable = true;
 
-			if ( !jQuery.isFunction( value ) ) {
+			if ( !EhQuery.isFunction( value ) ) {
 				raw = true;
 			}
 
@@ -744,7 +744,7 @@ jQuery.extend({
 				} else {
 					bulk = fn;
 					fn = function( elem, key, value ) {
-						return bulk.call( jQuery( elem ), value );
+						return bulk.call( EhQuery( elem ), value );
 					};
 				}
 			}
@@ -768,17 +768,17 @@ jQuery.extend({
 	now: Date.now
 });
 
-jQuery.ready.promise = function( obj ) {
+EhQuery.ready.promise = function( obj ) {
 	if ( !readyList ) {
 
-		readyList = jQuery.Deferred();
+		readyList = EhQuery.Deferred();
 
 		// Catch cases where $(document).ready() is called after the browser event has already occurred.
 		// we once tried to use readyState "interactive" here, but it caused issues like the one
 		// discovered by ChrisS here: http://bugs.jquery.com/ticket/12282#comment:15
 		if ( document.readyState === "complete" ) {
 			// Handle it asynchronously to allow scripts the opportunity to delay ready
-			setTimeout( jQuery.ready );
+			setTimeout( EhQuery.ready );
 
 		} else {
 
@@ -793,15 +793,15 @@ jQuery.ready.promise = function( obj ) {
 };
 
 // Populate the class2type map
-jQuery.each("Boolean Number String Function Array Date RegExp Object Error".split(" "), function(i, name) {
+EhQuery.each("Boolean Number String Function Array Date RegExp Object Error".split(" "), function(i, name) {
 	class2type[ "[object " + name + "]" ] = name.toLowerCase();
 });
 
 function isArraylike( obj ) {
 	var length = obj.length,
-		type = jQuery.type( obj );
+		type = EhQuery.type( obj );
 
-	if ( jQuery.isWindow( obj ) ) {
+	if ( EhQuery.isWindow( obj ) ) {
 		return false;
 	}
 
@@ -814,5 +814,5 @@ function isArraylike( obj ) {
 		typeof length === "number" && length > 0 && ( length - 1 ) in obj );
 }
 
-// All jQuery objects should point back to these
-rootjQuery = jQuery(document);
+// All EhQuery objects should point back to these
+rootEhQuery = EhQuery(document);

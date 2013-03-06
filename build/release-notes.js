@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * jQuery Release Note Generator
+ * EhQuery Release Note Generator
  */
 
 var fs = require("fs"),

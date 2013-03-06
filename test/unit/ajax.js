@@ -1,41 +1,41 @@
 module( "ajax", {
 	setup: function() {
-		var jsonpCallback = this.jsonpCallback = jQuery.ajaxSettings.jsonpCallback;
-		jQuery.ajaxSettings.jsonpCallback = function() {
+		var jsonpCallback = this.jsonpCallback = EhQuery.ajaxSettings.jsonpCallback;
+		EhQuery.ajaxSettings.jsonpCallback = function() {
 			var callback = jsonpCallback.apply( this, arguments );
 			Globals.register( callback );
 			return callback;
 		};
 	},
 	teardown: function() {
-		jQuery( document ).off( "ajaxStart ajaxStop ajaxSend ajaxComplete ajaxError ajaxSuccess" );
+		EhQuery( document ).off( "ajaxStart ajaxStop ajaxSend ajaxComplete ajaxError ajaxSuccess" );
 		moduleTeardown.apply( this, arguments );
 	}
 });
 
 (function() {
 
-	if ( !jQuery.ajax || ( isLocal && !hasPHP ) ) {
+	if ( !EhQuery.ajax || ( isLocal && !hasPHP ) ) {
 		return;
 	}
 
 	function addGlobalEvents( expected ) {
 		return function() {
 			expected = expected || "";
-			jQuery( document ).on( "ajaxStart ajaxStop ajaxSend ajaxComplete ajaxError ajaxSuccess", function( e ) {
+			EhQuery( document ).on( "ajaxStart ajaxStop ajaxSend ajaxComplete ajaxError ajaxSuccess", function( e ) {
 				ok( expected.indexOf(e.type) !== -1, e.type );
 			});
 		};
 	}
 
-//----------- jQuery.ajax()
+//----------- EhQuery.ajax()
 
 	testIframeWithCallback( "XMLHttpRequest - Attempt to block tests because of dangling XHR requests (IE)", "ajax/unreleasedXHR.html", function() {
 		expect( 1 );
 		ok( true, "done" );
 	});
 
-	ajaxTest( "jQuery.ajax() - success callbacks", 8, {
+	ajaxTest( "EhQuery.ajax() - success callbacks", 8, {
 		setup: addGlobalEvents("ajaxStart ajaxStop ajaxSend ajaxComplete ajaxSuccess"),
 		url: url("data/name.html"),
 		beforeSend: function() {
@@ -49,10 +49,10 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - success callbacks - (url, options) syntax", 8, {
+	ajaxTest( "EhQuery.ajax() - success callbacks - (url, options) syntax", 8, {
 		setup: addGlobalEvents("ajaxStart ajaxStop ajaxSend ajaxComplete ajaxSuccess"),
 		create: function( options ) {
-			return jQuery.ajax( url("data/name.html"), options );
+			return EhQuery.ajax( url("data/name.html"), options );
 		},
 		beforeSend: function() {
 			ok( true, "beforeSend" );
@@ -65,7 +65,7 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - success callbacks (late binding)", 8, {
+	ajaxTest( "EhQuery.ajax() - success callbacks (late binding)", 8, {
 		setup: addGlobalEvents("ajaxStart ajaxStop ajaxSend ajaxComplete ajaxSuccess"),
 		url: url("data/name.html"),
 		beforeSend: function() {
@@ -83,7 +83,7 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - success callbacks (oncomplete binding)", 8, {
+	ajaxTest( "EhQuery.ajax() - success callbacks (oncomplete binding)", 8, {
 		setup: addGlobalEvents("ajaxStart ajaxStop ajaxSend ajaxComplete ajaxSuccess"),
 		url: url("data/name.html"),
 		beforeSend: function() {
@@ -101,7 +101,7 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - error callbacks", 8, {
+	ajaxTest( "EhQuery.ajax() - error callbacks", 8, {
 		setup: addGlobalEvents("ajaxStart ajaxStop ajaxSend ajaxComplete ajaxError"),
 		url: url("data/name.php?wait=5"),
 		beforeSend: function() {
@@ -118,7 +118,7 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - textStatus and errorThrown values", 4, [
+	ajaxTest( "EhQuery.ajax() - textStatus and errorThrown values", 4, [
 		{
 			url: url("data/name.php?wait=5"),
 			error: function( _, textStatus, errorThrown ) {
@@ -141,25 +141,25 @@ module( "ajax", {
 		}
 	]);
 
-	ajaxTest( "jQuery.ajax() - responseText on error", 1, {
+	ajaxTest( "EhQuery.ajax() - responseText on error", 1, {
 		url: url("data/errorWithText.php"),
 		error: function( xhr ) {
 			strictEqual( xhr.responseText, "plain text message", "Test jqXHR.responseText is filled for HTTP errors" );
 		}
 	});
 
-	asyncTest( "jQuery.ajax() - retry with jQuery.ajax( this )", 2, function() {
+	asyncTest( "EhQuery.ajax() - retry with EhQuery.ajax( this )", 2, function() {
 		var previousUrl,
 			firstTime = true;
-		jQuery.ajax({
+		EhQuery.ajax({
 			url: url("data/errorWithText.php"),
 			error: function() {
 				if ( firstTime ) {
 					firstTime = false;
-					jQuery.ajax( this );
+					EhQuery.ajax( this );
 				} else {
-					ok ( true, "Test retrying with jQuery.ajax(this) works" );
-					jQuery.ajax({
+					ok ( true, "Test retrying with EhQuery.ajax(this) works" );
+					EhQuery.ajax({
 						url: url("data/errorWithText.php"),
 						data: {
 							"x": 1
@@ -174,7 +174,7 @@ module( "ajax", {
 							}
 						},
 						error: function() {
-							jQuery.ajax( this );
+							EhQuery.ajax( this );
 						}
 					});
 				}
@@ -182,9 +182,9 @@ module( "ajax", {
 		});
 	});
 
-	ajaxTest( "jQuery.ajax() - headers", 4, {
+	ajaxTest( "EhQuery.ajax() - headers", 4, {
 		setup: function() {
-			jQuery( document ).ajaxSend(function( evt, xhr ) {
+			EhQuery( document ).ajaxSend(function( evt, xhr ) {
 				xhr.setRequestHeader( "ajax-send", "test" );
 			});
 		},
@@ -196,7 +196,7 @@ module( "ajax", {
 		},
 		success: function( data, _, xhr ) {
 			var i, emptyHeader,
-				requestHeaders = jQuery.extend( this.headers, {
+				requestHeaders = EhQuery.extend( this.headers, {
 					"ajax-send": "test"
 				}),
 				tmp = [];
@@ -218,7 +218,7 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - Accept header", 1, {
+	ajaxTest( "EhQuery.ajax() - Accept header", 1, {
 		url: url("data/headers.php?keys=accept"),
 		headers: {
 			Accept: "very wrong accept value"
@@ -231,7 +231,7 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - contentType", 2, [
+	ajaxTest( "EhQuery.ajax() - contentType", 2, [
 		{
 			url: url("data/headers.php?keys=content-type"),
 			contentType: "test",
@@ -248,7 +248,7 @@ module( "ajax", {
 		}
 	]);
 
-	ajaxTest( "jQuery.ajax() - protocol-less urls", 1, {
+	ajaxTest( "EhQuery.ajax() - protocol-less urls", 1, {
 		url: "//somedomain.com",
 		beforeSend: function( xhr, settings ) {
 			equal( settings.url, location.protocol + "//somedomain.com", "Make sure that the protocol is added." );
@@ -257,7 +257,7 @@ module( "ajax", {
 		error: true
 	});
 
-	ajaxTest( "jQuery.ajax() - hash", 3, [
+	ajaxTest( "EhQuery.ajax() - hash", 3, [
 		{
 			url: "data/name.html#foo",
 			beforeSend: function( xhr, settings ) {
@@ -287,9 +287,9 @@ module( "ajax", {
 		}
 	]);
 
-	ajaxTest( "jQuery.ajax() - cross-domain detection", 7, function() {
+	ajaxTest( "EhQuery.ajax() - cross-domain detection", 7, function() {
 		function request( url, title, crossDomainOrOptions ) {
-			return jQuery.extend( {
+			return EhQuery.extend( {
 				dataType: "jsonp",
 				url: url,
 				beforeSend: function( _, s ) {
@@ -341,7 +341,7 @@ module( "ajax", {
 		];
 	});
 
-	ajaxTest( "jQuery.ajax() - abort", 9, {
+	ajaxTest( "EhQuery.ajax() - abort", 9, {
 		setup: addGlobalEvents("ajaxStart ajaxStop ajaxSend ajaxError ajaxComplete"),
 		url: url("data/name.php?wait=5"),
 		beforeSend: function() {
@@ -358,7 +358,7 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - events with context", 12, function() {
+	ajaxTest( "EhQuery.ajax() - events with context", 12, function() {
 
 		var context = document.createElement("div");
 
@@ -374,7 +374,7 @@ module( "ajax", {
 
 		return {
 			setup: function() {
-				jQuery( context ).appendTo("#foo")
+				EhQuery( context ).appendTo("#foo")
 					.ajaxSend( event )
 					.ajaxComplete( event )
 					.ajaxError( event )
@@ -396,7 +396,7 @@ module( "ajax", {
 		};
 	});
 
-	ajaxTest( "jQuery.ajax() - events without context", 3, function() {
+	ajaxTest( "EhQuery.ajax() - events without context", 3, function() {
 		function nocallback( msg ) {
 			return function() {
 				equal( typeof this.url, "string", "context is settings on callback " + msg );
@@ -410,7 +410,7 @@ module( "ajax", {
 		};
 	});
 
-	ajaxTest( "jQuery.ajax() - context modification", 1, {
+	ajaxTest( "EhQuery.ajax() - context modification", 1, {
 		url: url("data/name.html"),
 		context: {},
 		beforeSend: function() {
@@ -422,14 +422,14 @@ module( "ajax", {
 		success: true
 	});
 
-	ajaxTest( "jQuery.ajax() - context modification through ajaxSetup", 3, function() {
+	ajaxTest( "EhQuery.ajax() - context modification through ajaxSetup", 3, function() {
 		var obj = {};
 		return {
 			setup: function() {
-				jQuery.ajaxSetup({
+				EhQuery.ajaxSetup({
 					context: obj
 				});
-				strictEqual( jQuery.ajaxSettings.context, obj, "Make sure the context is properly set in ajaxSettings." );
+				strictEqual( EhQuery.ajaxSettings.context, obj, "Make sure the context is properly set in ajaxSettings." );
 			},
 			requests: [{
 				url: url("data/name.html"),
@@ -446,7 +446,7 @@ module( "ajax", {
 		};
 	});
 
-	ajaxTest( "jQuery.ajax() - disabled globals", 3, {
+	ajaxTest( "EhQuery.ajax() - disabled globals", 3, {
 		setup: addGlobalEvents(""),
 		global: false,
 		url: url("data/name.html"),
@@ -461,27 +461,27 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - xml: non-namespace elements inside namespaced elements", 3, {
+	ajaxTest( "EhQuery.ajax() - xml: non-namespace elements inside namespaced elements", 3, {
 		url: url("data/with_fries.xml"),
 		dataType: "xml",
 		success: function( resp ) {
-			equal( jQuery( "properties", resp ).length, 1, "properties in responseXML" );
-			equal( jQuery( "jsconf", resp ).length, 1, "jsconf in responseXML" );
-			equal( jQuery( "thing", resp ).length, 2, "things in responseXML" );
+			equal( EhQuery( "properties", resp ).length, 1, "properties in responseXML" );
+			equal( EhQuery( "jsconf", resp ).length, 1, "jsconf in responseXML" );
+			equal( EhQuery( "thing", resp ).length, 2, "things in responseXML" );
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - xml: non-namespace elements inside namespaced elements (over JSONP)", 3, {
+	ajaxTest( "EhQuery.ajax() - xml: non-namespace elements inside namespaced elements (over JSONP)", 3, {
 		url: url("data/with_fries_over_jsonp.php"),
 		dataType: "jsonp xml",
 		success: function( resp ) {
-			equal( jQuery( "properties", resp ).length, 1, "properties in responseXML" );
-			equal( jQuery( "jsconf", resp ).length, 1, "jsconf in responseXML" );
-			equal( jQuery( "thing", resp ).length, 2, "things in responseXML" );
+			equal( EhQuery( "properties", resp ).length, 1, "properties in responseXML" );
+			equal( EhQuery( "jsconf", resp ).length, 1, "jsconf in responseXML" );
+			equal( EhQuery( "thing", resp ).length, 2, "things in responseXML" );
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - HEAD requests", 2, [
+	ajaxTest( "EhQuery.ajax() - HEAD requests", 2, [
 		{
 			url: url("data/name.html"),
 			type: "HEAD",
@@ -501,7 +501,7 @@ module( "ajax", {
 		}
 	]);
 
-	ajaxTest( "jQuery.ajax() - beforeSend", 1, {
+	ajaxTest( "EhQuery.ajax() - beforeSend", 1, {
 		url: url("data/name.html"),
 		beforeSend: function( xml ) {
 			this.check = true;
@@ -511,9 +511,9 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - beforeSend, cancel request manually", 2, {
+	ajaxTest( "EhQuery.ajax() - beforeSend, cancel request manually", 2, {
 		create: function() {
-			return jQuery.ajax({
+			return EhQuery.ajax({
 				url: url("data/name.html"),
 				beforeSend: function( xhr ) {
 					ok( true, "beforeSend got called, canceling" );
@@ -535,7 +535,7 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - dataType html", 5, {
+	ajaxTest( "EhQuery.ajax() - dataType html", 5, {
 		setup: function() {
 			Globals.register("testFoo");
 			Globals.register("testBar");
@@ -544,13 +544,13 @@ module( "ajax", {
 		url: url("data/test.html"),
 		success: function( data ) {
 			ok( data.match( /^html text/ ), "Check content for datatype html" );
-			jQuery("#ap").html( data );
+			EhQuery("#ap").html( data );
 			strictEqual( window["testFoo"], "foo", "Check if script was evaluated for datatype html" );
 			strictEqual( window["testBar"], "bar", "Check if script src was evaluated for datatype html" );
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - synchronous request", 1, {
+	ajaxTest( "EhQuery.ajax() - synchronous request", 1, {
 		url: url("data/json_obj.js"),
 		dataType: "text",
 		async: false,
@@ -560,7 +560,7 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - synchronous request with callbacks", 2, {
+	ajaxTest( "EhQuery.ajax() - synchronous request with callbacks", 2, {
 		url: url("data/json_obj.js"),
 		async: false,
 		dataType: "text",
@@ -575,7 +575,7 @@ module( "ajax", {
 		}
 	});
 
-	asyncTest( "jQuery.ajax(), jQuery.get[Script|JSON](), jQuery.post(), pass-through request object", 8, function() {
+	asyncTest( "EhQuery.ajax(), EhQuery.get[Script|JSON](), EhQuery.post(), pass-through request object", 8, function() {
 		var target = "data/name.html";
 		var successCount = 0;
 		var errorCount = 0;
@@ -583,29 +583,29 @@ module( "ajax", {
 		var success = function() {
 			successCount++;
 		};
-		jQuery( document ).on( "ajaxError.passthru", function( e, xml, s, ex ) {
+		EhQuery( document ).on( "ajaxError.passthru", function( e, xml, s, ex ) {
 			errorCount++;
 			errorEx += ": " + xml.status;
 		});
-		jQuery( document ).one( "ajaxStop", function() {
+		EhQuery( document ).one( "ajaxStop", function() {
 			equal( successCount, 5, "Check all ajax calls successful" );
 			equal( errorCount, 0, "Check no ajax errors (status" + errorEx + ")" );
-			jQuery( document ).off("ajaxError.passthru");
+			EhQuery( document ).off("ajaxError.passthru");
 			start();
 		});
 		Globals.register("testBar");
 
-		ok( jQuery.get( url(target), success ), "get" );
-		ok( jQuery.post( url(target), success ), "post" );
-		ok( jQuery.getScript( url("data/test.js"), success ), "script" );
-		ok( jQuery.getJSON( url("data/json_obj.js"), success ), "json" );
-		ok( jQuery.ajax({
+		ok( EhQuery.get( url(target), success ), "get" );
+		ok( EhQuery.post( url(target), success ), "post" );
+		ok( EhQuery.getScript( url("data/test.js"), success ), "script" );
+		ok( EhQuery.getJSON( url("data/json_obj.js"), success ), "json" );
+		ok( EhQuery.ajax({
 			url: url( target ),
 			success: success
 		}), "generic" );
 	});
 
-	ajaxTest( "jQuery.ajax() - cache", 12, function() {
+	ajaxTest( "EhQuery.ajax() - cache", 12, function() {
 
 		var re = /_=(.*?)(&|$)/g;
 
@@ -654,9 +654,9 @@ module( "ajax", {
 		];
 	});
 
-	jQuery.each( [ " - Same Domain", " - Cross Domain" ], function( crossDomain, label ) {
+	EhQuery.each( [ " - Same Domain", " - Cross Domain" ], function( crossDomain, label ) {
 
-		ajaxTest( "jQuery.ajax() - JSONP - Query String (?n)" + label, 4, [
+		ajaxTest( "EhQuery.ajax() - JSONP - Query String (?n)" + label, 4, [
 			{
 				url: "data/jsonp.php?callback=?",
 				dataType: "jsonp",
@@ -686,12 +686,12 @@ module( "ajax", {
 				dataType: "jsonp",
 				crossDomain: crossDomain,
 				success: function( data ) {
-					strictEqual( jQuery.type( data ), "array", "JSON results returned (GET, REST-like with param)" );
+					strictEqual( EhQuery.type( data ), "array", "JSON results returned (GET, REST-like with param)" );
 				}
 			}
 		]);
 
-		ajaxTest( "jQuery.ajax() - JSONP - Explicit callback param" + label, 9, {
+		ajaxTest( "EhQuery.ajax() - JSONP - Explicit callback param" + label, 9, {
 			setup: function() {
 				Globals.register("functionToCleanUp");
 				Globals.register("XXX");
@@ -725,7 +725,7 @@ module( "ajax", {
 					ok( data["data"], "JSON results returned (GET, custom callback name to be cleaned up)" );
 					strictEqual( window["functionToCleanUp"], undefined, "Callback was removed (GET, custom callback name to be cleaned up)" );
 					var xhr;
-					jQuery.ajax({
+					EhQuery.ajax({
 						url: "data/jsonp.php",
 						dataType: "jsonp",
 						crossDomain: crossDomain,
@@ -755,7 +755,7 @@ module( "ajax", {
 			}]
 		});
 
-		ajaxTest( "jQuery.ajax() - JSONP - Callback in data" + label, 2, [
+		ajaxTest( "EhQuery.ajax() - JSONP - Callback in data" + label, 2, [
 			{
 				url: "data/jsonp.php",
 				dataType: "jsonp",
@@ -777,7 +777,7 @@ module( "ajax", {
 		]);
 
 
-		ajaxTest( "jQuery.ajax() - JSONP - POST" + label, 3, [
+		ajaxTest( "EhQuery.ajax() - JSONP - POST" + label, 3, [
 			{
 				type: "POST",
 				url: "data/jsonp.php",
@@ -809,7 +809,7 @@ module( "ajax", {
 			}
 		]);
 
-		ajaxTest( "jQuery.ajax() - JSONP" + label, 3, [
+		ajaxTest( "EhQuery.ajax() - JSONP" + label, 3, [
 			{
 				url: "data/jsonp.php",
 				dataType: "jsonp",
@@ -820,10 +820,10 @@ module( "ajax", {
 			},
 			{
 				create: function( options ) {
-					var request = jQuery.ajax( options ),
+					var request = EhQuery.ajax( options ),
 						promise = request.then(function( data ) {
 							ok( data.data, "first request: JSON results returned (GET, no callback)" );
-							request = jQuery.ajax( this ).done(function( data ) {
+							request = EhQuery.ajax( this ).done(function( data ) {
 								ok( data.data, "this re-used: JSON results returned (GET, no callback)" );
 							});
 							promise.abort = request.abort;
@@ -841,7 +841,7 @@ module( "ajax", {
 
 	});
 
-	ajaxTest( "jQuery.ajax() - script, Remote", 2, {
+	ajaxTest( "EhQuery.ajax() - script, Remote", 2, {
 		setup: function() {
 			Globals.register("testBar");
 		},
@@ -852,7 +852,7 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - script, Remote with POST", 3, {
+	ajaxTest( "EhQuery.ajax() - script, Remote with POST", 3, {
 		setup: function() {
 			Globals.register("testBar");
 		},
@@ -865,7 +865,7 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - script, Remote with scheme-less URL", 2, {
+	ajaxTest( "EhQuery.ajax() - script, Remote with scheme-less URL", 2, {
 		setup: function() {
 			Globals.register("testBar");
 		},
@@ -876,7 +876,7 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - malformed JSON", 2, {
+	ajaxTest( "EhQuery.ajax() - malformed JSON", 2, {
 		url: "data/badjson.js",
 		dataType: "json",
 		error: function( xhr, msg, detailedMsg ) {
@@ -885,7 +885,7 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - script by content-type", 2, [
+	ajaxTest( "EhQuery.ajax() - script by content-type", 2, [
 		{
 			url: "data/script.php",
 			data: {
@@ -902,7 +902,7 @@ module( "ajax", {
 		}
 	]);
 
-	ajaxTest( "jQuery.ajax() - JSON by content-type", 5, {
+	ajaxTest( "EhQuery.ajax() - JSON by content-type", 5, {
 		url: "data/json.php",
 		data: {
 			"header": "json",
@@ -917,7 +917,7 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - JSON by content-type disabled with options", 6, {
+	ajaxTest( "EhQuery.ajax() - JSON by content-type disabled with options", 6, {
 		url: url("data/json.php"),
 		data: {
 			"header": "json",
@@ -928,7 +928,7 @@ module( "ajax", {
 		},
 		success: function( text ) {
 			strictEqual( typeof text, "string", "json wasn't auto-determined" );
-			var json = jQuery.parseJSON( text );
+			var json = EhQuery.parseJSON( text );
 			ok( json.length >= 2, "Check length");
 			strictEqual( json[ 0 ]["name"], "John", "Check JSON: first, name" );
 			strictEqual( json[ 0 ]["age"], 21, "Check JSON: first, age" );
@@ -937,7 +937,7 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - simple get", 1, {
+	ajaxTest( "EhQuery.ajax() - simple get", 1, {
 		type: "GET",
 		url: url("data/name.php?name=foo"),
 		success: function( msg ) {
@@ -945,7 +945,7 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - simple post", 1, {
+	ajaxTest( "EhQuery.ajax() - simple post", 1, {
 		type: "POST",
 		url: url("data/name.php"),
 		data: "name=peter",
@@ -954,7 +954,7 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - data option - empty bodies for non-GET requests", 1, {
+	ajaxTest( "EhQuery.ajax() - data option - empty bodies for non-GET requests", 1, {
 		url: "data/echoData.php",
 		data: undefined,
 		type: "post",
@@ -965,8 +965,8 @@ module( "ajax", {
 
 	var ifModifiedNow = new Date();
 
-	jQuery.each(
-		/* jQuery.each arguments start */
+	EhQuery.each(
+		/* EhQuery.each arguments start */
 		{
 			" (cache)": true,
 			" (no cache)": false
@@ -975,21 +975,21 @@ module( "ajax", {
 			// Support: Opera 12.0
 			// In Opera 12.0, XHR doesn't notify 304 back to the user properly
 			var opera = window.opera && window.opera.version();
-			jQuery.each(
+			EhQuery.each(
 				{
 					"If-Modified-Since": "if_modified_since.php",
 					"Etag": "etag.php"
 				},
 				function( type, url ) {
 					url = "data/" + url + "?ts=" + ifModifiedNow++;
-					asyncTest( "jQuery.ajax() - " + type + " support" + label, 4, function() {
-						jQuery.ajax({
+					asyncTest( "EhQuery.ajax() - " + type + " support" + label, 4, function() {
+						EhQuery.ajax({
 							url: url,
 							ifModified: true,
 							cache: cache,
 							success: function( _, status ) {
 								strictEqual( status, "success", "Initial status is 'success'" );
-								jQuery.ajax({
+								EhQuery.ajax({
 									url: url,
 									ifModified: true,
 									cache: cache,
@@ -1014,10 +1014,10 @@ module( "ajax", {
 				}
 			);
 		}
-		/* jQuery.each arguments end */
+		/* EhQuery.each arguments end */
 	);
 
-	ajaxTest( "jQuery.ajax() - failing cross-domain (non-existing)", 1, {
+	ajaxTest( "EhQuery.ajax() - failing cross-domain (non-existing)", 1, {
 		// see RFC 2606
 		url: "http://example.invalid",
 		error: function( xhr, _, e ) {
@@ -1025,33 +1025,33 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - failing cross-domain", 1, {
+	ajaxTest( "EhQuery.ajax() - failing cross-domain", 1, {
 		url: "http://" + externalHost,
 		error: function( xhr, _, e ) {
 			ok( true, "access denied: " + xhr.status + " => " + e );
 		}
 	});
 
-	ajaxTest( "jQuery.ajax() - atom+xml", 1, {
+	ajaxTest( "EhQuery.ajax() - atom+xml", 1, {
 		url: url("data/atom+xml.php"),
 		success: function() {
 			ok( true, "success" );
 		}
 	});
 
-	asyncTest( "jQuery.ajax() - statusText", 3, function() {
-		jQuery.ajax( url("data/statusText.php?status=200&text=Hello") ).done(function( _, statusText, jqXHR ) {
+	asyncTest( "EhQuery.ajax() - statusText", 3, function() {
+		EhQuery.ajax( url("data/statusText.php?status=200&text=Hello") ).done(function( _, statusText, jqXHR ) {
 			strictEqual( statusText, "success", "callback status text ok for success" );
 			ok( jqXHR.statusText === "Hello" || jqXHR.statusText === "OK", "jqXHR status text ok for success (" + jqXHR.statusText + ")" );
-			jQuery.ajax( url("data/statusText.php?status=404&text=World") ).fail(function( jqXHR, statusText ) {
+			EhQuery.ajax( url("data/statusText.php?status=404&text=World") ).fail(function( jqXHR, statusText ) {
 				strictEqual( statusText, "error", "callback status text ok for error" );
-				// ok( jqXHR.statusText === "World" || jQuery.browser.safari && jqXHR.statusText === "Not Found", "jqXHR status text ok for error (" + jqXHR.statusText + ")" );
+				// ok( jqXHR.statusText === "World" || EhQuery.browser.safari && jqXHR.statusText === "Not Found", "jqXHR status text ok for error (" + jqXHR.statusText + ")" );
 				start();
 			});
 		});
 	});
 
-	asyncTest( "jQuery.ajax() - statusCode", 20, function() {
+	asyncTest( "EhQuery.ajax() - statusCode", 20, function() {
 
 		var count = 12;
 
@@ -1073,31 +1073,31 @@ module( "ajax", {
 			};
 		}
 
-		jQuery.each(
-			/* jQuery.each arguments start */
+		EhQuery.each(
+			/* EhQuery.each arguments start */
 			{
 				"data/name.html": true,
 				"data/someFileThatDoesNotExist.html": false
 			},
 			function( uri, isSuccess ) {
 
-				jQuery.ajax( url(uri), {
+				EhQuery.ajax( url(uri), {
 					statusCode: createStatusCodes( "in options", isSuccess ),
 					complete: countComplete
 				});
 
-				jQuery.ajax( url(uri), {
+				EhQuery.ajax( url(uri), {
 					complete: countComplete
 				}).statusCode( createStatusCodes("immediately with method", isSuccess) );
 
-				jQuery.ajax( url(uri), {
+				EhQuery.ajax( url(uri), {
 					complete: function( jqXHR ) {
 						jqXHR.statusCode( createStatusCodes("on complete", isSuccess) );
 						countComplete();
 					}
 				});
 
-				jQuery.ajax( url(uri), {
+				EhQuery.ajax( url(uri), {
 					complete: function( jqXHR ) {
 						setTimeout(function() {
 							jqXHR.statusCode( createStatusCodes("very late binding", isSuccess) );
@@ -1106,7 +1106,7 @@ module( "ajax", {
 					}
 				});
 
-				jQuery.ajax( url(uri), {
+				EhQuery.ajax( url(uri), {
 					statusCode: createStatusCodes( "all (options)", isSuccess ),
 					complete: function( jqXHR ) {
 						jqXHR.statusCode( createStatusCodes("all (on complete)", isSuccess) );
@@ -1119,7 +1119,7 @@ module( "ajax", {
 
 				var testString = "";
 
-				jQuery.ajax( url(uri), {
+				EhQuery.ajax( url(uri), {
 					success: function( a, b, jqXHR ) {
 						ok( isSuccess, "success" );
 						var statusCode = {};
@@ -1149,11 +1149,11 @@ module( "ajax", {
 				});
 
 			}
-			/* jQuery.each arguments end*/
+			/* EhQuery.each arguments end*/
 		);
 	});
 
-	ajaxTest( "jQuery.ajax() - transitive conversions", 8, [
+	ajaxTest( "EhQuery.ajax() - transitive conversions", 8, [
 		{
 			url: url("data/json.php"),
 			converters: {
@@ -1187,7 +1187,7 @@ module( "ajax", {
 		}
 	]);
 
-	ajaxTest( "jQuery.ajax() - overrideMimeType", 2, [
+	ajaxTest( "EhQuery.ajax() - overrideMimeType", 2, [
 		{
 			url: url("data/json.php"),
 			beforeSend: function( xhr ) {
@@ -1206,7 +1206,7 @@ module( "ajax", {
 		}
 	]);
 
-	ajaxTest( "jQuery.ajax() - empty json gets to error callback instead of success callback.", 1, {
+	ajaxTest( "EhQuery.ajax() - empty json gets to error callback instead of success callback.", 1, {
 		url: url("data/echoData.php"),
 		error: function( _, __, error ) {
 			equal( typeof error === "object", true,  "Didn't get back error object for empty json response" );
@@ -1214,9 +1214,9 @@ module( "ajax", {
 		dataType: "json"
 	});
 
-	ajaxTest( "#2688 - jQuery.ajax() - beforeSend, cancel request", 2, {
+	ajaxTest( "#2688 - EhQuery.ajax() - beforeSend, cancel request", 2, {
 		create: function() {
-			return jQuery.ajax({
+			return EhQuery.ajax({
 				url: url("data/name.html"),
 				beforeSend: function() {
 					ok( true, "beforeSend got called, canceling" );
@@ -1238,7 +1238,7 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "#2806 - jQuery.ajax() - data option - evaluate function values", 1, {
+	ajaxTest( "#2806 - EhQuery.ajax() - data option - evaluate function values", 1, {
 		url: "data/echoQuery.php",
 		data: {
 			key: function() {
@@ -1250,10 +1250,10 @@ module( "ajax", {
 		}
 	});
 
-	test( "#7531 - jQuery.ajax() - Location object as url", 1, function () {
+	test( "#7531 - EhQuery.ajax() - Location object as url", 1, function () {
 		var success = false;
 		try {
-			var xhr = jQuery.ajax({
+			var xhr = EhQuery.ajax({
 				url: window.location
 			});
 			success = true;
@@ -1264,8 +1264,8 @@ module( "ajax", {
 		ok( success, "document.location did not generate exception" );
 	});
 
-	jQuery.each( [ " - Same Domain", " - Cross Domain" ], function( crossDomain, label ) {
-		ajaxTest( "#7578 - jQuery.ajax() - JSONP - default for cache option" + label, 1, {
+	EhQuery.each( [ " - Same Domain", " - Cross Domain" ], function( crossDomain, label ) {
+		ajaxTest( "#7578 - EhQuery.ajax() - JSONP - default for cache option" + label, 1, {
 			url: "data/jsonp.php",
 			dataType: "jsonp",
 			crossDomain: crossDomain,
@@ -1277,10 +1277,10 @@ module( "ajax", {
 		});
 	});
 
-	ajaxTest( "#8107 - jQuery.ajax() - multiple method signatures introduced in 1.5", 4, [
+	ajaxTest( "#8107 - EhQuery.ajax() - multiple method signatures introduced in 1.5", 4, [
 		{
 			create: function() {
-				return jQuery.ajax();
+				return EhQuery.ajax();
 			},
 			done: function() {
 				ok( true, "With no arguments" );
@@ -1288,7 +1288,7 @@ module( "ajax", {
 		},
 		{
 			create: function() {
-				return jQuery.ajax("data/name.html");
+				return EhQuery.ajax("data/name.html");
 			},
 			done: function() {
 				ok( true, "With only string URL argument" );
@@ -1296,7 +1296,7 @@ module( "ajax", {
 		},
 		{
 			create: function() {
-				return jQuery.ajax( "data/name.html", {});
+				return EhQuery.ajax( "data/name.html", {});
 			},
 			done: function() {
 				ok( true, "With string URL param and map" );
@@ -1304,7 +1304,7 @@ module( "ajax", {
 		},
 		{
 			create: function( options ) {
-				return jQuery.ajax( options );
+				return EhQuery.ajax( options );
 			},
 			url: "data/name.html",
 			success: function() {
@@ -1313,8 +1313,8 @@ module( "ajax", {
 		}
 	]);
 
-	jQuery.each( [ " - Same Domain", " - Cross Domain" ], function( crossDomain, label ) {
-		ajaxTest( "#8205 - jQuery.ajax() - JSONP - re-use callbacks name" + label, 2, {
+	EhQuery.each( [ " - Same Domain", " - Cross Domain" ], function( crossDomain, label ) {
+		ajaxTest( "#8205 - EhQuery.ajax() - JSONP - re-use callbacks name" + label, 2, {
 			url: "data/jsonp.php",
 			dataType: "jsonp",
 			crossDomain: crossDomain,
@@ -1324,7 +1324,7 @@ module( "ajax", {
 			success: function() {
 				var previous = this;
 				strictEqual( previous.jsonpCallback, undefined, "jsonpCallback option is set back to default in callbacks" );
-				jQuery.ajax({
+				EhQuery.ajax({
 					url: "data/jsonp.php",
 					dataType: "jsonp",
 					crossDomain: crossDomain,
@@ -1337,12 +1337,12 @@ module( "ajax", {
 		});
 	});
 
-	test( "#9887 - jQuery.ajax() - Context with circular references (#9887)", 2, function () {
+	test( "#9887 - EhQuery.ajax() - Context with circular references (#9887)", 2, function () {
 		var success = false,
 			context = {};
 		context.field = context;
 		try {
-			jQuery.ajax( "non-existing", {
+			EhQuery.ajax( "non-existing", {
 				context: context,
 				beforeSend: function() {
 					ok( this === context, "context was not deep extended" );
@@ -1356,12 +1356,12 @@ module( "ajax", {
 		ok( success, "context with circular reference did not generate an exception" );
 	});
 
-	jQuery.each( [ "as argument", "in settings object" ], function( inSetting, title ) {
+	EhQuery.each( [ "as argument", "in settings object" ], function( inSetting, title ) {
 
 		function request( url, test ) {
 			return {
 				create: function() {
-					return jQuery.ajax( inSetting ? { url: url } : url );
+					return EhQuery.ajax( inSetting ? { url: url } : url );
 				},
 				done: function() {
 					ok( true, ( test || url ) + " " + title );
@@ -1369,7 +1369,7 @@ module( "ajax", {
 			};
 		}
 
-		ajaxTest( "#10093 - jQuery.ajax() - falsy url " + title, 4, [
+		ajaxTest( "#10093 - EhQuery.ajax() - falsy url " + title, 4, [
 			request( "", "empty string" ),
 			request( false ),
 			request( null ),
@@ -1378,7 +1378,7 @@ module( "ajax", {
 
 	});
 
-	ajaxTest( "#11151 - jQuery.ajax() - parse error body", 2, {
+	ajaxTest( "#11151 - EhQuery.ajax() - parse error body", 2, {
 		url: url("data/errorWithJSON.php"),
 		dataFilter: function( string ) {
 			ok( false, "dataFilter called" );
@@ -1390,21 +1390,21 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "#11426 - jQuery.ajax() - loading binary data shouldn't throw an exception in IE", 1, {
+	ajaxTest( "#11426 - EhQuery.ajax() - loading binary data shouldn't throw an exception in IE", 1, {
 		url: url("data/1x1.jpg"),
 		success: function( data ) {
 			ok( data === undefined || /JFIF/.test( data ), "success callback reached" );
 		}
 	});
 
-	asyncTest( "#11743 - jQuery.ajax() - script, throws exception", 1, function() {
+	asyncTest( "#11743 - EhQuery.ajax() - script, throws exception", 1, function() {
 		var onerror = window.onerror;
 		window.onerror = function() {
 			ok( true, "Exception thrown" );
 			window.onerror = onerror;
 			start();
 		};
-		jQuery.ajax({
+		EhQuery.ajax({
 			url: "data/badjson.js",
 			dataType: "script",
 			throws: true,
@@ -1419,7 +1419,7 @@ module( "ajax", {
 		});
 	});
 
-	jQuery.each( [ "method", "type" ], function( _, globalOption ) {
+	EhQuery.each( [ "method", "type" ], function( _, globalOption ) {
 
 		function request( option ) {
 			var options = {
@@ -1438,11 +1438,11 @@ module( "ajax", {
 			return options;
 		}
 
-		ajaxTest( "#12004 - jQuery.ajax() - method is an alias of type - " + globalOption + " set globally", 3, {
+		ajaxTest( "#12004 - EhQuery.ajax() - method is an alias of type - " + globalOption + " set globally", 3, {
 			setup: function() {
 				var options = {};
 				options[ globalOption ] = "POST";
-				jQuery.ajaxSetup( options );
+				EhQuery.ajaxSetup( options );
 			},
 			requests: [
 				request("type"),
@@ -1453,12 +1453,12 @@ module( "ajax", {
 
 	});
 
-	ajaxTest( "#13276 - jQuery.ajax() - compatibility between XML documents from ajax requests and parsed string", 1, {
+	ajaxTest( "#13276 - EhQuery.ajax() - compatibility between XML documents from ajax requests and parsed string", 1, {
 		url: "data/dashboard.xml",
 		dataType: "xml",
 		success: function( ajaxXML ) {
-			var parsedXML = jQuery( jQuery.parseXML("<tab title=\"Added\">blibli</tab>") ).find("tab");
-			ajaxXML = jQuery( ajaxXML );
+			var parsedXML = EhQuery( EhQuery.parseXML("<tab title=\"Added\">blibli</tab>") ).find("tab");
+			ajaxXML = EhQuery( ajaxXML );
 			try {
 				ajaxXML.find("infowindowtab").append( parsedXML );
 			} catch( e ) {
@@ -1468,8 +1468,8 @@ module( "ajax", {
 			strictEqual( ajaxXML.find("tab").length, 3, "Parsed node was added properly" );
 		}
 	});
-	
-	ajaxTest( "#13292 - jQuery.ajax() - converter is bypassed for 204 requests", 3, {
+
+	ajaxTest( "#13292 - EhQuery.ajax() - converter is bypassed for 204 requests", 3, {
 		url: "data/nocontent.php",
 		dataType: "testing",
 		converters: {
@@ -1489,7 +1489,7 @@ module( "ajax", {
 		}
 	});
 
-	ajaxTest( "#13388 - jQuery.ajax() - responseXML", 3, {
+	ajaxTest( "#13388 - EhQuery.ajax() - responseXML", 3, {
 		url: url("data/with_fries.xml"),
 		dataType: "xml",
 		success: function( resp, _, jqXHR ) {
@@ -1499,11 +1499,11 @@ module( "ajax", {
 		}
 	});
 
-//----------- jQuery.ajaxPrefilter()
+//----------- EhQuery.ajaxPrefilter()
 
-	ajaxTest( "jQuery.ajaxPrefilter() - abort", 1, {
+	ajaxTest( "EhQuery.ajaxPrefilter() - abort", 1, {
 		setup: function() {
-			jQuery.ajaxPrefilter(function( options, _, jqXHR ) {
+			EhQuery.ajaxPrefilter(function( options, _, jqXHR ) {
 				if ( options.abortInPrefilter ) {
 					jqXHR.abort();
 				}
@@ -1518,25 +1518,25 @@ module( "ajax", {
 		}
 	});
 
-//----------- jQuery.ajaxSetup()
+//----------- EhQuery.ajaxSetup()
 
-	asyncTest( "jQuery.ajaxSetup()", 1, function() {
-		jQuery.ajaxSetup({
+	asyncTest( "EhQuery.ajaxSetup()", 1, function() {
+		EhQuery.ajaxSetup({
 			url: url("data/name.php?name=foo"),
 			success: function( msg ) {
 				strictEqual( msg, "bar", "Check for GET" );
 				start();
 			}
 		});
-		jQuery.ajax();
+		EhQuery.ajax();
 	});
 
-	asyncTest( "jQuery.ajaxSetup({ timeout: Number }) - with global timeout", 2, function() {
+	asyncTest( "EhQuery.ajaxSetup({ timeout: Number }) - with global timeout", 2, function() {
 		var passed = 0,
 			pass = function() {
 				ok( passed++ < 2, "Error callback executed" );
 				if ( passed == 2 ) {
-					jQuery( document ).off("ajaxError.setupTest");
+					EhQuery( document ).off("ajaxError.setupTest");
 					start();
 				}
 			},
@@ -1545,13 +1545,13 @@ module( "ajax", {
 				start();
 			};
 
-		jQuery( document ).on( "ajaxError.setupTest", pass );
+		EhQuery( document ).on( "ajaxError.setupTest", pass );
 
-		jQuery.ajaxSetup({
+		EhQuery.ajaxSetup({
 			timeout: 1000
 		});
 
-		jQuery.ajax({
+		EhQuery.ajax({
 			type: "GET",
 			url: url("data/name.php?wait=5"),
 			error: pass,
@@ -1559,11 +1559,11 @@ module( "ajax", {
 		});
 	});
 
-	asyncTest( "jQuery.ajaxSetup({ timeout: Number }) with localtimeout", 1, function() {
-		jQuery.ajaxSetup({
+	asyncTest( "EhQuery.ajaxSetup({ timeout: Number }) with localtimeout", 1, function() {
+		EhQuery.ajaxSetup({
 			timeout: 50
 		});
-		jQuery.ajax({
+		EhQuery.ajax({
 			type: "GET",
 			timeout: 15000,
 			url: url("data/name.php?wait=1"),
@@ -1578,33 +1578,33 @@ module( "ajax", {
 		});
 	});
 
-//----------- jQuery.domManip()
+//----------- EhQuery.domManip()
 
-	test( "#11264 - jQuery.domManip() - no side effect because of ajaxSetup or global events", 1, function() {
-		jQuery.ajaxSetup({
+	test( "#11264 - EhQuery.domManip() - no side effect because of ajaxSetup or global events", 1, function() {
+		EhQuery.ajaxSetup({
 			type: "POST"
 		});
 
-		jQuery( document ).bind( "ajaxStart ajaxStop", function() {
+		EhQuery( document ).bind( "ajaxStart ajaxStop", function() {
 			ok( false, "Global event triggered" );
 		});
 
-		jQuery("#qunit-fixture").append("<script src='data/evalScript.php'></script>");
+		EhQuery("#qunit-fixture").append("<script src='data/evalScript.php'></script>");
 
-		jQuery( document ).unbind("ajaxStart ajaxStop");
+		EhQuery( document ).unbind("ajaxStart ajaxStop");
 	});
 
-	asyncTest( "#11402 - jQuery.domManip() - script in comments are properly evaluated", 2, function() {
-		jQuery("#qunit-fixture").load( "data/cleanScript.html", start );
+	asyncTest( "#11402 - EhQuery.domManip() - script in comments are properly evaluated", 2, function() {
+		EhQuery("#qunit-fixture").load( "data/cleanScript.html", start );
 	});
 
-//----------- jQuery.get()
+//----------- EhQuery.get()
 
-	asyncTest( "jQuery.get( String, Hash, Function ) - parse xml and use text() on nodes", 2, function() {
-		jQuery.get( url("data/dashboard.xml"), function( xml ) {
+	asyncTest( "EhQuery.get( String, Hash, Function ) - parse xml and use text() on nodes", 2, function() {
+		EhQuery.get( url("data/dashboard.xml"), function( xml ) {
 			var content = [];
-			jQuery( "tab", xml ).each(function() {
-				content.push( jQuery( this ).text() );
+			EhQuery( "tab", xml ).each(function() {
+				content.push( EhQuery( this ).text() );
 			});
 			strictEqual( content[ 0 ], "blabla", "Check first tab" );
 			strictEqual( content[ 1 ], "blublu", "Check second tab" );
@@ -1612,20 +1612,20 @@ module( "ajax", {
 		});
 	});
 
-	asyncTest( "#8277 - jQuery.get( String, Function ) - data in ajaxSettings", 1, function() {
-		jQuery.ajaxSetup({
+	asyncTest( "#8277 - EhQuery.get( String, Function ) - data in ajaxSettings", 1, function() {
+		EhQuery.ajaxSetup({
 			data: "helloworld"
 		});
-		jQuery.get( url("data/echoQuery.php"), function( data ) {
+		EhQuery.get( url("data/echoQuery.php"), function( data ) {
 			ok( /helloworld$/.test( data ), "Data from ajaxSettings was used" );
 			start();
 		});
 	});
 
-//----------- jQuery.getJSON()
+//----------- EhQuery.getJSON()
 
-	asyncTest( "jQuery.getJSON( String, Hash, Function ) - JSON array", 5, function() {
-		jQuery.getJSON(
+	asyncTest( "EhQuery.getJSON( String, Hash, Function ) - JSON array", 5, function() {
+		EhQuery.getJSON(
 			url("data/json.php"),
 			{
 				"json": "array"
@@ -1641,8 +1641,8 @@ module( "ajax", {
 		);
 	});
 
-	asyncTest( "jQuery.getJSON( String, Function ) - JSON object", 2, function() {
-		jQuery.getJSON( url("data/json.php"), function( json ) {
+	asyncTest( "EhQuery.getJSON( String, Function ) - JSON object", 2, function() {
+		EhQuery.getJSON( url("data/json.php"), function( json ) {
 			if ( json && json["data"] ) {
 				strictEqual( json["data"]["lang"], "en", "Check JSON: lang" );
 				strictEqual( json["data"].length, 25, "Check JSON: length" );
@@ -1651,159 +1651,159 @@ module( "ajax", {
 		});
 	});
 
-	asyncTest( "jQuery.getJSON( String, Function ) - JSON object with absolute url to local content", 2, function() {
-		jQuery.getJSON( url( window.location.href.replace( /[^\/]*$/, "" ) + "data/json.php" ), function( json ) {
+	asyncTest( "EhQuery.getJSON( String, Function ) - JSON object with absolute url to local content", 2, function() {
+		EhQuery.getJSON( url( window.location.href.replace( /[^\/]*$/, "" ) + "data/json.php" ), function( json ) {
 			strictEqual( json.data.lang, "en", "Check JSON: lang" );
 			strictEqual( json.data.length, 25, "Check JSON: length" );
 			start();
 		});
 	});
 
-//----------- jQuery.getScript()
+//----------- EhQuery.getScript()
 
-	asyncTest( "jQuery.getScript( String, Function ) - with callback", 2, function() {
+	asyncTest( "EhQuery.getScript( String, Function ) - with callback", 2, function() {
 		Globals.register("testBar");
-		jQuery.getScript( url("data/test.js"), function( data, _, jqXHR ) {
+		EhQuery.getScript( url("data/test.js"), function( data, _, jqXHR ) {
 			strictEqual( window["testBar"], "bar", "Check if script was evaluated" );
 			start();
 		});
 	});
 
-	asyncTest( "jQuery.getScript( String, Function ) - no callback", 1, function() {
+	asyncTest( "EhQuery.getScript( String, Function ) - no callback", 1, function() {
 		Globals.register("testBar");
-		jQuery.getScript( url("data/test.js") ).done( start );
+		EhQuery.getScript( url("data/test.js") ).done( start );
 	});
 
-	asyncTest( "#8082 - jQuery.getScript( String, Function ) - source as responseText", 2, function() {
+	asyncTest( "#8082 - EhQuery.getScript( String, Function ) - source as responseText", 2, function() {
 		Globals.register("testBar");
-		jQuery.getScript( url("data/test.js"), function( data, _, jqXHR ) {
+		EhQuery.getScript( url("data/test.js"), function( data, _, jqXHR ) {
 			strictEqual( data, jqXHR.responseText, "Same-domain script requests returns the source of the script" );
 			start();
 		});
 	});
 
-//----------- jQuery.fn.load()
+//----------- EhQuery.fn.load()
 
 	// check if load can be called with only url
-	asyncTest( "jQuery.fn.load( String )", 2, function() {
-		jQuery.ajaxSetup({
+	asyncTest( "EhQuery.fn.load( String )", 2, function() {
+		EhQuery.ajaxSetup({
 			beforeSend: function() {
 				strictEqual( this.type, "GET", "no data means GET request" );
 			}
 		});
-		jQuery("#first").load( "data/name.html", start );
+		EhQuery("#first").load( "data/name.html", start );
 	});
 
-	asyncTest( "jQuery.fn.load() - 404 error callbacks", 6, function() {
+	asyncTest( "EhQuery.fn.load() - 404 error callbacks", 6, function() {
 		addGlobalEvents("ajaxStart ajaxStop ajaxSend ajaxComplete ajaxError")();
-		jQuery( document ).ajaxStop( start );
-		jQuery("<div/>").load( "data/404.html", function() {
+		EhQuery( document ).ajaxStop( start );
+		EhQuery("<div/>").load( "data/404.html", function() {
 			ok( true, "complete" );
 		});
 	});
 
 	// check if load can be called with url and null data
-	asyncTest( "jQuery.fn.load( String, null )", 2, function() {
-		jQuery.ajaxSetup({
+	asyncTest( "EhQuery.fn.load( String, null )", 2, function() {
+		EhQuery.ajaxSetup({
 			beforeSend: function() {
 				strictEqual( this.type, "GET", "no data means GET request" );
 			}
 		});
-		jQuery("#first").load( "data/name.html", null, start );
+		EhQuery("#first").load( "data/name.html", null, start );
 	});
 
 	// check if load can be called with url and undefined data
-	asyncTest( "jQuery.fn.load( String, undefined )", 2, function() {
-		jQuery.ajaxSetup({
+	asyncTest( "EhQuery.fn.load( String, undefined )", 2, function() {
+		EhQuery.ajaxSetup({
 			beforeSend: function() {
 				strictEqual( this.type, "GET", "no data means GET request" );
 			}
 		});
-		jQuery("#first").load( "data/name.html", undefined, start );
+		EhQuery("#first").load( "data/name.html", undefined, start );
 	});
 
 	// check if load can be called with only url
-	asyncTest( "jQuery.fn.load( URL_SELECTOR )", 1, function() {
-		jQuery("#first").load( "data/test3.html div.user", function() {
-			strictEqual( jQuery( this ).children("div").length, 2, "Verify that specific elements were injected" );
+	asyncTest( "EhQuery.fn.load( URL_SELECTOR )", 1, function() {
+		EhQuery("#first").load( "data/test3.html div.user", function() {
+			strictEqual( EhQuery( this ).children("div").length, 2, "Verify that specific elements were injected" );
 			start();
 		});
 	});
 
-	asyncTest( "jQuery.fn.load( String, Function ) - simple: inject text into DOM", 2, function() {
-		jQuery("#first").load( url("data/name.html"), function() {
-			ok( /^ERROR/.test(jQuery("#first").text()), "Check if content was injected into the DOM" );
+	asyncTest( "EhQuery.fn.load( String, Function ) - simple: inject text into DOM", 2, function() {
+		EhQuery("#first").load( url("data/name.html"), function() {
+			ok( /^ERROR/.test(EhQuery("#first").text()), "Check if content was injected into the DOM" );
 			start();
 		});
 	});
 
-	asyncTest( "jQuery.fn.load( String, Function ) - check scripts", 7, function() {
+	asyncTest( "EhQuery.fn.load( String, Function ) - check scripts", 7, function() {
 		var verifyEvaluation = function() {
 			strictEqual( window["testBar"], "bar", "Check if script src was evaluated after load" );
-			strictEqual( jQuery("#ap").html(), "bar", "Check if script evaluation has modified DOM");
+			strictEqual( EhQuery("#ap").html(), "bar", "Check if script evaluation has modified DOM");
 			start();
 		};
 
 		Globals.register("testFoo");
 		Globals.register("testBar");
 
-		jQuery("#first").load( url("data/test.html"), function() {
-			ok( jQuery("#first").html().match( /^html text/ ), "Check content after loading html" );
-			strictEqual( jQuery("#foo").html(), "foo", "Check if script evaluation has modified DOM" );
+		EhQuery("#first").load( url("data/test.html"), function() {
+			ok( EhQuery("#first").html().match( /^html text/ ), "Check content after loading html" );
+			strictEqual( EhQuery("#foo").html(), "foo", "Check if script evaluation has modified DOM" );
 			strictEqual( window["testFoo"], "foo", "Check if script was evaluated after load" );
 			setTimeout( verifyEvaluation, 600 );
 		});
 	});
 
-	asyncTest( "jQuery.fn.load( String, Function ) - check file with only a script tag", 3, function() {
+	asyncTest( "EhQuery.fn.load( String, Function ) - check file with only a script tag", 3, function() {
 		Globals.register("testFoo");
 
-		jQuery("#first").load( url("data/test2.html"), function() {
-			strictEqual( jQuery("#foo").html(), "foo", "Check if script evaluation has modified DOM");
+		EhQuery("#first").load( url("data/test2.html"), function() {
+			strictEqual( EhQuery("#foo").html(), "foo", "Check if script evaluation has modified DOM");
 			strictEqual( window["testFoo"], "foo", "Check if script was evaluated after load" );
 			start();
 		});
 	});
 
-	asyncTest( "jQuery.fn.load( String, Function ) - dataFilter in ajaxSettings", 2, function() {
-		jQuery.ajaxSetup({
+	asyncTest( "EhQuery.fn.load( String, Function ) - dataFilter in ajaxSettings", 2, function() {
+		EhQuery.ajaxSetup({
 			dataFilter: function() {
 				return "Hello World";
 			}
 		});
-		jQuery("<div/>").load( url("data/name.html"), function( responseText ) {
-			strictEqual( jQuery( this ).html(), "Hello World", "Test div was filled with filtered data" );
+		EhQuery("<div/>").load( url("data/name.html"), function( responseText ) {
+			strictEqual( EhQuery( this ).html(), "Hello World", "Test div was filled with filtered data" );
 			strictEqual( responseText, "Hello World", "Test callback receives filtered data" );
 			start();
 		});
 	});
 
-	asyncTest( "jQuery.fn.load( String, Object, Function )", 2, function() {
-		jQuery("<div />").load( url("data/params_html.php"), {
+	asyncTest( "EhQuery.fn.load( String, Object, Function )", 2, function() {
+		EhQuery("<div />").load( url("data/params_html.php"), {
 			"foo": 3,
 			"bar": "ok"
 		}, function() {
-			var $post = jQuery( this ).find("#post");
+			var $post = EhQuery( this ).find("#post");
 			strictEqual( $post.find("#foo").text(), "3", "Check if a hash of data is passed correctly" );
 			strictEqual( $post.find("#bar").text(), "ok", "Check if a hash of data is passed correctly" );
 			start();
 		});
 	});
 
-	asyncTest( "jQuery.fn.load( String, String, Function )", 2, function() {
-		jQuery("<div />").load( url("data/params_html.php"), "foo=3&bar=ok", function() {
-			var $get = jQuery( this ).find("#get");
+	asyncTest( "EhQuery.fn.load( String, String, Function )", 2, function() {
+		EhQuery("<div />").load( url("data/params_html.php"), "foo=3&bar=ok", function() {
+			var $get = EhQuery( this ).find("#get");
 			strictEqual( $get.find("#foo").text(), "3", "Check if a string of data is passed correctly" );
 			strictEqual( $get.find("#bar").text(), "ok", "Check if a   of data is passed correctly" );
 			start();
 		});
 	});
 
-	asyncTest( "jQuery.fn.load() - callbacks get the correct parameters", 8, function() {
+	asyncTest( "EhQuery.fn.load() - callbacks get the correct parameters", 8, function() {
 		var slice = [].slice,
 			completeArgs = {};
 
-		jQuery.ajaxSetup({
+		EhQuery.ajaxSetup({
 			success: function( _, status, jqXHR ) {
 				completeArgs[ this.url ] = [ jqXHR.responseText, status, jqXHR ];
 			},
@@ -1812,9 +1812,9 @@ module( "ajax", {
 			}
 		});
 
-		jQuery.when.apply(
-			jQuery,
-			jQuery.map([
+		EhQuery.when.apply(
+			EhQuery,
+			EhQuery.map([
 				{
 					type: "success",
 					url: "data/echoQuery.php?arg=pop"
@@ -1825,11 +1825,11 @@ module( "ajax", {
 				}
 			],
 			function( options ) {
-				return jQuery.Deferred(function( defer ) {
-					jQuery("#foo").load( options.url, function() {
+				return EhQuery.Deferred(function( defer ) {
+					EhQuery("#foo").load( options.url, function() {
 						var args = arguments;
 						strictEqual( completeArgs[ options.url ].length, args.length, "same number of arguments (" + options.type + ")" );
-						jQuery.each( completeArgs[ options.url ], function( i, value ) {
+						EhQuery.each( completeArgs[ options.url ], function( i, value ) {
 							strictEqual( args[ i ], value, "argument #" + i + " is the same (" + options.type + ")" );
 						});
 						defer.resolve();
@@ -1839,52 +1839,52 @@ module( "ajax", {
 		).always( start );
 	});
 
-	asyncTest( "#2046 - jQuery.fn.load( String, Function ) with ajaxSetup on dataType json", 1, function() {
-		jQuery.ajaxSetup({
+	asyncTest( "#2046 - EhQuery.fn.load( String, Function ) with ajaxSetup on dataType json", 1, function() {
+		EhQuery.ajaxSetup({
 			dataType: "json"
 		});
-		jQuery( document ).ajaxComplete(function( e, xml, s ) {
+		EhQuery( document ).ajaxComplete(function( e, xml, s ) {
 			strictEqual( s.dataType, "html", "Verify the load() dataType was html" );
-			jQuery( document ).unbind("ajaxComplete");
+			EhQuery( document ).unbind("ajaxComplete");
 			start();
 		});
-		jQuery("#first").load("data/test3.html");
+		EhQuery("#first").load("data/test3.html");
 	});
 
-	asyncTest( "#10524 - jQuery.fn.load() - data specified in ajaxSettings is merged in", 1, function() {
+	asyncTest( "#10524 - EhQuery.fn.load() - data specified in ajaxSettings is merged in", 1, function() {
 		var data = {
 			"baz": 1
 		};
-		jQuery.ajaxSetup({
+		EhQuery.ajaxSetup({
 			data: {
 				"foo": "bar"
 			}
 		});
-		jQuery("#foo").load( "data/echoQuery.php", data );
-		jQuery( document ).ajaxComplete(function( event, jqXHR, options ) {
+		EhQuery("#foo").load( "data/echoQuery.php", data );
+		EhQuery( document ).ajaxComplete(function( event, jqXHR, options ) {
 			ok( ~options.data.indexOf("foo=bar"), "Data from ajaxSettings was used" );
 			start();
 		});
 	});
 
-//----------- jQuery.post()
+//----------- EhQuery.post()
 
-	asyncTest( "jQuery.post() - data", 3, function() {
-		jQuery.when(
-			jQuery.post(
+	asyncTest( "EhQuery.post() - data", 3, function() {
+		EhQuery.when(
+			EhQuery.post(
 				url("data/name.php"),
 				{
 					xml: "5-2",
 					length: 3
 				},
 				function( xml ) {
-					jQuery( "math", xml ).each(function() {
-						strictEqual( jQuery( "calculation", this ).text(), "5-2", "Check for XML" );
-						strictEqual( jQuery( "result", this ).text(), "3", "Check for XML" );
+					EhQuery( "math", xml ).each(function() {
+						strictEqual( EhQuery( "calculation", this ).text(), "5-2", "Check for XML" );
+						strictEqual( EhQuery( "result", this ).text(), "3", "Check for XML" );
 					});
 				}
 			),
-			jQuery.ajax({
+			EhQuery.ajax({
 				url: url("data/echoData.php"),
 				type: "POST",
 				data: {
@@ -1900,33 +1900,33 @@ module( "ajax", {
 		).always( start );
 	});
 
-	asyncTest( "jQuery.post( String, Hash, Function ) - simple with xml", 4, function() {
-		jQuery.when(
-			jQuery.post(
+	asyncTest( "EhQuery.post( String, Hash, Function ) - simple with xml", 4, function() {
+		EhQuery.when(
+			EhQuery.post(
 				url("data/name.php"),
 				{
 					"xml": "5-2"
 				},
 				function( xml ) {
-					jQuery( "math", xml ).each(function() {
-						strictEqual( jQuery( "calculation", this ).text(), "5-2", "Check for XML" );
-						strictEqual( jQuery( "result", this ).text(), "3", "Check for XML" );
+					EhQuery( "math", xml ).each(function() {
+						strictEqual( EhQuery( "calculation", this ).text(), "5-2", "Check for XML" );
+						strictEqual( EhQuery( "result", this ).text(), "3", "Check for XML" );
 					});
 				}
 			),
-			jQuery.post( url("data/name.php?xml=5-2"), {}, function( xml ) {
-				jQuery( "math", xml ).each(function() {
-					strictEqual( jQuery( "calculation", this ).text(), "5-2", "Check for XML" );
-					strictEqual( jQuery( "result", this ).text(), "3", "Check for XML" );
+			EhQuery.post( url("data/name.php?xml=5-2"), {}, function( xml ) {
+				EhQuery( "math", xml ).each(function() {
+					strictEqual( EhQuery( "calculation", this ).text(), "5-2", "Check for XML" );
+					strictEqual( EhQuery( "result", this ).text(), "3", "Check for XML" );
 				});
 			})
 		).always( start );
 	});
 
-//----------- jQuery.active
+//----------- EhQuery.active
 
-	test( "jQuery.active", 1, function() {
-		ok( jQuery.active === 0, "ajax active counter should be zero: " + jQuery.active );
+	test( "EhQuery.active", 1, function() {
+		ok( EhQuery.active === 0, "ajax active counter should be zero: " + EhQuery.active );
 	});
 
 })();

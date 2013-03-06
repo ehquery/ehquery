@@ -1,7 +1,7 @@
 var runtil = /Until$/,
 	rparentsprev = /^(?:parents|prev(?:Until|All))/,
 	isSimple = /^.[^:#\[\.,]*$/,
-	rneedsContext = jQuery.expr.match.needsContext,
+	rneedsContext = EhQuery.expr.match.needsContext,
 	// methods guaranteed to produce a unique set when starting from a unique set
 	guaranteedUnique = {
 		children: true,
@@ -10,16 +10,16 @@ var runtil = /Until$/,
 		prev: true
 	};
 
-jQuery.fn.extend({
+EhQuery.fn.extend({
 	find: function( selector ) {
 		var self, matched, i,
 			l = this.length;
 
 		if ( typeof selector !== "string" ) {
 			self = this;
-			return this.pushStack( jQuery( selector ).filter(function() {
+			return this.pushStack( EhQuery( selector ).filter(function() {
 				for ( i = 0; i < l; i++ ) {
-					if ( jQuery.contains( self[ i ], this ) ) {
+					if ( EhQuery.contains( self[ i ], this ) ) {
 						return true;
 					}
 				}
@@ -28,23 +28,23 @@ jQuery.fn.extend({
 
 		matched = [];
 		for ( i = 0; i < l; i++ ) {
-			jQuery.find( selector, this[ i ], matched );
+			EhQuery.find( selector, this[ i ], matched );
 		}
 
 		// Needed because $( selector, context ) becomes $( context ).find( selector )
-		matched = this.pushStack( l > 1 ? jQuery.unique( matched ) : matched );
+		matched = this.pushStack( l > 1 ? EhQuery.unique( matched ) : matched );
 		matched.selector = ( this.selector ? this.selector + " " : "" ) + selector;
 		return matched;
 	},
 
 	has: function( target ) {
-		var targets = jQuery( target, this ),
+		var targets = EhQuery( target, this ),
 			l = targets.length;
 
 		return this.filter(function() {
 			var i = 0;
 			for ( ; i < l; i++ ) {
-				if ( jQuery.contains( this, targets[i] ) ) {
+				if ( EhQuery.contains( this, targets[i] ) ) {
 					return true;
 				}
 			}
@@ -65,8 +65,8 @@ jQuery.fn.extend({
 				// If this is a positional/relative selector, check membership in the returned set
 				// so $("p:first").is("p:last") won't return true for a doc with two "p".
 				rneedsContext.test( selector ) ?
-					jQuery( selector, this.context ).index( this[ 0 ] ) >= 0 :
-					jQuery.filter( selector, this ).length > 0 :
+					EhQuery( selector, this.context ).index( this[ 0 ] ) >= 0 :
+					EhQuery.filter( selector, this ).length > 0 :
 				this.filter( selector ).length > 0 );
 	},
 
@@ -76,7 +76,7 @@ jQuery.fn.extend({
 			l = this.length,
 			matched = [],
 			pos = ( rneedsContext.test( selectors ) || typeof selectors !== "string" ) ?
-				jQuery( selectors, context || this.context ) :
+				EhQuery( selectors, context || this.context ) :
 				0;
 
 		for ( ; i < l; i++ ) {
@@ -87,7 +87,7 @@ jQuery.fn.extend({
 
 					// Don't pass non-elements to Sizzle
 					cur.nodeType === 1 &&
-						jQuery.find.matchesSelector(cur, selectors)) ) {
+						EhQuery.find.matchesSelector(cur, selectors)) ) {
 
 					cur = matched.push( cur );
 					break;
@@ -95,7 +95,7 @@ jQuery.fn.extend({
 			}
 		}
 
-		return this.pushStack( matched.length > 1 ? jQuery.unique( matched ) : matched );
+		return this.pushStack( matched.length > 1 ? EhQuery.unique( matched ) : matched );
 	},
 
 	// Determine the position of an element within
@@ -109,24 +109,24 @@ jQuery.fn.extend({
 
 		// index in selector
 		if ( typeof elem === "string" ) {
-			return core_indexOf.call( jQuery( elem ), this[ 0 ] );
+			return core_indexOf.call( EhQuery( elem ), this[ 0 ] );
 		}
 
 		// Locate the position of the desired element
 		return core_indexOf.call( this,
 
-			// If it receives a jQuery object, the first element is used
+			// If it receives a EhQuery object, the first element is used
 			elem.jquery ? elem[ 0 ] : elem
 		);
 	},
 
 	add: function( selector, context ) {
 		var set = typeof selector === "string" ?
-				jQuery( selector, context ) :
-				jQuery.makeArray( selector && selector.nodeType ? [ selector ] : selector ),
-			all = jQuery.merge( this.get(), set );
+				EhQuery( selector, context ) :
+				EhQuery.makeArray( selector && selector.nodeType ? [ selector ] : selector ),
+			all = EhQuery.merge( this.get(), set );
 
-		return this.pushStack( jQuery.unique(all) );
+		return this.pushStack( EhQuery.unique(all) );
 	},
 
 	addBack: function( selector ) {
@@ -142,16 +142,16 @@ function sibling( cur, dir ) {
 	return cur;
 }
 
-jQuery.each({
+EhQuery.each({
 	parent: function( elem ) {
 		var parent = elem.parentNode;
 		return parent && parent.nodeType !== 11 ? parent : null;
 	},
 	parents: function( elem ) {
-		return jQuery.dir( elem, "parentNode" );
+		return EhQuery.dir( elem, "parentNode" );
 	},
 	parentsUntil: function( elem, i, until ) {
-		return jQuery.dir( elem, "parentNode", until );
+		return EhQuery.dir( elem, "parentNode", until );
 	},
 	next: function( elem ) {
 		return sibling( elem, "nextSibling" );
@@ -160,43 +160,43 @@ jQuery.each({
 		return sibling( elem, "previousSibling" );
 	},
 	nextAll: function( elem ) {
-		return jQuery.dir( elem, "nextSibling" );
+		return EhQuery.dir( elem, "nextSibling" );
 	},
 	prevAll: function( elem ) {
-		return jQuery.dir( elem, "previousSibling" );
+		return EhQuery.dir( elem, "previousSibling" );
 	},
 	nextUntil: function( elem, i, until ) {
-		return jQuery.dir( elem, "nextSibling", until );
+		return EhQuery.dir( elem, "nextSibling", until );
 	},
 	prevUntil: function( elem, i, until ) {
-		return jQuery.dir( elem, "previousSibling", until );
+		return EhQuery.dir( elem, "previousSibling", until );
 	},
 	siblings: function( elem ) {
-		return jQuery.sibling( ( elem.parentNode || {} ).firstChild, elem );
+		return EhQuery.sibling( ( elem.parentNode || {} ).firstChild, elem );
 	},
 	children: function( elem ) {
-		return jQuery.sibling( elem.firstChild );
+		return EhQuery.sibling( elem.firstChild );
 	},
 	contents: function( elem ) {
-		return jQuery.nodeName( elem, "iframe" ) ?
+		return EhQuery.nodeName( elem, "iframe" ) ?
 			elem.contentDocument || elem.contentWindow.document :
-			jQuery.merge( [], elem.childNodes );
+			EhQuery.merge( [], elem.childNodes );
 	}
 }, function( name, fn ) {
-	jQuery.fn[ name ] = function( until, selector ) {
-		var matched = jQuery.map( this, fn, until );
+	EhQuery.fn[ name ] = function( until, selector ) {
+		var matched = EhQuery.map( this, fn, until );
 
 		if ( !runtil.test( name ) ) {
 			selector = until;
 		}
 
 		if ( selector && typeof selector === "string" ) {
-			matched = jQuery.filter( selector, matched );
+			matched = EhQuery.filter( selector, matched );
 		}
 
 		if ( this.length > 1 ) {
 			if ( !guaranteedUnique[ name ] ) {
-				jQuery.unique( matched );
+				EhQuery.unique( matched );
 			}
 
 			if ( rparentsprev.test( name ) ) {
@@ -208,15 +208,15 @@ jQuery.each({
 	};
 });
 
-jQuery.extend({
+EhQuery.extend({
 	filter: function( expr, elems, not ) {
 		if ( not ) {
 			expr = ":not(" + expr + ")";
 		}
 
 		return elems.length === 1 ?
-			jQuery.find.matchesSelector( elems[ 0 ], expr ) ? [ elems[ 0 ] ] : [] :
-			jQuery.find.matches( expr, elems );
+			EhQuery.find.matchesSelector( elems[ 0 ], expr ) ? [ elems[ 0 ] ] : [] :
+			EhQuery.find.matches( expr, elems );
 	},
 
 	dir: function( elem, dir, until ) {
@@ -225,7 +225,7 @@ jQuery.extend({
 
 		while ( (elem = elem[ dir ]) && elem.nodeType !== 9 ) {
 			if ( elem.nodeType === 1 ) {
-				if ( truncate && jQuery( elem ).is( until ) ) {
+				if ( truncate && EhQuery( elem ).is( until ) ) {
 					break;
 				}
 				matched.push( elem );
@@ -256,32 +256,32 @@ function winnow( elements, qualifier, keep ) {
 
 	var filtered;
 
-	if ( jQuery.isFunction( qualifier ) ) {
-		return jQuery.grep(elements, function( elem, i ) {
+	if ( EhQuery.isFunction( qualifier ) ) {
+		return EhQuery.grep(elements, function( elem, i ) {
 			var retVal = !!qualifier.call( elem, i, elem );
 			return retVal === keep;
 		});
 	}
 
 	if ( qualifier.nodeType ) {
-		return jQuery.grep(elements, function( elem ) {
+		return EhQuery.grep(elements, function( elem ) {
 			return ( elem === qualifier ) === keep;
 		});
 	}
 
 	if ( typeof qualifier === "string" ) {
-		filtered = jQuery.grep(elements, function( elem ) {
+		filtered = EhQuery.grep(elements, function( elem ) {
 			return elem.nodeType === 1;
 		});
 
 		if ( isSimple.test( qualifier ) ) {
-			return jQuery.filter( qualifier, filtered, !keep );
+			return EhQuery.filter( qualifier, filtered, !keep );
 		}
 
-		qualifier = jQuery.filter( qualifier, filtered );
+		qualifier = EhQuery.filter( qualifier, filtered );
 	}
 
-	return jQuery.grep(elements, function( elem ) {
+	return EhQuery.grep(elements, function( elem ) {
 		return ( core_indexOf.call( qualifier, elem ) >= 0 ) === keep;
 	});
 }

@@ -98,7 +98,7 @@ module.exports = function( grunt ) {
 					"dist/jquery.min.js": [ "dist/jquery.js" ]
 				},
 				options: {
-					banner: "/*! jQuery v<%= pkg.version %> | (c) 2005, 2013 jQuery Foundation, Inc. | jquery.org/license */",
+					banner: "/*! EhQuery v<%= pkg.version %> | (c) 2005, 2013 EhQuery Foundation, Inc. | jquery.org/license */",
 					sourceMap: "dist/jquery.min.map",
 					beautify: {
 						ascii_only: true
@@ -117,10 +117,10 @@ module.exports = function( grunt ) {
 			tests = grunt.config([ this.name, "tests" ]);
 
 		if ( pull ) {
-			jobName = "jQuery pull <a href='https://github.com/jquery/jquery/pull/" +
+			jobName = "EhQuery pull <a href='https://github.com/jquery/jquery/pull/" +
 				pull[ 1 ] + "'>#" + pull[ 1 ] + "</a>";
 		} else {
-			jobName = "jQuery commit #<a href='https://github.com/jquery/jquery/commit/" +
+			jobName = "EhQuery commit #<a href='https://github.com/jquery/jquery/commit/" +
 				commit + "'>" + commit.substr( 0, 10 ) + "</a>";
 		}
 
@@ -170,14 +170,14 @@ module.exports = function( grunt ) {
 
 			Becomes...
 
-			Sizzle.attr = jQuery.attr;
-			jQuery.find = Sizzle;
-			jQuery.expr = Sizzle.selectors;
-			jQuery.expr[":"] = jQuery.expr.pseudos;
-			jQuery.unique = Sizzle.uniqueSort;
-			jQuery.text = Sizzle.getText;
-			jQuery.isXMLDoc = Sizzle.isXML;
-			jQuery.contains = Sizzle.contains;
+			Sizzle.attr = EhQuery.attr;
+			EhQuery.find = Sizzle;
+			EhQuery.expr = Sizzle.selectors;
+			EhQuery.expr[":"] = EhQuery.expr.pseudos;
+			EhQuery.unique = Sizzle.uniqueSort;
+			EhQuery.text = Sizzle.getText;
+			EhQuery.isXMLDoc = Sizzle.isXML;
+			EhQuery.contains = Sizzle.contains;
 
 		 */
 
@@ -236,7 +236,7 @@ module.exports = function( grunt ) {
 		});
 	});
 
-	// Special concat/build task to handle various jQuery build requirements
+	// Special concat/build task to handle various EhQuery build requirements
 	//
 	grunt.registerMultiTask(
 		"build",

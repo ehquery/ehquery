@@ -5,23 +5,23 @@ var nodeHook, boolHook,
 	rclickable = /^(?:a|area)$/i,
 	rboolean = /^(?:checked|selected|autofocus|autoplay|async|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped)$/i;
 
-jQuery.fn.extend({
+EhQuery.fn.extend({
 	attr: function( name, value ) {
-		return jQuery.access( this, jQuery.attr, name, value, arguments.length > 1 );
+		return EhQuery.access( this, EhQuery.attr, name, value, arguments.length > 1 );
 	},
 
 	removeAttr: function( name ) {
 		return this.each(function() {
-			jQuery.removeAttr( this, name );
+			EhQuery.removeAttr( this, name );
 		});
 	},
 
 	prop: function( name, value ) {
-		return jQuery.access( this, jQuery.prop, name, value, arguments.length > 1 );
+		return EhQuery.access( this, EhQuery.prop, name, value, arguments.length > 1 );
 	},
 
 	removeProp: function( name ) {
-		name = jQuery.propFix[ name ] || name;
+		name = EhQuery.propFix[ name ] || name;
 		return this.each(function() {
 			// try/catch handles cases where IE balks (such as removing a property on window)
 			try {
@@ -37,9 +37,9 @@ jQuery.fn.extend({
 			len = this.length,
 			proceed = typeof value === "string" && value;
 
-		if ( jQuery.isFunction( value ) ) {
+		if ( EhQuery.isFunction( value ) ) {
 			return this.each(function( j ) {
-				jQuery( this ).addClass( value.call( this, j, this.className ) );
+				EhQuery( this ).addClass( value.call( this, j, this.className ) );
 			});
 		}
 
@@ -61,7 +61,7 @@ jQuery.fn.extend({
 							cur += clazz + " ";
 						}
 					}
-					elem.className = jQuery.trim( cur );
+					elem.className = EhQuery.trim( cur );
 
 				}
 			}
@@ -76,9 +76,9 @@ jQuery.fn.extend({
 			len = this.length,
 			proceed = arguments.length === 0 || typeof value === "string" && value;
 
-		if ( jQuery.isFunction( value ) ) {
+		if ( EhQuery.isFunction( value ) ) {
 			return this.each(function( j ) {
-				jQuery( this ).removeClass( value.call( this, j, this.className ) );
+				EhQuery( this ).removeClass( value.call( this, j, this.className ) );
 			});
 		}
 		if ( proceed ) {
@@ -100,7 +100,7 @@ jQuery.fn.extend({
 							cur = cur.replace( " " + clazz + " ", " " );
 						}
 					}
-					elem.className = value ? jQuery.trim( cur ) : "";
+					elem.className = value ? EhQuery.trim( cur ) : "";
 				}
 			}
 		}
@@ -112,9 +112,9 @@ jQuery.fn.extend({
 		var type = typeof value,
 			isBool = typeof stateVal === "boolean";
 
-		if ( jQuery.isFunction( value ) ) {
+		if ( EhQuery.isFunction( value ) ) {
 			return this.each(function( i ) {
-				jQuery( this ).toggleClass( value.call(this, i, this.className, stateVal), stateVal );
+				EhQuery( this ).toggleClass( value.call(this, i, this.className, stateVal), stateVal );
 			});
 		}
 
@@ -123,7 +123,7 @@ jQuery.fn.extend({
 				// toggle individual class names
 				var className,
 					i = 0,
-					self = jQuery( this ),
+					self = EhQuery( this ),
 					state = stateVal,
 					classNames = value.match( core_rnotwhite ) || [];
 
@@ -137,14 +137,14 @@ jQuery.fn.extend({
 			} else if ( type === core_strundefined || type === "boolean" ) {
 				if ( this.className ) {
 					// store className if set
-					jQuery._data( this, "__className__", this.className );
+					EhQuery._data( this, "__className__", this.className );
 				}
 
 				// If the element has a class name or if we're passed "false",
 				// then remove the whole classname (if there was one, the above saved it).
 				// Otherwise bring back whatever was previously saved (if anything),
 				// falling back to the empty string if nothing was stored.
-				this.className = this.className || value === false ? "" : jQuery._data( this, "__className__" ) || "";
+				this.className = this.className || value === false ? "" : EhQuery._data( this, "__className__" ) || "";
 			}
 		});
 	},
@@ -168,7 +168,7 @@ jQuery.fn.extend({
 
 		if ( !arguments.length ) {
 			if ( elem ) {
-				hooks = jQuery.valHooks[ elem.type ] || jQuery.valHooks[ elem.nodeName.toLowerCase() ];
+				hooks = EhQuery.valHooks[ elem.type ] || EhQuery.valHooks[ elem.nodeName.toLowerCase() ];
 
 				if ( hooks && "get" in hooks && (ret = hooks.get( elem, "value" )) !== undefined ) {
 					return ret;
@@ -186,11 +186,11 @@ jQuery.fn.extend({
 			return;
 		}
 
-		isFunction = jQuery.isFunction( value );
+		isFunction = EhQuery.isFunction( value );
 
 		return this.each(function( i ) {
 			var val,
-				self = jQuery(this);
+				self = EhQuery(this);
 
 			if ( this.nodeType !== 1 ) {
 				return;
@@ -207,13 +207,13 @@ jQuery.fn.extend({
 				val = "";
 			} else if ( typeof val === "number" ) {
 				val += "";
-			} else if ( jQuery.isArray( val ) ) {
-				val = jQuery.map(val, function ( value ) {
+			} else if ( EhQuery.isArray( val ) ) {
+				val = EhQuery.map(val, function ( value ) {
 					return value == null ? "" : value + "";
 				});
 			}
 
-			hooks = jQuery.valHooks[ this.type ] || jQuery.valHooks[ this.nodeName.toLowerCase() ];
+			hooks = EhQuery.valHooks[ this.type ] || EhQuery.valHooks[ this.nodeName.toLowerCase() ];
 
 			// If set returns undefined, fall back to normal setting
 			if ( !hooks || !("set" in hooks) || hooks.set( this, val, "value" ) === undefined ) {
@@ -223,7 +223,7 @@ jQuery.fn.extend({
 	}
 });
 
-jQuery.extend({
+EhQuery.extend({
 	valHooks: {
 		option: {
 			get: function( elem ) {
@@ -252,11 +252,11 @@ jQuery.extend({
 					// oldIE doesn't update selected after form reset (#2551)
 					if ( ( option.selected || i === index ) &&
 							// Don't return options that are disabled or in a disabled optgroup
-							( jQuery.support.optDisabled ? !option.disabled : option.getAttribute("disabled") === null ) &&
-							( !option.parentNode.disabled || !jQuery.nodeName( option.parentNode, "optgroup" ) ) ) {
+							( EhQuery.support.optDisabled ? !option.disabled : option.getAttribute("disabled") === null ) &&
+							( !option.parentNode.disabled || !EhQuery.nodeName( option.parentNode, "optgroup" ) ) ) {
 
 						// Get the specific value for the option
-						value = jQuery( option ).val();
+						value = EhQuery( option ).val();
 
 						// We don't need an array for one selects
 						if ( one ) {
@@ -272,10 +272,10 @@ jQuery.extend({
 			},
 
 			set: function( elem, value ) {
-				var values = jQuery.makeArray( value );
+				var values = EhQuery.makeArray( value );
 
-				jQuery(elem).find("option").each(function() {
-					this.selected = jQuery.inArray( jQuery(this).val(), values ) >= 0;
+				EhQuery(elem).find("option").each(function() {
+					this.selected = EhQuery.inArray( EhQuery(this).val(), values ) >= 0;
 				});
 
 				if ( !values.length ) {
@@ -297,22 +297,22 @@ jQuery.extend({
 
 		// Fallback to prop when attributes are not supported
 		if ( typeof elem.getAttribute === core_strundefined ) {
-			return jQuery.prop( elem, name, value );
+			return EhQuery.prop( elem, name, value );
 		}
 
-		notxml = nType !== 1 || !jQuery.isXMLDoc( elem );
+		notxml = nType !== 1 || !EhQuery.isXMLDoc( elem );
 
 		// All attributes are lowercase
 		// Grab necessary hook if one is defined
 		if ( notxml ) {
 			name = name.toLowerCase();
-			hooks = jQuery.attrHooks[ name ] || ( rboolean.test( name ) ? boolHook : nodeHook );
+			hooks = EhQuery.attrHooks[ name ] || ( rboolean.test( name ) ? boolHook : nodeHook );
 		}
 
 		if ( value !== undefined ) {
 
 			if ( value === null ) {
-				jQuery.removeAttr( elem, name );
+				EhQuery.removeAttr( elem, name );
 
 			} else if ( hooks && notxml && "set" in hooks && (ret = hooks.set( elem, value, name )) !== undefined ) {
 				return ret;
@@ -347,7 +347,7 @@ jQuery.extend({
 
 		if ( attrNames && elem.nodeType === 1 ) {
 			while ( (name = attrNames[i++]) ) {
-				propName = jQuery.propFix[ name ] || name;
+				propName = EhQuery.propFix[ name ] || name;
 
 				// Boolean attributes get special treatment (#10870)
 				// Set corresponding property to false for boolean attributes
@@ -363,7 +363,7 @@ jQuery.extend({
 	attrHooks: {
 		type: {
 			set: function( elem, value ) {
-				if ( !jQuery.support.radioValue && value === "radio" && jQuery.nodeName(elem, "input") ) {
+				if ( !EhQuery.support.radioValue && value === "radio" && EhQuery.nodeName(elem, "input") ) {
 					// Setting the type on a radio button after the value resets the value in IE6-9
 					// Reset value to default in case type is set after value during creation
 					var val = elem.value;
@@ -401,12 +401,12 @@ jQuery.extend({
 			return;
 		}
 
-		notxml = nType !== 1 || !jQuery.isXMLDoc( elem );
+		notxml = nType !== 1 || !EhQuery.isXMLDoc( elem );
 
 		if ( notxml ) {
 			// Fix name and attach hooks
-			name = jQuery.propFix[ name ] || name;
-			hooks = jQuery.propHooks[ name ];
+			name = EhQuery.propFix[ name ] || name;
+			hooks = EhQuery.propHooks[ name ];
 		}
 
 		if ( value !== undefined ) {
@@ -454,7 +454,7 @@ boolHook = {
 	set: function( elem, value, name ) {
 		if ( value === false ) {
 			// Remove boolean attributes when set to false
-			jQuery.removeAttr( elem, name );
+			EhQuery.removeAttr( elem, name );
 		} else {
 			elem.setAttribute( name, name );
 		}
@@ -463,9 +463,9 @@ boolHook = {
 };
 
 // Radios and checkboxes getter/setter
-if ( !jQuery.support.checkOn ) {
-	jQuery.each([ "radio", "checkbox" ], function() {
-		jQuery.valHooks[ this ] = {
+if ( !EhQuery.support.checkOn ) {
+	EhQuery.each([ "radio", "checkbox" ], function() {
+		EhQuery.valHooks[ this ] = {
 			get: function( elem ) {
 				// Handle the case where in Webkit "" is returned instead of "on" if a value isn't specified
 				return elem.getAttribute("value") === null ? "on" : elem.value;
@@ -473,11 +473,11 @@ if ( !jQuery.support.checkOn ) {
 		};
 	});
 }
-jQuery.each([ "radio", "checkbox" ], function() {
-	jQuery.valHooks[ this ] = jQuery.extend( jQuery.valHooks[ this ], {
+EhQuery.each([ "radio", "checkbox" ], function() {
+	EhQuery.valHooks[ this ] = EhQuery.extend( EhQuery.valHooks[ this ], {
 		set: function( elem, value ) {
-			if ( jQuery.isArray( value ) ) {
-				return ( elem.checked = jQuery.inArray( jQuery(elem).val(), value ) >= 0 );
+			if ( EhQuery.isArray( value ) ) {
+				return ( elem.checked = EhQuery.inArray( EhQuery(elem).val(), value ) >= 0 );
 			}
 		}
 	});
@@ -485,8 +485,8 @@ jQuery.each([ "radio", "checkbox" ], function() {
 
 // IE9/10 do not see a selected option inside an optgroup unless you access it
 // Support: IE9, IE10
-if ( !jQuery.support.optSelected ) {
-	jQuery.propHooks.selected = jQuery.extend( jQuery.propHooks.selected, {
+if ( !EhQuery.support.optSelected ) {
+	EhQuery.propHooks.selected = EhQuery.extend( EhQuery.propHooks.selected, {
 		get: function( elem ) {
 			var parent = elem.parentNode;
 			if ( parent && parent.parentNode ) {

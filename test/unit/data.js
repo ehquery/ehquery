@@ -3,119 +3,119 @@ module("data", { teardown: moduleTeardown });
 test("expando", function(){
 	expect(1);
 
-	equal(jQuery.expando !== undefined, true, "jQuery is exposing the expando");
+	equal(EhQuery.expando !== undefined, true, "EhQuery is exposing the expando");
 });
 
-test( "jQuery.data & removeData, expected returns", function() {
+test( "EhQuery.data & removeData, expected returns", function() {
 	expect(4);
 	var elem = document.body;
 
 	equal(
-		jQuery.data( elem, "hello", "world" ), "world",
-		"jQuery.data( elem, key, value ) returns value"
+		EhQuery.data( elem, "hello", "world" ), "world",
+		"EhQuery.data( elem, key, value ) returns value"
 	);
 	equal(
-		jQuery.data( elem, "hello" ), "world",
-		"jQuery.data( elem, key ) returns value"
+		EhQuery.data( elem, "hello" ), "world",
+		"EhQuery.data( elem, key ) returns value"
 	);
 	deepEqual(
-		jQuery.data( elem, { goodnight: "moon" }), { goodnight: "moon" },
-		"jQuery.data( elem, key, obj ) returns obj"
+		EhQuery.data( elem, { goodnight: "moon" }), { goodnight: "moon" },
+		"EhQuery.data( elem, key, obj ) returns obj"
 	);
 	equal(
-		jQuery.removeData( elem, "hello" ), undefined,
-		"jQuery.removeData( elem, key, value ) returns undefined"
+		EhQuery.removeData( elem, "hello" ), undefined,
+		"EhQuery.removeData( elem, key, value ) returns undefined"
 	);
 
 });
 
-test( "jQuery._data & _removeData, expected returns", function() {
+test( "EhQuery._data & _removeData, expected returns", function() {
 	expect(4);
 	var elem = document.body;
 
 	equal(
-		jQuery._data( elem, "hello", "world" ), "world",
-		"jQuery._data( elem, key, value ) returns value"
+		EhQuery._data( elem, "hello", "world" ), "world",
+		"EhQuery._data( elem, key, value ) returns value"
 	);
 	equal(
-		jQuery._data( elem, "hello" ), "world",
-		"jQuery._data( elem, key ) returns value"
+		EhQuery._data( elem, "hello" ), "world",
+		"EhQuery._data( elem, key ) returns value"
 	);
 	deepEqual(
-		jQuery._data( elem, { goodnight: "moon" }), { goodnight: "moon" },
-		"jQuery._data( elem, obj ) returns obj"
+		EhQuery._data( elem, { goodnight: "moon" }), { goodnight: "moon" },
+		"EhQuery._data( elem, obj ) returns obj"
 	);
 	equal(
-		jQuery._removeData( elem, "hello" ), undefined,
-		"jQuery._removeData( elem, key, value ) returns undefined"
+		EhQuery._removeData( elem, "hello" ), undefined,
+		"EhQuery._removeData( elem, key, value ) returns undefined"
 	);
 });
 
 function dataTests (elem) {
 	var oldCacheLength, dataObj, internalDataObj, expected, actual;
 
-	equal( jQuery.data(elem, "foo"), undefined, "No data exists initially" );
-	strictEqual( jQuery.hasData(elem), false, "jQuery.hasData agrees no data exists initially" );
+	equal( EhQuery.data(elem, "foo"), undefined, "No data exists initially" );
+	strictEqual( EhQuery.hasData(elem), false, "EhQuery.hasData agrees no data exists initially" );
 
-	dataObj = jQuery.data(elem);
+	dataObj = EhQuery.data(elem);
 	equal( typeof dataObj, "object", "Calling data with no args gives us a data object reference" );
-	strictEqual( jQuery.data(elem), dataObj, "Calling jQuery.data returns the same data object when called multiple times" );
+	strictEqual( EhQuery.data(elem), dataObj, "Calling EhQuery.data returns the same data object when called multiple times" );
 
-	strictEqual( jQuery.hasData(elem), false, "jQuery.hasData agrees no data exists even when an empty data obj exists" );
+	strictEqual( EhQuery.hasData(elem), false, "EhQuery.hasData agrees no data exists even when an empty data obj exists" );
 
 	dataObj["foo"] = "bar";
-	equal( jQuery.data(elem, "foo"), "bar", "Data is readable by jQuery.data when set directly on a returned data object" );
+	equal( EhQuery.data(elem, "foo"), "bar", "Data is readable by EhQuery.data when set directly on a returned data object" );
 
-	strictEqual( jQuery.hasData(elem), true, "jQuery.hasData agrees data exists when data exists" );
+	strictEqual( EhQuery.hasData(elem), true, "EhQuery.hasData agrees data exists when data exists" );
 
-	jQuery.data(elem, "foo", "baz");
-	equal( jQuery.data(elem, "foo"), "baz", "Data can be changed by jQuery.data" );
-	equal( dataObj["foo"], "baz", "Changes made through jQuery.data propagate to referenced data object" );
+	EhQuery.data(elem, "foo", "baz");
+	equal( EhQuery.data(elem, "foo"), "baz", "Data can be changed by EhQuery.data" );
+	equal( dataObj["foo"], "baz", "Changes made through EhQuery.data propagate to referenced data object" );
 
-	jQuery.data(elem, "foo", undefined);
-	equal( jQuery.data(elem, "foo"), "baz", "Data is not unset by passing undefined to jQuery.data" );
+	EhQuery.data(elem, "foo", undefined);
+	equal( EhQuery.data(elem, "foo"), "baz", "Data is not unset by passing undefined to EhQuery.data" );
 
-	jQuery.data(elem, "foo", null);
-	strictEqual( jQuery.data(elem, "foo"), null, "Setting null using jQuery.data works OK" );
+	EhQuery.data(elem, "foo", null);
+	strictEqual( EhQuery.data(elem, "foo"), null, "Setting null using EhQuery.data works OK" );
 
-	jQuery.data(elem, "foo", "foo1");
+	EhQuery.data(elem, "foo", "foo1");
 
-	jQuery.data(elem, { "bar" : "baz", "boom" : "bloz" });
-	strictEqual( jQuery.data(elem, "foo"), "foo1", "Passing an object extends the data object instead of replacing it" );
-	equal( jQuery.data(elem, "boom"), "bloz", "Extending the data object works" );
+	EhQuery.data(elem, { "bar" : "baz", "boom" : "bloz" });
+	strictEqual( EhQuery.data(elem, "foo"), "foo1", "Passing an object extends the data object instead of replacing it" );
+	equal( EhQuery.data(elem, "boom"), "bloz", "Extending the data object works" );
 
-	jQuery._data(elem, "foo", "foo2", true);
-	equal( jQuery._data(elem, "foo"), "foo2", "Setting internal data works" );
-	equal( jQuery.data(elem, "foo"), "foo1", "Setting internal data does not override user data" );
+	EhQuery._data(elem, "foo", "foo2", true);
+	equal( EhQuery._data(elem, "foo"), "foo2", "Setting internal data works" );
+	equal( EhQuery.data(elem, "foo"), "foo1", "Setting internal data does not override user data" );
 
-	internalDataObj = jQuery._data( elem );
+	internalDataObj = EhQuery._data( elem );
 	ok( internalDataObj, "Internal data object exists" );
 	notStrictEqual( dataObj, internalDataObj, "Internal data object is not the same as user data object" );
 
 	strictEqual( elem.boom, undefined, "Data is never stored directly on the object" );
 
-	jQuery.removeData(elem, "foo");
-	strictEqual( jQuery.data(elem, "foo"), undefined, "jQuery.removeData removes single properties" );
+	EhQuery.removeData(elem, "foo");
+	strictEqual( EhQuery.data(elem, "foo"), undefined, "EhQuery.removeData removes single properties" );
 
-	jQuery.removeData(elem);
-	strictEqual( jQuery._data(elem), internalDataObj, "jQuery.removeData does not remove internal data if it exists" );
+	EhQuery.removeData(elem);
+	strictEqual( EhQuery._data(elem), internalDataObj, "EhQuery.removeData does not remove internal data if it exists" );
 
-	jQuery.data(elem, "foo", "foo1");
-	jQuery._data(elem, "foo", "foo2");
+	EhQuery.data(elem, "foo", "foo1");
+	EhQuery._data(elem, "foo", "foo2");
 
-	equal( jQuery.data(elem, "foo"), "foo1", "(sanity check) Ensure data is set in user data object" );
-	equal( jQuery._data(elem, "foo"), "foo2", "(sanity check) Ensure data is set in internal data object" );
+	equal( EhQuery.data(elem, "foo"), "foo1", "(sanity check) Ensure data is set in user data object" );
+	equal( EhQuery._data(elem, "foo"), "foo2", "(sanity check) Ensure data is set in internal data object" );
 
-	strictEqual( jQuery._data(elem, jQuery.expando), undefined, "Removing the last item in internal data destroys the internal data object" );
+	strictEqual( EhQuery._data(elem, EhQuery.expando), undefined, "Removing the last item in internal data destroys the internal data object" );
 
-	jQuery._data(elem, "foo", "foo2");
-	equal( jQuery._data(elem, "foo"), "foo2", "(sanity check) Ensure data is set in internal data object" );
+	EhQuery._data(elem, "foo", "foo2");
+	equal( EhQuery._data(elem, "foo"), "foo2", "(sanity check) Ensure data is set in internal data object" );
 
-	jQuery.removeData(elem, "foo");
-	equal( jQuery._data(elem, "foo"), "foo2", "(sanity check) jQuery.removeData for user data does not remove internal data" );
+	EhQuery.removeData(elem, "foo");
+	equal( EhQuery._data(elem, "foo"), "foo2", "(sanity check) EhQuery.removeData for user data does not remove internal data" );
 }
 
-test("jQuery.data(div)", 25, function() {
+test("EhQuery.data(div)", 25, function() {
 	var div = document.createElement("div");
 
 	dataTests(div);
@@ -126,58 +126,58 @@ test("jQuery.data(div)", 25, function() {
 	QUnit.expectJqData(div, "foo");
 });
 
-test("jQuery.data({})", 25, function() {
+test("EhQuery.data({})", 25, function() {
 	dataTests({});
 });
 
-test("jQuery.data(window)", 25, function() {
+test("EhQuery.data(window)", 25, function() {
 	// remove bound handlers from window object to stop potential false positives caused by fix for #5280 in
 	// transports/xhr.js
-	jQuery(window).unbind("unload");
+	EhQuery(window).unbind("unload");
 
 	dataTests(window);
 });
 
-test("jQuery.data(document)", 25, function() {
+test("EhQuery.data(document)", 25, function() {
 	dataTests(document);
 
 	QUnit.expectJqData(document, "foo");
 });
 
-test("jQuery.data(<embed>)", 25, function() {
+test("EhQuery.data(<embed>)", 25, function() {
 	dataTests( document.createElement("embed") );
 });
 
-test("jQuery.data(<applet>)", 25, function() {
+test("EhQuery.data(<applet>)", 25, function() {
 	dataTests( document.createElement("applet") );
 });
 
-test("jQuery.data(object/flash)", 25, function() {
+test("EhQuery.data(object/flash)", 25, function() {
 	var flash = document.createElement("object");
 	flash.setAttribute( "classid", "clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" );
 
 	dataTests( flash );
 });
 
-test("jQuery.data(object/applet)", 25, function() {
+test("EhQuery.data(object/applet)", 25, function() {
 	var applet = document.createElement("object");
 	applet.setAttribute( "classid", "clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" );
 
 	dataTests( applet );
 });
 
-test("jQuery.data(comment)", 25, function() {
+test("EhQuery.data(comment)", 25, function() {
 	dataTests( document.createComment("") );
 });
 
-test("jQuery.data(text)", 25, function() {
+test("EhQuery.data(text)", 25, function() {
 	dataTests( document.createTextNode("") );
 });
 
 test(".data()", function() {
 	expect(5);
 
-	var div = jQuery("#foo");
+	var div = EhQuery("#foo");
 	strictEqual( div.data("foo"), undefined, "Make sure that missing result is undefined" );
 	div.data("test", "success");
 
@@ -186,19 +186,19 @@ test(".data()", function() {
 	deepEqual( dataObj, {test: "success"}, "data() returns entire data object with expected properties" );
 	strictEqual( div.data("foo"), undefined, "Make sure that missing result is still undefined" );
 
-	var nodiv = jQuery("#unfound");
+	var nodiv = EhQuery("#unfound");
 	equal( nodiv.data(), null, "data() on empty set returns null" );
 
 	var obj = { foo: "bar" };
-	jQuery(obj).data("foo", "baz");
+	EhQuery(obj).data("foo", "baz");
 
-	dataObj = jQuery.extend(true, {}, jQuery(obj).data());
+	dataObj = EhQuery.extend(true, {}, EhQuery(obj).data());
 
 	deepEqual( dataObj, { "foo": "baz" }, "Retrieve data object from a wrapped JS object (#7524)" );
 });
 
 var testDataTypes = function( $obj ) {
-	jQuery.each({
+	EhQuery.each({
 		"null": null,
 		"true": true,
 		"false": false,
@@ -217,9 +217,9 @@ var testDataTypes = function( $obj ) {
 	});
 };
 
-test("jQuery(Element).data(String, Object).data(String)", function() {
+test("EhQuery(Element).data(String, Object).data(String)", function() {
 	expect( 18 );
-	var parent = jQuery("<div><div></div></div>"),
+	var parent = EhQuery("<div><div></div></div>"),
 		div = parent.children();
 
 	strictEqual( div.data("test"), undefined, "No data exists initially" );
@@ -232,11 +232,11 @@ test("jQuery(Element).data(String, Object).data(String)", function() {
 	parent.remove();
 });
 
-test("jQuery(plain Object).data(String, Object).data(String)", function() {
+test("EhQuery(plain Object).data(String, Object).data(String)", function() {
 	expect( 16 );
 
 	// #3748
-	var $obj = jQuery({ exists: true });
+	var $obj = EhQuery({ exists: true });
 	strictEqual( $obj.data("nothing"), undefined, "Non-existent data returns undefined");
 	strictEqual( $obj.data("exists"), undefined, "Object properties are not returned as data" );
 	testDataTypes( $obj );
@@ -248,9 +248,9 @@ test("jQuery(plain Object).data(String, Object).data(String)", function() {
 
 test("data-* attributes", function() {
 	expect(40);
-	var div = jQuery("<div>"),
-		child = jQuery("<div data-myobj='old data' data-ignored=\"DOM\" data-other='test'></div>"),
-		dummy = jQuery("<div data-myobj='old data' data-ignored=\"DOM\" data-other='test'></div>");
+	var div = EhQuery("<div>"),
+		child = EhQuery("<div data-myobj='old data' data-ignored=\"DOM\" data-other='test'></div>"),
+		dummy = EhQuery("<div data-myobj='old data' data-ignored=\"DOM\" data-other='test'></div>");
 
 	equal( div.data("attr"), undefined, "Check for non-existing data-attr attribute" );
 
@@ -345,20 +345,20 @@ test("data-* attributes", function() {
 	function testData(index, elem) {
 		switch (index) {
 		case 0:
-			equal(jQuery(elem).data("foo"), "bar", "Check foo property");
-			equal(jQuery(elem).data("bar"), "baz", "Check baz property");
+			equal(EhQuery(elem).data("foo"), "bar", "Check foo property");
+			equal(EhQuery(elem).data("bar"), "baz", "Check baz property");
 			break;
 		case 1:
-			equal(jQuery(elem).data("test"), "bar", "Check test property");
-			equal(jQuery(elem).data("bar"), "baz", "Check bar property");
+			equal(EhQuery(elem).data("test"), "bar", "Check test property");
+			equal(EhQuery(elem).data("bar"), "baz", "Check bar property");
 			break;
 		case 2:
-			equal(jQuery(elem).data("zoooo"), "bar", "Check zoooo property");
-			deepEqual(jQuery(elem).data("bar"), {"test":"baz"}, "Check bar property");
+			equal(EhQuery(elem).data("zoooo"), "bar", "Check zoooo property");
+			deepEqual(EhQuery(elem).data("bar"), {"test":"baz"}, "Check bar property");
 			break;
 		case 3:
-			equal(jQuery(elem).data("number"), true, "Check number property");
-			deepEqual(jQuery(elem).data("stuff"), [2,8], "Check stuff property");
+			equal(EhQuery(elem).data("number"), true, "Check number property");
+			deepEqual(EhQuery(elem).data("stuff"), [2,8], "Check stuff property");
 			break;
 		default:
 			ok(false, ["Assertion failed on index ", index, ", with data"].join(""));
@@ -366,7 +366,7 @@ test("data-* attributes", function() {
 	}
 
 	var metadata = "<ol><li class='test test2' data-foo='bar' data-bar='baz' data-arr='[1,2]'>Some stuff</li><li class='test test2' data-test='bar' data-bar='baz'>Some stuff</li><li class='test test2' data-zoooo='bar' data-bar='{\"test\":\"baz\"}'>Some stuff</li><li class='test test2' data-number=true data-stuff='[2,8]'>Some stuff</li></ol>",
-		elem = jQuery(metadata).appendTo("#qunit-fixture");
+		elem = EhQuery(metadata).appendTo("#qunit-fixture");
 
 	elem.find("li").each(testData);
 	elem.remove();
@@ -375,71 +375,71 @@ test("data-* attributes", function() {
 test(".data(Object)", function() {
 	expect(4);
 
-	var div = jQuery("<div/>");
+	var div = EhQuery("<div/>");
 
 	div.data({ "test": "in", "test2": "in2" });
 	equal( div.data("test"), "in", "Verify setting an object in data" );
 	equal( div.data("test2"), "in2", "Verify setting an object in data" );
 
 	var obj = {test:"unset"},
-		jqobj = jQuery(obj);
+		jqobj = EhQuery(obj);
 	jqobj.data("test", "unset");
 	jqobj.data({ "test": "in", "test2": "in2" });
-	equal( jQuery.data(obj)["test"], "in", "Verify setting an object on an object extends the data object" );
+	equal( EhQuery.data(obj)["test"], "in", "Verify setting an object on an object extends the data object" );
 	equal( obj["test2"], undefined, "Verify setting an object on an object does not extend the object" );
 
 	// manually clean up detached elements
 	div.remove();
 });
 
-test("jQuery.removeData", function() {
+test("EhQuery.removeData", function() {
 	expect(10);
-	var div = jQuery("#foo")[0];
-	jQuery.data(div, "test", "testing");
-	jQuery.removeData(div, "test");
-	equal( jQuery.data(div, "test"), undefined, "Check removal of data" );
+	var div = EhQuery("#foo")[0];
+	EhQuery.data(div, "test", "testing");
+	EhQuery.removeData(div, "test");
+	equal( EhQuery.data(div, "test"), undefined, "Check removal of data" );
 
-	jQuery.data(div, "test2", "testing");
-	jQuery.removeData( div );
-	ok( !jQuery.data(div, "test2"), "Make sure that the data property no longer exists." );
-	ok( !div[ jQuery.expando ], "Make sure the expando no longer exists, as well." );
+	EhQuery.data(div, "test2", "testing");
+	EhQuery.removeData( div );
+	ok( !EhQuery.data(div, "test2"), "Make sure that the data property no longer exists." );
+	ok( !div[ EhQuery.expando ], "Make sure the expando no longer exists, as well." );
 
-	jQuery.data(div, {
+	EhQuery.data(div, {
 		test3: "testing",
 		test4: "testing"
 	});
-	jQuery.removeData( div, "test3 test4" );
-	ok( !jQuery.data(div, "test3") || jQuery.data(div, "test4"), "Multiple delete with spaces." );
+	EhQuery.removeData( div, "test3 test4" );
+	ok( !EhQuery.data(div, "test3") || EhQuery.data(div, "test4"), "Multiple delete with spaces." );
 
-	jQuery.data(div, {
+	EhQuery.data(div, {
 		test3: "testing",
 		test4: "testing"
 	});
-	jQuery.removeData( div, [ "test3", "test4" ] );
-	ok( !jQuery.data(div, "test3") || jQuery.data(div, "test4"), "Multiple delete by array." );
+	EhQuery.removeData( div, [ "test3", "test4" ] );
+	ok( !EhQuery.data(div, "test3") || EhQuery.data(div, "test4"), "Multiple delete by array." );
 
-	jQuery.data(div, {
+	EhQuery.data(div, {
 		"test3 test4": "testing",
 		"test3": "testing"
 	});
-	jQuery.removeData( div, "test3 test4" );
-	ok( !jQuery.data(div, "test3 test4"), "Multiple delete with spaces deleted key with exact name" );
-	ok( jQuery.data(div, "test3"), "Left the partial matched key alone" );
+	EhQuery.removeData( div, "test3 test4" );
+	ok( !EhQuery.data(div, "test3 test4"), "Multiple delete with spaces deleted key with exact name" );
+	ok( EhQuery.data(div, "test3"), "Left the partial matched key alone" );
 
 	var obj = {};
-	jQuery.data(obj, "test", "testing");
-	equal( jQuery(obj).data("test"), "testing", "verify data on plain object");
-	jQuery.removeData(obj, "test");
-	equal( jQuery.data(obj, "test"), undefined, "Check removal of data on plain object" );
+	EhQuery.data(obj, "test", "testing");
+	equal( EhQuery(obj).data("test"), "testing", "verify data on plain object");
+	EhQuery.removeData(obj, "test");
+	equal( EhQuery.data(obj, "test"), undefined, "Check removal of data on plain object" );
 
-	jQuery.data( window, "BAD", true );
-	jQuery.removeData( window, "BAD" );
-	ok( !jQuery.data( window, "BAD" ), "Make sure that the value was not still set." );
+	EhQuery.data( window, "BAD", true );
+	EhQuery.removeData( window, "BAD" );
+	ok( !EhQuery.data( window, "BAD" ), "Make sure that the value was not still set." );
 });
 
 test(".removeData()", function() {
 	expect(6);
-	var div = jQuery("#foo");
+	var div = EhQuery("#foo");
 	div.data("test", "testing");
 	div.removeData("test");
 	equal( div.data("test"), undefined, "Check removal of data" );
@@ -463,7 +463,7 @@ if (window.JSON && window.JSON.stringify) {
 		expect(1);
 
 		var obj = { "foo": "bar" };
-		jQuery.data(obj, "hidden", true);
+		EhQuery.data(obj, "hidden", true);
 
 		equal( JSON.stringify(obj), "{\"foo\":\"bar\"}", "Expando is hidden from JSON.stringify" );
 	});
@@ -472,7 +472,7 @@ if (window.JSON && window.JSON.stringify) {
 test(".data should follow html5 specification regarding camel casing", function() {
 	expect(12);
 
-	var div = jQuery("<div id='myObject' data-w-t-f='ftw' data-big-a-little-a='bouncing-b' data-foo='a' data-foo-bar='b' data-foo-bar-baz='c'></div>")
+	var div = EhQuery("<div id='myObject' data-w-t-f='ftw' data-big-a-little-a='bouncing-b' data-foo='a' data-foo-bar='b' data-foo-bar-baz='c'></div>")
 		.prependTo("body");
 
 	equal( div.data()["wTF"], "ftw", "Verify single letter data-* key" );
@@ -501,7 +501,7 @@ test(".data should not miss preset data-* w/ hyphenated property names", functio
 
 	expect(2);
 
-	var div = jQuery("<div/>", { id: "hyphened" }).appendTo("#qunit-fixture"),
+	var div = EhQuery("<div/>", { id: "hyphened" }).appendTo("#qunit-fixture"),
 		test = {
 			"camelBar": "camelBar",
 			"hyphen-foo": "hyphen-foo"
@@ -509,7 +509,7 @@ test(".data should not miss preset data-* w/ hyphenated property names", functio
 
 	div.data( test );
 
-	jQuery.each( test , function(i, k) {
+	EhQuery.each( test , function(i, k) {
 		equal( div.data(k), k, "data with property '"+k+"' was correctly found");
 	});
 });
@@ -519,14 +519,14 @@ test(".data should not miss attr() set data-* with hyphenated property names", f
 
 	var a, b;
 
-	a = jQuery("<div/>").appendTo("#qunit-fixture");
+	a = EhQuery("<div/>").appendTo("#qunit-fixture");
 
 	a.attr( "data-long-param", "test" );
 	a.data( "long-param", { a: 2 });
 
 	deepEqual( a.data("long-param"), { a: 2 }, "data with property long-param was found, 1" );
 
-	b = jQuery("<div/>").appendTo("#qunit-fixture");
+	b = EhQuery("<div/>").appendTo("#qunit-fixture");
 
 	b.attr( "data-long-param", "test" );
 	b.data( "long-param" );
@@ -537,7 +537,7 @@ test(".data should not miss attr() set data-* with hyphenated property names", f
 
 test(".data supports interoperable hyphenated/camelCase get/set of properties with arbitrary non-null|NaN|undefined values", function() {
 
-	var div = jQuery("<div/>", { id: "hyphened" }).appendTo("#qunit-fixture"),
+	var div = EhQuery("<div/>", { id: "hyphened" }).appendTo("#qunit-fixture"),
 		datas = {
 			"non-empty": "a string",
 			"empty-string": "",
@@ -558,16 +558,16 @@ test(".data supports interoperable hyphenated/camelCase get/set of properties wi
 
 	expect( 24 );
 
-	jQuery.each( datas, function( key, val ) {
+	EhQuery.each( datas, function( key, val ) {
 		div.data( key, val );
 
 		deepEqual( div.data( key ), val, "get: " + key );
-		deepEqual( div.data( jQuery.camelCase( key ) ), val, "get: " + jQuery.camelCase( key ) );
+		deepEqual( div.data( EhQuery.camelCase( key ) ), val, "get: " + EhQuery.camelCase( key ) );
 	});
 });
 
 test(".data supports interoperable removal of hyphenated/camelCase properties", function() {
-	var div = jQuery("<div/>", { id: "hyphened" }).appendTo("#qunit-fixture"),
+	var div = EhQuery("<div/>", { id: "hyphened" }).appendTo("#qunit-fixture"),
 		datas = {
 			"non-empty": "a string",
 			"empty-string": "",
@@ -585,11 +585,11 @@ test(".data supports interoperable removal of hyphenated/camelCase properties", 
 
 	expect( 27 );
 
-	jQuery.each( datas, function( key, val ) {
+	EhQuery.each( datas, function( key, val ) {
 		div.data( key, val );
 
 		deepEqual( div.data( key ), val, "get: " + key );
-		deepEqual( div.data( jQuery.camelCase( key ) ), val, "get: " + jQuery.camelCase( key ) );
+		deepEqual( div.data( EhQuery.camelCase( key ) ), val, "get: " + EhQuery.camelCase( key ) );
 
 		div.removeData( key );
 
@@ -603,8 +603,8 @@ test( ".removeData supports removal of hyphenated properties via array (#12786)"
 
 	var div, plain, compare;
 
-	div = jQuery("<div>").appendTo("#qunit-fixture");
-	plain = jQuery({});
+	div = EhQuery("<div>").appendTo("#qunit-fixture");
+	plain = EhQuery({});
 
 	// When data is batch assigned (via plain object), the properties
 	// are not camel cased as they are with (property, value) calls
@@ -634,8 +634,8 @@ test( ".removeData supports removal of hyphenated properties via array (#12786)"
 test(".removeData should not throw exceptions. (#10080)", function() {
 	expect(1);
 	stop();
-	var frame = jQuery("#loadediframe");
-	jQuery(frame[0].contentWindow).bind("unload", function() {
+	var frame = EhQuery("#loadediframe");
+	EhQuery(frame[0].contentWindow).bind("unload", function() {
 		ok(true, "called unload");
 		start();
 	});
@@ -649,7 +649,7 @@ test( ".data only checks element attributes once. #8909", function() {
 			"test": "testing",
 			"test2": "testing"
 		},
-		element = jQuery( "<div data-test='testing'>" ),
+		element = EhQuery( "<div data-test='testing'>" ),
 		node = element[ 0 ];
 
 	// set an attribute using attr to ensure it
@@ -666,7 +666,7 @@ test( ".data only checks element attributes once. #8909", function() {
 test( "data-* with JSON value can have newlines", function() {
 	expect(1);
 
-	var x = jQuery("<div data-some='{\n\"foo\":\n\t\"bar\"\n}'></div>");
+	var x = EhQuery("<div data-some='{\n\"foo\":\n\t\"bar\"\n}'></div>");
 	equal( x.data("some").foo, "bar", "got a JSON data- attribute with spaces" );
 	x.remove();
 });
@@ -675,8 +675,8 @@ test(".data doesn't throw when calling selection is empty. #13551", function() {
 	expect(1);
 
 	try {
-		jQuery( null ).data( "prop" );
-		ok( true, "jQuery(null).data('prop') does not throw" );
+		EhQuery( null ).data( "prop" );
+		ok( true, "EhQuery(null).data('prop') does not throw" );
 	} catch ( e ) {
 		ok( false, e.message );
 	}

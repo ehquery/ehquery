@@ -4,12 +4,12 @@
 	<title>Test Event Handling Performance</title>
 	<script src="benchmark.js"></script>
 	<script src="jquery-basis.js"></script>
-	<script>var old = jQuery.noConflict(true);</script>
+	<script>var old = EhQuery.noConflict(true);</script>
 	<script src="../dist/jquery.js"></script>
 	<script>
 	var num = 400;
 
-	jQuery(function(){
+	EhQuery(function(){
 		var p = old("p");
 		var s = (new Date).getTime();
 
@@ -24,7 +24,7 @@
 
 		var oldNum = (new Date).getTime() - s;
 
-		p = jQuery("p");
+		p = EhQuery("p");
 		s = (new Date).getTime();
 
 		for ( var n = 0; n < 5; n++ ) {
@@ -38,10 +38,10 @@
 
 		var curNum = (new Date).getTime() - s;
 
-		jQuery("#num").text( old.fn.jquery + ": " + oldNum + " " + jQuery.fn.jquery + ": " + curNum );
+		EhQuery("#num").text( old.fn.jquery + ": " + oldNum + " " + EhQuery.fn.jquery + ": " + curNum );
 	});
 
-	jQuery(function(){
+	EhQuery(function(){
 		var p = old("p");
 		var s = (new Date).getTime();
 
@@ -56,7 +56,7 @@
 
 		var oldNum = (new Date).getTime() - s;
 
-		p = jQuery("p");
+		p = EhQuery("p");
 		s = (new Date).getTime();
 
 		for ( var n = 0; n < 5; n++ ) {
@@ -70,7 +70,7 @@
 
 		var curNum = (new Date).getTime() - s;
 
-		jQuery("#num2").text( old.fn.jquery + ": " + oldNum + " " + jQuery.fn.jquery + ": " + curNum );
+		EhQuery("#num2").text( old.fn.jquery + ": " + oldNum + " " + EhQuery.fn.jquery + ": " + curNum );
 	});
 	</script>
 	<style>p { position: absolute; top: 5px; left: 5px; }</style>

@@ -1,64 +1,64 @@
 module("selector", { teardown: moduleTeardown });
 
 /**
- * This test page is for selector tests that require jQuery in order to do the selection
+ * This test page is for selector tests that require EhQuery in order to do the selection
  */
 
-test("element - jQuery only", function() {
+test("element - EhQuery only", function() {
 	expect( 7 );
 
 	var fixture = document.getElementById("qunit-fixture");
 
-	deepEqual( jQuery("p", fixture).get(), q("firstp","ap","sndp","en","sap","first"), "Finding elements with a Node context." );
-	deepEqual( jQuery("p", "#qunit-fixture").get(), q("firstp","ap","sndp","en","sap","first"), "Finding elements with a selector context." );
-	deepEqual( jQuery("p", jQuery("#qunit-fixture")).get(), q("firstp","ap","sndp","en","sap","first"), "Finding elements with a jQuery object context." );
-	deepEqual( jQuery("#qunit-fixture").find("p").get(), q("firstp","ap","sndp","en","sap","first"), "Finding elements with a context via .find()." );
+	deepEqual( EhQuery("p", fixture).get(), q("firstp","ap","sndp","en","sap","first"), "Finding elements with a Node context." );
+	deepEqual( EhQuery("p", "#qunit-fixture").get(), q("firstp","ap","sndp","en","sap","first"), "Finding elements with a selector context." );
+	deepEqual( EhQuery("p", EhQuery("#qunit-fixture")).get(), q("firstp","ap","sndp","en","sap","first"), "Finding elements with a EhQuery object context." );
+	deepEqual( EhQuery("#qunit-fixture").find("p").get(), q("firstp","ap","sndp","en","sap","first"), "Finding elements with a context via .find()." );
 
-	ok( jQuery("#length").length, "<input name=\"length\"> cannot be found under IE, see #945" );
-	ok( jQuery("#lengthtest input").length, "<input name=\"length\"> cannot be found under IE, see #945" );
+	ok( EhQuery("#length").length, "<input name=\"length\"> cannot be found under IE, see #945" );
+	ok( EhQuery("#lengthtest input").length, "<input name=\"length\"> cannot be found under IE, see #945" );
 
 	// #7533
-	equal( jQuery("<div id=\"A'B~C.D[E]\"><p>foo</p></div>").find("p").length, 1, "Find where context root is a node and has an ID with CSS3 meta characters" );
+	equal( EhQuery("<div id=\"A'B~C.D[E]\"><p>foo</p></div>").find("p").length, 1, "Find where context root is a node and has an ID with CSS3 meta characters" );
 });
 
-test("class - jQuery only", function() {
+test("class - EhQuery only", function() {
 	expect( 4 );
 
-	deepEqual( jQuery(".blog", document.getElementsByTagName("p")).get(), q("mark", "simon"), "Finding elements with a context." );
-	deepEqual( jQuery(".blog", "p").get(), q("mark", "simon"), "Finding elements with a context." );
-	deepEqual( jQuery(".blog", jQuery("p")).get(), q("mark", "simon"), "Finding elements with a context." );
-	deepEqual( jQuery("p").find(".blog").get(), q("mark", "simon"), "Finding elements with a context." );
+	deepEqual( EhQuery(".blog", document.getElementsByTagName("p")).get(), q("mark", "simon"), "Finding elements with a context." );
+	deepEqual( EhQuery(".blog", "p").get(), q("mark", "simon"), "Finding elements with a context." );
+	deepEqual( EhQuery(".blog", EhQuery("p")).get(), q("mark", "simon"), "Finding elements with a context." );
+	deepEqual( EhQuery("p").find(".blog").get(), q("mark", "simon"), "Finding elements with a context." );
 });
 
-test("attributes - jQuery only", function() {
+test("attributes - EhQuery only", function() {
 	expect( 6 );
 
 	t( "Find elements with a tabindex attribute", "[tabindex]", ["listWithTabIndex", "foodWithNegativeTabIndex", "linkWithTabIndex", "linkWithNegativeTabIndex", "linkWithNoHrefWithTabIndex", "linkWithNoHrefWithNegativeTabIndex"] );
 
 	// #12523
 	deepEqual(
-		jQuery.find( "[title]", null, null, jQuery("#qunit-fixture a").get().concat( document.createTextNode("") ) ),
+		EhQuery.find( "[title]", null, null, EhQuery("#qunit-fixture a").get().concat( document.createTextNode("") ) ),
 		q("google"),
 		"Text nodes fail attribute tests without exception"
 	);
 
 	// #12600
 	ok(
-		jQuery("<select value='12600'><option value='option' selected='selected'></option><option value=''></option></select>")
+		EhQuery("<select value='12600'><option value='option' selected='selected'></option><option value=''></option></select>")
 		.prop( "value", "option" )
 		.is(":input[value='12600']"),
 
 		":input[value=foo] selects select by attribute"
 	);
-	ok( jQuery("<input type='text' value='12600'/>").prop( "value", "option" ).is(":input[value='12600']"),
+	ok( EhQuery("<input type='text' value='12600'/>").prop( "value", "option" ).is(":input[value='12600']"),
 		":input[value=foo] selects text input by attribute"
 	);
 
 	// #11115
-	ok( jQuery("<input type='checkbox' checked='checked'/>").prop( "checked", false ).is("[checked]"),
+	ok( EhQuery("<input type='checkbox' checked='checked'/>").prop( "checked", false ).is("[checked]"),
 		"[checked] selects by attribute (positive)"
 	);
-	ok( !jQuery("<input type='checkbox'/>").prop( "checked", true ).is("[checked]"),
+	ok( !EhQuery("<input type='checkbox'/>").prop( "checked", true ).is("[checked]"),
 		"[checked] selects by attribute (negative)"
 	);
 });
@@ -66,33 +66,33 @@ test("attributes - jQuery only", function() {
 test("disconnected nodes", function() {
 	expect( 1 );
 
-	var $div = jQuery("<div/>");
+	var $div = EhQuery("<div/>");
 	equal( $div.is("div"), true, "Make sure .is('nodeName') works on disconnected nodes." );
 });
 
-test("disconnected nodes - jQuery only", function() {
+test("disconnected nodes - EhQuery only", function() {
 	expect( 3 );
 
-	var $opt = jQuery("<option></option>").attr("value", "whipit").appendTo("#qunit-fixture").detach();
+	var $opt = EhQuery("<option></option>").attr("value", "whipit").appendTo("#qunit-fixture").detach();
 	equal( $opt.val(), "whipit", "option value" );
 	equal( $opt.is(":selected"), false, "unselected option" );
 	$opt.prop("selected", true);
 	equal( $opt.is(":selected"), true, "selected option" );
 });
 
-test("jQuery only - broken", 1, function() {
+test("EhQuery only - broken", 1, function() {
 	raises(function() {
 		// Setting context to null here somehow avoids QUnit's window.error handling
 		// making the e & e.message correct
 		// For whatever reason, without this,
 		// Sizzle.error will be called but no error will be seen in oldIE
-		jQuery.call( null, " <div/> " );
+		EhQuery.call( null, " <div/> " );
 	}, function( e ) {
 		return (/syntax.err/i).test( e.message );
 	}, "leading space invalid: $(' <div/> ')" );
 });
 
-testIframe("selector/html5_selector", "attributes - jQuery.attr", function( jQuery, window, document ) {
+testIframe("selector/html5_selector", "attributes - EhQuery.attr", function( EhQuery, window, document ) {
 	expect( 35 );
 
 	/**
@@ -117,7 +117,7 @@ testIframe("selector/html5_selector", "attributes - jQuery.attr", function( jQue
 	 * @param {Array} c - Array of ids to construct what is expected
 	 */
 	function t( a, b, c ) {
-		var f = jQuery(b).get(),
+		var f = EhQuery(b).get(),
 			s = "",
 			i = 0;
 
@@ -170,8 +170,8 @@ testIframe("selector/html5_selector", "attributes - jQuery.attr", function( jQue
 	t( "Attribute Exists", "[truespeed]",      ["marquee1"]);
 
 	// Enumerated attributes (these are not boolean content attributes)
-	jQuery.expandedEach = jQuery.each;
-	jQuery.expandedEach([ "draggable", "contenteditable", "aria-disabled" ], function( i, val ) {
+	EhQuery.expandedEach = EhQuery.each;
+	EhQuery.expandedEach([ "draggable", "contenteditable", "aria-disabled" ], function( i, val ) {
 		t( "Enumerated attribute", "[" + val + "]", ["div1"]);
 	});
 	t( "Enumerated attribute", "[spellcheck]", ["span1"]);
@@ -180,12 +180,12 @@ testIframe("selector/html5_selector", "attributes - jQuery.attr", function( jQue
 	t( "Improperly named form elements do not interfere with form selections (#9570)", "form[name='formName']", ["form1"] );
 });
 
-testIframe("selector/sizzle_cache", "Sizzle cache collides with multiple Sizzles on a page", function( jQuery, window, document ) {
+testIframe("selector/sizzle_cache", "Sizzle cache collides with multiple Sizzles on a page", function( EhQuery, window, document ) {
 	var $cached = window["$cached"];
 
 	expect(4);
-	notStrictEqual( jQuery, $cached, "Loaded two engines" );
+	notStrictEqual( EhQuery, $cached, "Loaded two engines" );
 	deepEqual( $cached(".test a").get(), [ document.getElementById("collision") ], "Select collision anchor with first sizzle" );
-	equal( jQuery(".evil a").length, 0, "Select nothing with second sizzle" );
-	equal( jQuery(".evil a").length, 0, "Select nothing again with second sizzle" );
+	equal( EhQuery(".evil a").length, 0, "Select nothing with second sizzle" );
+	equal( EhQuery(".evil a").length, 0, "Select nothing again with second sizzle" );
 });

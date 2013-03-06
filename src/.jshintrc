@@ -17,7 +17,7 @@
 	"wsh": true,
 
 	"predef": [
-		"jQuery",
+		"EhQuery",
 		"define",
 		"module"
 	]

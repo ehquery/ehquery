@@ -4,12 +4,12 @@ test("null or undefined handler", function() {
 	expect(2);
 	// Supports Fixes bug #7229
 	try {
-		jQuery("#firstp").on( "click", null );
+		EhQuery("#firstp").on( "click", null );
 		ok(true, "Passing a null handler will not throw an exception");
 	} catch (e) {}
 
 	try {
-		jQuery("#firstp").on( "click", undefined );
+		EhQuery("#firstp").on( "click", undefined );
 		ok(true, "Passing an undefined handler will not throw an exception");
 	} catch (e) {}
 });
@@ -22,22 +22,22 @@ test("bind(),on(),delegate() with non-null,defined data", function() {
 		equal( data, 0, "non-null, defined data (zero) is correctly passed" );
 	};
 
-	jQuery("#foo").bind("foo.bind", handler);
-	jQuery("#foo").on("foo.on", handler);
-	jQuery("div").delegate("#foo", "foo.delegate", handler);
+	EhQuery("#foo").bind("foo.bind", handler);
+	EhQuery("#foo").on("foo.on", handler);
+	EhQuery("div").delegate("#foo", "foo.delegate", handler);
 
-	jQuery("#foo").trigger("foo", 0);
+	EhQuery("#foo").trigger("foo", 0);
 
-	jQuery("#foo").unbind("foo.bind", handler);
-	jQuery("#foo").off("foo.on", handler);
-	jQuery("div").undelegate("#foo", "foo.delegate");
+	EhQuery("#foo").unbind("foo.bind", handler);
+	EhQuery("#foo").off("foo.on", handler);
+	EhQuery("div").undelegate("#foo", "foo.delegate");
 
 });
 
 test("Handler changes and .trigger() order", function() {
 	expect(1);
 
-	var markup = jQuery(
+	var markup = EhQuery(
 		"<div><div><p><span><b class=\"a\">b</b></span></p></div></div>"
 	),
 	path = "";
@@ -49,7 +49,7 @@ test("Handler changes and .trigger() order", function() {
 		.filter( "b" ).on( "click", function( e ) {
 			// Removing span should not stop propagation to original parents
 			if ( e.target === this ) {
-				jQuery(this).parent().remove();
+				EhQuery(this).parent().remove();
 			}
 		});
 
@@ -66,15 +66,15 @@ test("bind(), with data", function() {
 		ok( event.data, "bind() with data, check passed data exists" );
 		equal( event.data["foo"], "bar", "bind() with data, Check value of passed data" );
 	};
-	jQuery("#firstp").bind("click", {"foo": "bar"}, handler).trigger("click").unbind("click", handler);
+	EhQuery("#firstp").bind("click", {"foo": "bar"}, handler).trigger("click").unbind("click", handler);
 
-	ok( !jQuery._data(jQuery("#firstp")[0], "events"), "Event handler unbound when using data." );
+	ok( !EhQuery._data(EhQuery("#firstp")[0], "events"), "Event handler unbound when using data." );
 
 	var test = function(){};
 	var handler2 = function(event) {
 		equal( event.data, test, "bind() with function data, Check value of passed data" );
 	};
-	jQuery("#firstp").bind("click", test, handler2).trigger("click").unbind("click", handler2);
+	EhQuery("#firstp").bind("click", test, handler2).trigger("click").unbind("click", handler2);
 });
 
 test("click(), with data", function() {
@@ -83,9 +83,9 @@ test("click(), with data", function() {
 		ok( event.data, "bind() with data, check passed data exists" );
 		equal( event.data["foo"], "bar", "bind() with data, Check value of passed data" );
 	};
-	jQuery("#firstp").on( "click", {"foo": "bar"}, handler).trigger("click").unbind("click", handler);
+	EhQuery("#firstp").on( "click", {"foo": "bar"}, handler).trigger("click").unbind("click", handler);
 
-	ok( !jQuery._data(jQuery("#firstp")[0], "events"), "Event handler unbound when using data." );
+	ok( !EhQuery._data(EhQuery("#firstp")[0], "events"), "Event handler unbound when using data." );
 });
 
 test("bind(), with data, trigger with data", function() {
@@ -96,7 +96,7 @@ test("bind(), with data, trigger with data", function() {
 		ok( data, "Check trigger data" );
 		equal( data.bar, "foo", "Check value of trigger data" );
 	};
-	jQuery("#firstp").bind("click", {foo: "bar"}, handler).trigger("click", [{bar: "foo"}]).unbind("click", handler);
+	EhQuery("#firstp").bind("click", {foo: "bar"}, handler).trigger("click", [{bar: "foo"}]).unbind("click", handler);
 });
 
 test("bind(), multiple events at once", function() {
@@ -112,7 +112,7 @@ test("bind(), multiple events at once", function() {
 		}
 
 	};
-	jQuery("#firstp").bind("click mouseover", handler).trigger("click").trigger("mouseover");
+	EhQuery("#firstp").bind("click mouseover", handler).trigger("click").trigger("mouseover");
 	equal( clickCounter, 1, "bind() with multiple events at once" );
 	equal( mouseoverCounter, 1, "bind() with multiple events at once" );
 });
@@ -125,7 +125,7 @@ test("bind(), five events at once", function() {
 			count++;
 		};
 
-	jQuery("#firstp").bind("click mouseover foo bar baz", handler)
+	EhQuery("#firstp").bind("click mouseover foo bar baz", handler)
 	.trigger("click").trigger("mouseover")
 		.trigger("foo").trigger("bar")
 		.trigger("baz");
@@ -138,7 +138,7 @@ test("bind(), multiple events at once and namespaces", function() {
 
 	var cur, obj = {};
 
-	var div = jQuery("<div/>").bind("focusin.a", function(e) {
+	var div = EhQuery("<div/>").bind("focusin.a", function(e) {
 		equal( e.type, cur, "Verify right single event was fired." );
 	});
 
@@ -148,7 +148,7 @@ test("bind(), multiple events at once and namespaces", function() {
 	// manually clean up detached elements
 	div.remove();
 
-	div = jQuery("<div/>").bind("click mouseover", obj, function(e) {
+	div = EhQuery("<div/>").bind("click mouseover", obj, function(e) {
 		equal( e.type, cur, "Verify right multi event was fired." );
 		equal( e.data, obj, "Make sure the data came in correctly." );
 	});
@@ -162,7 +162,7 @@ test("bind(), multiple events at once and namespaces", function() {
 	// manually clean up detached elements
 	div.remove();
 
-	div = jQuery("<div/>").bind("focusin.a focusout.b", function(e) {
+	div = EhQuery("<div/>").bind("focusin.a focusout.b", function(e) {
 		equal( e.type, cur, "Verify right multi event was fired." );
 	});
 
@@ -179,13 +179,13 @@ test("bind(), multiple events at once and namespaces", function() {
 test("bind(), namespace with special add", function() {
 	expect(27);
 
-	var div = jQuery("<div/>").bind("test", function(e) {
+	var div = EhQuery("<div/>").bind("test", function(e) {
 		ok( true, "Test event fired." );
 	});
 
 	var i = 0;
 
-	jQuery.event.special["test"] = {
+	EhQuery.event.special["test"] = {
 		_default: function(e, data) {
 			equal( this, document, "Make sure we're at the top of the chain." );
 			equal( e.type, "test", "And that we're still dealing with a test event." );
@@ -230,14 +230,14 @@ test("bind(), namespace with special add", function() {
 	// Should trigger 4
 	div.unbind("test");
 
-	div = jQuery("<div/>").bind("test", function(e) {
+	div = EhQuery("<div/>").bind("test", function(e) {
 		ok( true, "Test event fired." );
 	});
 
 	// Should trigger 2
 	div.appendTo("#qunit-fixture").remove();
 
-	delete jQuery.event.special["test"];
+	delete EhQuery.event.special["test"];
 });
 
 test("bind(), no data", function() {
@@ -245,7 +245,7 @@ test("bind(), no data", function() {
 	var handler = function(event) {
 		ok ( !event.data, "Check that no data is added to the event object" );
 	};
-	jQuery("#firstp").bind("click", handler).trigger("click");
+	EhQuery("#firstp").bind("click", handler).trigger("click");
 });
 
 test("bind/one/unbind(Object)", function(){
@@ -276,7 +276,7 @@ test("bind/one/unbind(Object)", function(){
 		$elem.trigger("click").trigger("mouseover");
 	}
 
-	var $elem = jQuery("#firstp")
+	var $elem = EhQuery("#firstp")
 		// Regular bind
 		.bind({
 			"click":handler,
@@ -297,7 +297,7 @@ test("bind/one/unbind(Object)", function(){
 	equal( clickCounter, 4, "bind(Object)" );
 	equal( mouseoverCounter, 4, "bind(Object)" );
 
-	jQuery("#firstp").unbind({
+	EhQuery("#firstp").unbind({
 		"click":handler,
 		"mouseover":handler
 	});
@@ -312,7 +312,7 @@ test("on/off(Object), delegate/undelegate(String, Object)", function() {
 
 	var clickCounter = 0,
 		mouseoverCounter = 0,
-		$p = jQuery("#firstp"),
+		$p = EhQuery("#firstp"),
 		$a = $p.find("a").eq(0);
 
 	var events = {
@@ -328,7 +328,7 @@ test("on/off(Object), delegate/undelegate(String, Object)", function() {
 		$a.trigger("click").trigger("mouseover");
 	}
 
-	jQuery( document ).on( events, "#firstp a" );
+	EhQuery( document ).on( events, "#firstp a" );
 	$p.delegate( "a", events, 2 );
 
 	trigger();
@@ -341,7 +341,7 @@ test("on/off(Object), delegate/undelegate(String, Object)", function() {
 	equal( clickCounter, 4, "undelegate" );
 	equal( mouseoverCounter, 4, "undelegate" );
 
-	jQuery( document ).off( events, "#firstp a" );
+	EhQuery( document ).off( events, "#firstp a" );
 
 	trigger();
 	equal( clickCounter, 4, "off" );
@@ -352,20 +352,20 @@ test("on/delegate immediate propagation", function() {
 	expect(2);
 
 	var lastClick,
-		$p = jQuery("#firstp"),
+		$p = EhQuery("#firstp"),
 		$a = $p.find("a").eq(0);
 
 	lastClick = "";
-	jQuery( document ).on( "click", "#firstp a", function(e) {
+	EhQuery( document ).on( "click", "#firstp a", function(e) {
 		lastClick = "click1";
 		e.stopImmediatePropagation();
 	});
-	jQuery( document ).on( "click", "#firstp a", function(e) {
+	EhQuery( document ).on( "click", "#firstp a", function(e) {
 		lastClick = "click2";
 	});
 	$a.trigger( "click" );
 	equal( lastClick, "click1", "on stopImmediatePropagation" );
-	jQuery( document ).off( "click", "#firstp a" );
+	EhQuery( document ).off( "click", "#firstp a" );
 
 	lastClick = "";
 	$p.delegate( "a", "click", function(e) {
@@ -382,10 +382,10 @@ test("on/delegate immediate propagation", function() {
 
 test("bind/delegate bubbling, isDefaultPrevented", function() {
 	expect(2);
-	var $anchor2 = jQuery( "#anchor2" ),
-		$main = jQuery( "#qunit-fixture" ),
+	var $anchor2 = EhQuery( "#anchor2" ),
+		$main = EhQuery( "#qunit-fixture" ),
 		fakeClick = function($jq) {
-			// Use a native click so we don't get jQuery simulated bubbling
+			// Use a native click so we don't get EhQuery simulated bubbling
 			if ( document.createEvent ) {
 				var e = document.createEvent( "MouseEvents" );
 				e.initEvent( "click", true, true );
@@ -427,9 +427,9 @@ test("bind(), iframes", function() {
 	expect( 1 );
 
 	// events don't work with iframes, see #939 - this test fails in IE because of contentDocument
-	var doc = jQuery("#loadediframe").contents();
+	var doc = EhQuery("#loadediframe").contents();
 
-	jQuery("div", doc).bind("click", function() {
+	EhQuery("div", doc).bind("click", function() {
 		ok( true, "Binding to element inside iframe" );
 	}).trigger("click").unbind("click");
 });
@@ -440,13 +440,13 @@ test("bind(), trigger change on select", function() {
 	function selectOnChange(event) {
 		equal( event.data, counter++, "Event.data is not a global event object" );
 	}
-	jQuery("#form select").each(function(i){
-		jQuery(this).bind("change", i, selectOnChange);
+	EhQuery("#form select").each(function(i){
+		EhQuery(this).bind("change", i, selectOnChange);
 	}).trigger("change");
 });
 
 test("bind(), namespaced events, cloned events", 18, function() {
-	var firstp = jQuery( "#firstp" );
+	var firstp = EhQuery( "#firstp" );
 
 	firstp.bind("custom.test",function(e){
 		ok(false, "Custom event triggered");
@@ -488,13 +488,13 @@ test("bind(), namespaced events, cloned events", 18, function() {
 	firstp.trigger("custom");
 
 	// using contents will get comments regular, text, and comment nodes
-	jQuery("#nonnodes").contents().bind("tester", function () {
+	EhQuery("#nonnodes").contents().bind("tester", function () {
 		equal(this.nodeType, 1, "Check node,textnode,comment bind just does real nodes" );
 	}).trigger("tester");
 
 	// Make sure events stick with appendTo'd elements (which are cloned) #2027
-	jQuery("<a href='#fail' class='test'>test</a>").on( "click", function(){ return false; }).appendTo("#qunit-fixture");
-	ok( jQuery("a.test").eq(0).triggerHandler("click") === false, "Handler is bound to appendTo'd elements" );
+	EhQuery("<a href='#fail' class='test'>test</a>").on( "click", function(){ return false; }).appendTo("#qunit-fixture");
+	ok( EhQuery("a.test").eq(0).triggerHandler("click") === false, "Handler is bound to appendTo'd elements" );
 });
 
 test("bind(), multi-namespaced events", function() {
@@ -513,52 +513,52 @@ test("bind(), multi-namespaced events", function() {
 		deepEqual(name, order.shift(), msg);
 	}
 
-	jQuery("#firstp").bind("custom.test",function(e){
+	EhQuery("#firstp").bind("custom.test",function(e){
 		check("custom.test", "Custom event triggered");
 	});
 
-	jQuery("#firstp").bind("custom.test2",function(e){
+	EhQuery("#firstp").bind("custom.test2",function(e){
 		check("custom.test2", "Custom event triggered");
 	});
 
-	jQuery("#firstp").bind("click.test",function(e){
+	EhQuery("#firstp").bind("click.test",function(e){
 		check("click.test", "Normal click triggered");
 	});
 
-	jQuery("#firstp").bind("click.test.abc",function(e){
+	EhQuery("#firstp").bind("click.test.abc",function(e){
 		check("click.test.abc", "Namespaced click triggered");
 	});
 
 	// Those would not trigger/unbind (#5303)
-	jQuery("#firstp").trigger("click.a.test");
-	jQuery("#firstp").unbind("click.a.test");
+	EhQuery("#firstp").trigger("click.a.test");
+	EhQuery("#firstp").unbind("click.a.test");
 
 	// Trigger both bound fn (1)
-	jQuery("#firstp").trigger("click.test.abc");
+	EhQuery("#firstp").trigger("click.test.abc");
 
 	// Trigger one bound fn (1)
-	jQuery("#firstp").trigger("click.abc");
+	EhQuery("#firstp").trigger("click.abc");
 
 	// Trigger two bound fn (2)
-	jQuery("#firstp").trigger("click.test");
+	EhQuery("#firstp").trigger("click.test");
 
 	// Remove only the one fn
-	jQuery("#firstp").unbind("click.abc");
+	EhQuery("#firstp").unbind("click.abc");
 
 	// Trigger the remaining fn (1)
-	jQuery("#firstp").trigger("click");
+	EhQuery("#firstp").trigger("click");
 
 	// Remove the remaining fn
-	jQuery("#firstp").unbind(".test");
+	EhQuery("#firstp").unbind(".test");
 
 	// Trigger the remaining fn (1)
-	jQuery("#firstp").trigger("custom");
+	EhQuery("#firstp").trigger("custom");
 });
 
 test("namespace-only event binding is a no-op", function(){
 	expect(2);
 
-	jQuery("#firstp")
+	EhQuery("#firstp")
 		.on( ".whoops", function() {
 			ok( false, "called a namespace-only event" );
 		})
@@ -578,13 +578,13 @@ test("bind(), with same function", function() {
 		count++;
 	};
 
-	jQuery("#liveHandlerOrder").bind("foo.bar", func).bind("foo.zar", func);
-	jQuery("#liveHandlerOrder").trigger("foo.bar");
+	EhQuery("#liveHandlerOrder").bind("foo.bar", func).bind("foo.zar", func);
+	EhQuery("#liveHandlerOrder").trigger("foo.bar");
 
 	equal(count, 1, "Verify binding function with multiple namespaces." );
 
-	jQuery("#liveHandlerOrder").unbind("foo.bar", func).unbind("foo.zar", func);
-	jQuery("#liveHandlerOrder").trigger("foo.bar");
+	EhQuery("#liveHandlerOrder").unbind("foo.bar", func).unbind("foo.zar", func);
+	EhQuery("#liveHandlerOrder").trigger("foo.bar");
 
 	equal(count, 1, "Verify that removing events still work." );
 });
@@ -592,9 +592,9 @@ test("bind(), with same function", function() {
 test("bind(), make sure order is maintained", function() {
 	expect(1);
 
-	var elem = jQuery("#firstp"), log = [], check = [];
+	var elem = EhQuery("#firstp"), log = [], check = [];
 
-	jQuery.each( new Array(100), function( i ) {
+	EhQuery.each( new Array(100), function( i ) {
 		elem.bind( "click", function(){
 			log.push( i );
 		});
@@ -622,33 +622,33 @@ test("bind(), with different this object", function() {
 			equal( event.data, data, "bind() with different this object and data" );
 		};
 
-	jQuery("#firstp")
-		.bind("click", jQuery.proxy(handler1, thisObject)).trigger("click").unbind("click", handler1)
-		.bind("click", data, jQuery.proxy(handler2, thisObject)).trigger("click").unbind("click", handler2);
+	EhQuery("#firstp")
+		.bind("click", EhQuery.proxy(handler1, thisObject)).trigger("click").unbind("click", handler1)
+		.bind("click", data, EhQuery.proxy(handler2, thisObject)).trigger("click").unbind("click", handler2);
 
-	ok( !jQuery._data(jQuery("#firstp")[0], "events"), "Event handler unbound when using different this object and data." );
+	ok( !EhQuery._data(EhQuery("#firstp")[0], "events"), "Event handler unbound when using different this object and data." );
 });
 
 test("bind(name, false), unbind(name, false)", function() {
 	expect(3);
 
 	var main = 0;
-	jQuery("#qunit-fixture").bind("click", function(e){ main++; });
-	jQuery("#ap").trigger("click");
+	EhQuery("#qunit-fixture").bind("click", function(e){ main++; });
+	EhQuery("#ap").trigger("click");
 	equal( main, 1, "Verify that the trigger happened correctly." );
 
 	main = 0;
-	jQuery("#ap").bind("click", false);
-	jQuery("#ap").trigger("click");
+	EhQuery("#ap").bind("click", false);
+	EhQuery("#ap").trigger("click");
 	equal( main, 0, "Verify that no bubble happened." );
 
 	main = 0;
-	jQuery("#ap").unbind("click", false);
-	jQuery("#ap").trigger("click");
+	EhQuery("#ap").unbind("click", false);
+	EhQuery("#ap").trigger("click");
 	equal( main, 1, "Verify that the trigger happened correctly." );
 
 	// manually clean up events from elements outside the fixture
-	jQuery("#qunit-fixture").unbind("click");
+	EhQuery("#qunit-fixture").unbind("click");
 });
 
 test("delegate(selector, name, false), undelegate(selector, name, false)", function() {
@@ -656,20 +656,20 @@ test("delegate(selector, name, false), undelegate(selector, name, false)", funct
 
 	var main = 0;
 
-	jQuery("#qunit-fixture").delegate("#ap", "click", function(e){ main++; });
-	jQuery("#ap").trigger("click");
+	EhQuery("#qunit-fixture").delegate("#ap", "click", function(e){ main++; });
+	EhQuery("#ap").trigger("click");
 	equal( main, 1, "Verify that the trigger happened correctly." );
 
 	main = 0;
-	jQuery("#ap").delegate("#groups", "click", false);
-	jQuery("#groups").trigger("click");
+	EhQuery("#ap").delegate("#groups", "click", false);
+	EhQuery("#groups").trigger("click");
 	equal( main, 0, "Verify that no bubble happened." );
 
 	main = 0;
-	jQuery("#ap").undelegate("#groups", "click", false);
-	jQuery("#groups").trigger("click");
+	EhQuery("#ap").undelegate("#groups", "click", false);
+	EhQuery("#groups").trigger("click");
 	equal( main, 1, "Verify that the trigger happened correctly." );
-	jQuery("#qunit-fixture").undelegate("#ap", "click");
+	EhQuery("#qunit-fixture").undelegate("#ap", "click");
 });
 
 test("bind()/trigger()/unbind() on plain object", function() {
@@ -678,12 +678,12 @@ test("bind()/trigger()/unbind() on plain object", function() {
 	var obj = {};
 
 	// Make sure it doesn't complain when no events are found
-	jQuery(obj).trigger("test");
+	EhQuery(obj).trigger("test");
 
 	// Make sure it doesn't complain when no events are found
-	jQuery(obj).unbind("test");
+	EhQuery(obj).unbind("test");
 
-	jQuery(obj).bind({
+	EhQuery(obj).bind({
 		"test": function() {
 			ok( true, "Custom event run." );
 		},
@@ -692,34 +692,34 @@ test("bind()/trigger()/unbind() on plain object", function() {
 		}
 	});
 
-	var events = jQuery._data(obj, "events");
+	var events = EhQuery._data(obj, "events");
 	ok( events, "Object has events bound." );
 	equal( obj["events"], undefined, "Events object on plain objects is not events" );
 	equal( obj["test"], undefined, "Make sure that test event is not on the plain object." );
 	equal( obj["handle"], undefined, "Make sure that the event handler is not on the plain object." );
 
 	// Should trigger 1
-	jQuery(obj).trigger("test");
-	jQuery(obj).trigger("submit");
+	EhQuery(obj).trigger("test");
+	EhQuery(obj).trigger("submit");
 
-	jQuery(obj).unbind("test");
-	jQuery(obj).unbind("submit");
+	EhQuery(obj).unbind("test");
+	EhQuery(obj).unbind("submit");
 
 	// Should trigger 0
-	jQuery(obj).trigger("test");
+	EhQuery(obj).trigger("test");
 
 	// Make sure it doesn't complain when no events are found
-	jQuery(obj).unbind("test");
+	EhQuery(obj).unbind("test");
 
-	equal( obj && obj[ jQuery.expando ] &&
-			obj[ jQuery.expando ][ jQuery.expando ] &&
-			obj[ jQuery.expando ][ jQuery.expando ]["events"], undefined, "Make sure events object is removed" );
+	equal( obj && obj[ EhQuery.expando ] &&
+			obj[ EhQuery.expando ][ EhQuery.expando ] &&
+			obj[ EhQuery.expando ][ EhQuery.expando ]["events"], undefined, "Make sure events object is removed" );
 });
 
 test("unbind(type)", function() {
 	expect( 1 );
 
-	var $elem = jQuery("#firstp"),
+	var $elem = EhQuery("#firstp"),
 		message;
 
 	function error(){
@@ -751,11 +751,11 @@ test("unbind(type)", function() {
 		.trigger("error1").triggerHandler("error2");
 
 	// Should only unbind the specified function
-	jQuery( document ).bind( "click", function(){
+	EhQuery( document ).bind( "click", function(){
 		ok( true, "called handler after selective removal");
 	});
 	var func = function(){ };
-	jQuery( document )
+	EhQuery( document )
 		.bind( "click", func )
 		.unbind( "click", func )
 		.trigger("click")
@@ -765,7 +765,7 @@ test("unbind(type)", function() {
 test("unbind(eventObject)", function() {
 	expect(4);
 
-	var $elem = jQuery("#firstp"),
+	var $elem = EhQuery("#firstp"),
 		num;
 
 	function assert( expected ){
@@ -798,7 +798,7 @@ test("unbind(eventObject)", function() {
 	assert( 0 );
 });
 
-if ( jQuery.fn.hover ) {
+if ( EhQuery.fn.hover ) {
 	test("hover() mouseenter mouseleave", function() {
 		expect(1);
 
@@ -806,7 +806,7 @@ if ( jQuery.fn.hover ) {
 			handler1 = function( event ) { ++times; },
 			handler2 = function( event ) { ++times; };
 
-		jQuery("#firstp")
+		EhQuery("#firstp")
 			.hover(handler1, handler2)
 			.mouseenter().mouseleave()
 			.unbind("mouseenter", handler1)
@@ -825,7 +825,7 @@ test("mouseover triggers mouseenter", function() {
 	expect(1);
 
 	var count = 0,
-		elem = jQuery("<a />");
+		elem = EhQuery("<a />");
 	elem.on( "mouseenter", function () {
 		count++;
 	});
@@ -835,29 +835,29 @@ test("mouseover triggers mouseenter", function() {
 	elem.remove();
 });
 
-test("withinElement implemented with jQuery.contains()", function() {
+test("withinElement implemented with EhQuery.contains()", function() {
 
 	expect(1);
 
-	jQuery("#qunit-fixture").append("<div id='jc-outer'><div id='jc-inner'></div></div>");
+	EhQuery("#qunit-fixture").append("<div id='jc-outer'><div id='jc-inner'></div></div>");
 
-	jQuery("#jc-outer").bind("mouseenter mouseleave", function( event ) {
+	EhQuery("#jc-outer").bind("mouseenter mouseleave", function( event ) {
 
 		equal( this.id, "jc-outer", this.id + " " + event.type );
 
 	}).trigger("mouseenter");
 
-	jQuery("#jc-inner").trigger("mousenter");
+	EhQuery("#jc-inner").trigger("mousenter");
 
-	jQuery("#jc-outer").unbind("mouseenter mouseleave").remove();
-	jQuery("#jc-inner").remove();
+	EhQuery("#jc-outer").unbind("mouseenter mouseleave").remove();
+	EhQuery("#jc-inner").remove();
 
 });
 
 test("mouseenter, mouseleave don't catch exceptions", function() {
 	expect(2);
 
-	var elem = jQuery("#firstp").on( "mouseenter mouseleave", function() {
+	var elem = EhQuery("#firstp").on( "mouseenter mouseleave", function() {
 			throw "an Exception";
 		});
 
@@ -874,14 +874,14 @@ test("mouseenter, mouseleave don't catch exceptions", function() {
 	}
 });
 
-if ( jQuery.fn.click ) {
+if ( EhQuery.fn.click ) {
 
 	test("trigger() shortcuts", function() {
 		expect(6);
 
-		var elem = jQuery("<li><a href='#'>Change location</a></li>").prependTo("#firstUL");
+		var elem = EhQuery("<li><a href='#'>Change location</a></li>").prependTo("#firstUL");
 		elem.find("a").bind("click", function() {
-			var close = jQuery("spanx", this); // same with jQuery(this).find("span");
+			var close = EhQuery("spanx", this); // same with EhQuery(this).find("span");
 			equal( close.length, 0, "Context element does not exist, length must be zero" );
 			ok( !close[0], "Context element does not exist, direct access to element must return undefined" );
 			return false;
@@ -890,25 +890,25 @@ if ( jQuery.fn.click ) {
 		// manually clean up detached elements
 		elem.remove();
 
-		jQuery("#check1").click(function() {
+		EhQuery("#check1").click(function() {
 			ok( true, "click event handler for checkbox gets fired twice, see #815" );
 		}).click();
 
 		var counter = 0;
-		jQuery("#firstp")[0].onclick = function(event) {
+		EhQuery("#firstp")[0].onclick = function(event) {
 			counter++;
 		};
-		jQuery("#firstp").click();
+		EhQuery("#firstp").click();
 		equal( counter, 1, "Check that click, triggers onclick event handler also" );
 
 		var clickCounter = 0;
-		jQuery("#simon1")[0].onclick = function(event) {
+		EhQuery("#simon1")[0].onclick = function(event) {
 			clickCounter++;
 		};
-		jQuery("#simon1").click();
+		EhQuery("#simon1").click();
 		equal( clickCounter, 1, "Check that click, triggers onclick event handler on an a tag also" );
 
-		elem = jQuery("<img />").load(function(){
+		elem = EhQuery("<img />").load(function(){
 			ok( true, "Trigger the load event, using the shortcut .load() (#2819)");
 		}).load();
 
@@ -916,9 +916,9 @@ if ( jQuery.fn.click ) {
 		elem.remove();
 
 		// test that special handlers do not blow up with VML elements (#7071)
-		jQuery("<xml:namespace ns='urn:schemas-microsoft-com:vml' prefix='v' />").appendTo("head");
-		jQuery("<v:oval id='oval' style='width:100pt;height:75pt;' fillcolor='red'> </v:oval>").appendTo("#form");
-		jQuery("#oval").click().keydown();
+		EhQuery("<xml:namespace ns='urn:schemas-microsoft-com:vml' prefix='v' />").appendTo("head");
+		EhQuery("<v:oval id='oval' style='width:100pt;height:75pt;' fillcolor='red'> </v:oval>").appendTo("#form");
+		EhQuery("#oval").click().keydown();
 	});
 
 }
@@ -928,44 +928,44 @@ test("trigger() bubbling", function() {
 
 	var win = 0, doc = 0, html = 0, body = 0, main = 0, ap = 0;
 
-	jQuery(window).bind("click", function(e){ win++; });
-	jQuery(document).bind("click", function(e){ if ( e.target !== document) { doc++; } });
-	jQuery("html").bind("click", function(e){ html++; });
-	jQuery("body").bind("click", function(e){ body++; });
-	jQuery("#qunit-fixture").bind("click", function(e){ main++; });
-	jQuery("#ap").bind("click", function(){ ap++; return false; });
+	EhQuery(window).bind("click", function(e){ win++; });
+	EhQuery(document).bind("click", function(e){ if ( e.target !== document) { doc++; } });
+	EhQuery("html").bind("click", function(e){ html++; });
+	EhQuery("body").bind("click", function(e){ body++; });
+	EhQuery("#qunit-fixture").bind("click", function(e){ main++; });
+	EhQuery("#ap").bind("click", function(){ ap++; return false; });
 
-	jQuery("html").trigger("click");
+	EhQuery("html").trigger("click");
 	equal( win, 1, "HTML bubble" );
 	equal( doc, 1, "HTML bubble" );
 	equal( html, 1, "HTML bubble" );
 
-	jQuery("body").trigger("click");
+	EhQuery("body").trigger("click");
 	equal( win, 2, "Body bubble" );
 	equal( doc, 2, "Body bubble" );
 	equal( html, 2, "Body bubble" );
 	equal( body, 1, "Body bubble" );
 
-	jQuery("#qunit-fixture").trigger("click");
+	EhQuery("#qunit-fixture").trigger("click");
 	equal( win, 3, "Main bubble" );
 	equal( doc, 3, "Main bubble" );
 	equal( html, 3, "Main bubble" );
 	equal( body, 2, "Main bubble" );
 	equal( main, 1, "Main bubble" );
 
-	jQuery("#ap").trigger("click");
+	EhQuery("#ap").trigger("click");
 	equal( doc, 3, "ap bubble" );
 	equal( html, 3, "ap bubble" );
 	equal( body, 2, "ap bubble" );
 	equal( main, 1, "ap bubble" );
 	equal( ap, 1, "ap bubble" );
 
-	jQuery( document ).trigger("click");
+	EhQuery( document ).trigger("click");
 	equal( win, 4, "doc bubble" );
 
 	// manually clean up events from elements outside the fixture
-	jQuery(document).unbind("click");
-	jQuery("html, body, #qunit-fixture").unbind("click");
+	EhQuery(document).unbind("click");
+	EhQuery("html, body, #qunit-fixture").unbind("click");
 });
 
 test("trigger(type, [data], [fn])", function() {
@@ -979,7 +979,7 @@ test("trigger(type, [data], [fn])", function() {
 		return "test";
 	};
 
-	var $elem = jQuery("#firstp");
+	var $elem = EhQuery("#firstp");
 
 	// Simulate a "native" click
 	$elem[0].click = function(){
@@ -987,11 +987,11 @@ test("trigger(type, [data], [fn])", function() {
 	};
 
 
-	jQuery( document ).on("mouseenter", "#firstp", function(){
+	EhQuery( document ).on("mouseenter", "#firstp", function(){
 		ok( true, "Trigger mouseenter bound by on" );
 	});
 
-	jQuery( document ).on("mouseleave", "#firstp", function(){
+	EhQuery( document ).on("mouseleave", "#firstp", function(){
 		ok( true, "Trigger mouseleave bound by on" );
 	});
 
@@ -999,7 +999,7 @@ test("trigger(type, [data], [fn])", function() {
 
 	$elem.trigger("mouseleave");
 
-	jQuery( document ).off( "mouseenter mouseleave", "#firstp");
+	EhQuery( document ).off( "mouseenter mouseleave", "#firstp");
 
 	// Triggers handlers and native
 	// Trigger 5
@@ -1016,7 +1016,7 @@ test("trigger(type, [data], [fn])", function() {
 
 	var pass = true, elem2;
 	try {
-		elem2 = jQuery("#form input").eq(0);
+		elem2 = EhQuery("#form input").eq(0);
 		elem2.get(0).style.display = "none";
 		elem2.trigger("focus");
 	} catch(e) {
@@ -1026,13 +1026,13 @@ test("trigger(type, [data], [fn])", function() {
 
 	pass = true;
 	try {
-		jQuery("#qunit-fixture table").eq(0).bind("test:test", function(){}).trigger("test:test");
+		EhQuery("#qunit-fixture table").eq(0).bind("test:test", function(){}).trigger("test:test");
 	} catch (e) {
 		pass = false;
 	}
 	ok( pass, "Trigger on a table with a colon in the even type, see #3533" );
 
-	var form = jQuery("<form action=''></form>").appendTo("body");
+	var form = EhQuery("<form action=''></form>").appendTo("body");
 
 	// Make sure it can be prevented locally
 	form.on( "submit", function(){
@@ -1045,7 +1045,7 @@ test("trigger(type, [data], [fn])", function() {
 
 	form.unbind("submit");
 
-	jQuery(document).on( "submit", function(){
+	EhQuery(document).on( "submit", function(){
 		ok( true, "Make sure bubble works up to document." );
 		return false;
 	});
@@ -1053,7 +1053,7 @@ test("trigger(type, [data], [fn])", function() {
 	// Trigger 1
 	form.trigger("submit");
 
-	jQuery(document).unbind("submit");
+	EhQuery(document).unbind("submit");
 
 	form.remove();
 });
@@ -1062,9 +1062,9 @@ test( "submit event bubbles on copied forms (#11649)", function() {
 	expect( 3 );
 
 	var $formByClone, $formByHTML,
-		$testForm = jQuery("#testForm"),
-		$fixture = jQuery("#qunit-fixture"),
-		$wrapperDiv = jQuery("<div/>").appendTo( $fixture );
+		$testForm = EhQuery("#testForm"),
+		$fixture = EhQuery("#qunit-fixture"),
+		$wrapperDiv = EhQuery("<div/>").appendTo( $fixture );
 
 	function noSubmit( e ) {
 		e.preventDefault();
@@ -1082,7 +1082,7 @@ test( "submit event bubbles on copied forms (#11649)", function() {
 
 	// Copy the form via .clone() and .html()
 	$formByClone = $testForm.clone( true, true ).removeAttr("id");
-	$formByHTML = jQuery( jQuery.parseHTML($fixture.html()) ).filter("#testForm").removeAttr("id");
+	$formByHTML = EhQuery( EhQuery.parseHTML($fixture.html()) ).filter("#testForm").removeAttr("id");
 	$wrapperDiv.append( $formByClone, $formByHTML );
 
 	// Check submit bubbling on the copied forms
@@ -1098,9 +1098,9 @@ test( "change event bubbles on copied forms (#11796)", function(){
 	expect( 3 );
 
 	var $formByClone, $formByHTML,
-		$form = jQuery("#form"),
-		$fixture = jQuery("#qunit-fixture"),
-		$wrapperDiv = jQuery("<div/>").appendTo( $fixture );
+		$form = EhQuery("#form"),
+		$fixture = EhQuery("#qunit-fixture"),
+		$wrapperDiv = EhQuery("<div/>").appendTo( $fixture );
 
 	function delegatedChange() {
 		ok( true, "Make sure change event bubbles up." );
@@ -1115,7 +1115,7 @@ test( "change event bubbles on copied forms (#11796)", function(){
 
 	// Copy the form via .clone() and .html()
 	$formByClone = $form.clone( true, true ).removeAttr("id");
-	$formByHTML = jQuery( jQuery.parseHTML($fixture.html()) ).filter("#form").removeAttr("id");
+	$formByHTML = EhQuery( EhQuery.parseHTML($fixture.html()) ).filter("#form").removeAttr("id");
 	$wrapperDiv.append( $formByClone, $formByHTML );
 
 	// Check change bubbling on the copied forms
@@ -1129,13 +1129,13 @@ test( "change event bubbles on copied forms (#11796)", function(){
 test("trigger(eventObject, [data], [fn])", function() {
 	expect(28);
 
-	var $parent = jQuery("<div id='par' />").appendTo("body"),
-		$child = jQuery("<p id='child'>foo</p>").appendTo( $parent );
+	var $parent = EhQuery("<div id='par' />").appendTo("body"),
+		$child = EhQuery("<p id='child'>foo</p>").appendTo( $parent );
 
 	$parent.get( 0 ).style.display = "none";
 
-	var event = jQuery.Event("noNew");
-	ok( event != window, "Instantiate jQuery.Event without the 'new' keyword" );
+	var event = EhQuery.Event("noNew");
+	ok( event != window, "Instantiate EhQuery.Event without the 'new' keyword" );
 	equal( event.type, "noNew", "Verify its type" );
 
 	equal( event.isDefaultPrevented(), false, "Verify isDefaultPrevented" );
@@ -1161,7 +1161,7 @@ test("trigger(eventObject, [data], [fn])", function() {
 	});
 
 	// test with an event object
-	event = new jQuery.Event("foo");
+	event = new EhQuery.Event("foo");
 	event.secret = "boo!";
 	$child.trigger(event);
 
@@ -1196,7 +1196,7 @@ test("trigger(eventObject, [data], [fn])", function() {
 	// in which event handlers are iterated.
 	//$child.bind("foo", error );
 
-	event = new jQuery.Event("foo");
+	event = new EhQuery.Event("foo");
 	$child.trigger( event, [1,2,3] ).unbind();
 	equal( event.result, "result", "Check event.result attribute");
 
@@ -1207,8 +1207,8 @@ test("trigger(eventObject, [data], [fn])", function() {
 	$parent.unbind().remove();
 
 	// Ensure triggerHandler doesn't molest its event object (#xxx)
-	event = jQuery.Event( "zowie" );
-	jQuery( document ).triggerHandler( event );
+	event = EhQuery.Event( "zowie" );
+	EhQuery( document ).triggerHandler( event );
 	equal( event.type, "zowie", "Verify its type" );
 	equal( event.isPropagationStopped(), false, "propagation not stopped" );
 	equal( event.isDefaultPrevented(), false, "default not prevented" );
@@ -1219,11 +1219,11 @@ window.onclick = undefined;
 test(".trigger() bubbling on disconnected elements (#10489)", function() {
 	expect(2);
 
-	jQuery( window ).on( "click", function(){
+	EhQuery( window ).on( "click", function(){
 		ok( false, "click fired on window" );
 	});
 
-	jQuery( "<div><p>hi</p></div>" )
+	EhQuery( "<div><p>hi</p></div>" )
 		.on( "click", function() {
 			ok( true, "click fired on div" );
 		})
@@ -1237,18 +1237,18 @@ test(".trigger() bubbling on disconnected elements (#10489)", function() {
 		.off( "click" )
 		.remove();
 
-	jQuery( window ).off( "click" );
+	EhQuery( window ).off( "click" );
 });
 
 test(".trigger() doesn't bubble load event (#10717)", function() {
 	expect(1);
 
-	jQuery( window ).on( "load", function(){
+	EhQuery( window ).on( "load", function(){
 		ok( false, "load fired on window" );
 	});
 
 	// It's not an image, but as long as it fires load...
-	jQuery("<img src='index.html' />")
+	EhQuery("<img src='index.html' />")
 		.appendTo( "body" )
 		.on( "load", function() {
 			ok( true, "load fired on img" );
@@ -1256,14 +1256,14 @@ test(".trigger() doesn't bubble load event (#10717)", function() {
 		.trigger( "load" )
 		.remove();
 
-	jQuery( window ).off( "load" );
+	EhQuery( window ).off( "load" );
 });
 
 test("Delegated events in SVG (#10791; #13180)", function() {
 	expect(2);
 
 	var useElem, e,
-		svg = jQuery(
+		svg = EhQuery(
 			"<svg height='1' version='1.1' width='1' xmlns='http://www.w3.org/2000/svg'>" +
 			"<defs><rect id='ref' x='10' y='20' width='100' height='60' r='10' rx='10' ry='10'></rect></defs>" +
 			"<rect class='svg-by-class' x='10' y='20' width='100' height='60' r='10' rx='10' ry='10'></rect>" +
@@ -1272,7 +1272,7 @@ test("Delegated events in SVG (#10791; #13180)", function() {
 			"</svg>"
 		);
 
-	jQuery("#qunit-fixture")
+	EhQuery("#qunit-fixture")
 		.append( svg )
 		.on( "click", "#svg-by-id", function() {
 			ok( true, "delegated id selector" );
@@ -1293,14 +1293,14 @@ test("Delegated events in SVG (#10791; #13180)", function() {
 		useElem.instanceRoot.dispatchEvent( e );
 	}
 
-	jQuery("#qunit-fixture").off("click");
+	EhQuery("#qunit-fixture").off("click");
 });
 
 test("Delegated events in forms (#10844; #11145; #8165; #11382, #11764)", function() {
 	expect(5);
 
 	// Alias names like "id" cause havoc
-	var form = jQuery(
+	var form = EhQuery(
 			"<form id='myform'>" +
 				"<input type='text' name='id' value='secret agent man' />" +
 			"</form>"
@@ -1310,7 +1310,7 @@ test("Delegated events in forms (#10844; #11145; #8165; #11382, #11764)", functi
 		})
 		.appendTo("body");
 
-	jQuery("body")
+	EhQuery("body")
 		.on( "submit", "#myform", function() {
 			ok( true, "delegated id selector with aliased id" );
 		})
@@ -1320,7 +1320,7 @@ test("Delegated events in forms (#10844; #11145; #8165; #11382, #11764)", functi
 		.off("submit");
 
 	form.append("<input type='text' name='disabled' value='differently abled' />");
-	jQuery("body")
+	EhQuery("body")
 		.on( "submit", "#myform", function() {
 			ok( true, "delegated id selector with aliased disabled" );
 		})
@@ -1355,7 +1355,7 @@ test("Submit event can be stopped (#11049)", function() {
 	expect(1);
 
 	// Since we manually bubble in IE, make sure inner handlers get a chance to cancel
-	var form = jQuery(
+	var form = EhQuery(
 			"<form id='myform'>" +
 				"<input type='text' name='sue' value='bawls' />" +
 				"<input type='submit' />" +
@@ -1363,7 +1363,7 @@ test("Submit event can be stopped (#11049)", function() {
 		)
 		.appendTo("body");
 
-	jQuery( "body" )
+	EhQuery( "body" )
 		.on( "submit", function() {
 			ok( true, "submit bubbled on first handler" );
 			return false;
@@ -1377,7 +1377,7 @@ test("Submit event can be stopped (#11049)", function() {
 		})
 		.find( "#myform input[type=submit]" )
 			.each( function(){
-				jQuery( this.form ).on( "submit", function( e ) {
+				EhQuery( this.form ).on( "submit", function( e ) {
 					e.preventDefault();
 					e.stopPropagation();
 				});
@@ -1392,7 +1392,7 @@ test("Submit event can be stopped (#11049)", function() {
 // Test beforeunload event only if it supported (i.e. not Opera)
 if ( window.onbeforeunload === null ) {
 	asyncTest("on(beforeunload)", 1, function() {
-		var iframe = jQuery(jQuery.parseHTML("<iframe src='data/event/onbeforeunload.html'><iframe>"));
+		var iframe = EhQuery(EhQuery.parseHTML("<iframe src='data/event/onbeforeunload.html'><iframe>"));
 
 		window.onmessage = function( event ) {
 			var payload = JSON.parse( event.data );
@@ -1408,35 +1408,35 @@ if ( window.onbeforeunload === null ) {
 	});
 }
 
-test("jQuery.Event( type, props )", function() {
+test("EhQuery.Event( type, props )", function() {
 
 	expect(5);
 
-	var event = jQuery.Event( "keydown", { keyCode: 64 }),
+	var event = EhQuery.Event( "keydown", { keyCode: 64 }),
 			handler = function( event ) {
 				ok( "keyCode" in event, "Special property 'keyCode' exists" );
 				equal( event.keyCode, 64, "event.keyCode has explicit value '64'" );
 			};
 
-	// Supports jQuery.Event implementation
+	// Supports EhQuery.Event implementation
 	equal( event.type, "keydown", "Verify type" );
 
 	// ensure "type" in props won't clobber the one set by constructor
-	equal( jQuery.inArray("type", jQuery.event.props), -1, "'type' property not in props (#10375)" );
+	equal( EhQuery.inArray("type", EhQuery.event.props), -1, "'type' property not in props (#10375)" );
 
 	ok( "keyCode" in event, "Special 'keyCode' property exists" );
 
-	jQuery("body").bind( "keydown", handler ).trigger( event );
+	EhQuery("body").bind( "keydown", handler ).trigger( event );
 
-	jQuery("body").unbind( "keydown" );
+	EhQuery("body").unbind( "keydown" );
 
 });
 
-test("jQuery.Event properties", function(){
+test("EhQuery.Event properties", function(){
 	expect(12);
 
 	var handler,
-		$structure = jQuery("<div id='ancestor'><p id='delegate'><span id='target'>shiny</span></p></div>"),
+		$structure = EhQuery("<div id='ancestor'><p id='delegate'><span id='target'>shiny</span></p></div>"),
 		$target = $structure.find("#target");
 
 	handler = function( e ) {
@@ -1475,13 +1475,13 @@ test(".delegate()/.undelegate()", function() {
 
 	var submit = 0, div = 0, livea = 0, liveb = 0;
 
-	jQuery("#body").delegate("#qunit-fixture div", "submit", function(){ submit++; return false; });
-	jQuery("#body").delegate("#qunit-fixture div", "click", function(){ div++; });
-	jQuery("#body").delegate("div#nothiddendiv", "click", function(){ livea++; });
-	jQuery("#body").delegate("div#nothiddendivchild", "click", function(){ liveb++; });
+	EhQuery("#body").delegate("#qunit-fixture div", "submit", function(){ submit++; return false; });
+	EhQuery("#body").delegate("#qunit-fixture div", "click", function(){ div++; });
+	EhQuery("#body").delegate("div#nothiddendiv", "click", function(){ livea++; });
+	EhQuery("#body").delegate("div#nothiddendivchild", "click", function(){ liveb++; });
 
 	// Nothing should trigger on the body
-	jQuery("body").trigger("click");
+	EhQuery("body").trigger("click");
 	equal( submit, 0, "Click on body" );
 	equal( div, 0, "Click on body" );
 	equal( livea, 0, "Click on body" );
@@ -1489,7 +1489,7 @@ test(".delegate()/.undelegate()", function() {
 
 	// This should trigger two events
 	submit = 0; div = 0; livea = 0; liveb = 0;
-	jQuery("div#nothiddendiv").trigger("click");
+	EhQuery("div#nothiddendiv").trigger("click");
 	equal( submit, 0, "Click on div" );
 	equal( div, 1, "Click on div" );
 	equal( livea, 1, "Click on div" );
@@ -1497,7 +1497,7 @@ test(".delegate()/.undelegate()", function() {
 
 	// This should trigger three events (w/ bubbling)
 	submit = 0; div = 0; livea = 0; liveb = 0;
-	jQuery("div#nothiddendivchild").trigger("click");
+	EhQuery("div#nothiddendivchild").trigger("click");
 	equal( submit, 0, "Click on inner div" );
 	equal( div, 2, "Click on inner div" );
 	equal( livea, 1, "Click on inner div" );
@@ -1505,7 +1505,7 @@ test(".delegate()/.undelegate()", function() {
 
 	// This should trigger one submit
 	submit = 0; div = 0; livea = 0; liveb = 0;
-	jQuery("div#nothiddendivchild").trigger("submit");
+	EhQuery("div#nothiddendivchild").trigger("submit");
 	equal( submit, 1, "Submit on div" );
 	equal( div, 0, "Submit on div" );
 	equal( livea, 0, "Submit on div" );
@@ -1513,7 +1513,7 @@ test(".delegate()/.undelegate()", function() {
 
 	// Make sure no other events were removed in the process
 	submit = 0; div = 0; livea = 0; liveb = 0;
-	jQuery("div#nothiddendivchild").trigger("click");
+	EhQuery("div#nothiddendivchild").trigger("click");
 	equal( submit, 0, "undelegate Click on inner div" );
 	equal( div, 2, "undelegate Click on inner div" );
 	equal( livea, 1, "undelegate Click on inner div" );
@@ -1521,8 +1521,8 @@ test(".delegate()/.undelegate()", function() {
 
 	// Now make sure that the removal works
 	submit = 0; div = 0; livea = 0; liveb = 0;
-	jQuery("#body").undelegate("div#nothiddendivchild", "click");
-	jQuery("div#nothiddendivchild").trigger("click");
+	EhQuery("#body").undelegate("div#nothiddendivchild", "click");
+	EhQuery("div#nothiddendivchild").trigger("click");
 	equal( submit, 0, "undelegate Click on inner div" );
 	equal( div, 2, "undelegate Click on inner div" );
 	equal( livea, 1, "undelegate Click on inner div" );
@@ -1530,7 +1530,7 @@ test(".delegate()/.undelegate()", function() {
 
 	// Make sure that the click wasn't removed too early
 	submit = 0; div = 0; livea = 0; liveb = 0;
-	jQuery("div#nothiddendiv").trigger("click");
+	EhQuery("div#nothiddendiv").trigger("click");
 	equal( submit, 0, "undelegate Click on inner div" );
 	equal( div, 1, "undelegate Click on inner div" );
 	equal( livea, 1, "undelegate Click on inner div" );
@@ -1538,8 +1538,8 @@ test(".delegate()/.undelegate()", function() {
 
 	// Make sure that stopPropagation doesn't stop live events
 	submit = 0; div = 0; livea = 0; liveb = 0;
-	jQuery("#body").delegate("div#nothiddendivchild", "click", function(e){ liveb++; e.stopPropagation(); });
-	jQuery("div#nothiddendivchild").trigger("click");
+	EhQuery("#body").delegate("div#nothiddendivchild", "click", function(e){ liveb++; e.stopPropagation(); });
+	EhQuery("div#nothiddendivchild").trigger("click");
 	equal( submit, 0, "stopPropagation Click on inner div" );
 	equal( div, 1, "stopPropagation Click on inner div" );
 	equal( livea, 0, "stopPropagation Click on inner div" );
@@ -1547,210 +1547,210 @@ test(".delegate()/.undelegate()", function() {
 
 	// Make sure click events only fire with primary click
 	submit = 0; div = 0; livea = 0; liveb = 0;
-	var event = jQuery.Event("click");
+	var event = EhQuery.Event("click");
 	event.button = 1;
-	jQuery("div#nothiddendiv").trigger(event);
+	EhQuery("div#nothiddendiv").trigger(event);
 
 	equal( livea, 0, "delegate secondary click" );
 
-	jQuery("#body").undelegate("div#nothiddendivchild", "click");
-	jQuery("#body").undelegate("div#nothiddendiv", "click");
-	jQuery("#body").undelegate("#qunit-fixture div", "click");
-	jQuery("#body").undelegate("#qunit-fixture div", "submit");
+	EhQuery("#body").undelegate("div#nothiddendivchild", "click");
+	EhQuery("#body").undelegate("div#nothiddendiv", "click");
+	EhQuery("#body").undelegate("#qunit-fixture div", "click");
+	EhQuery("#body").undelegate("#qunit-fixture div", "submit");
 
 	// Test binding with a different context
-	var clicked = 0, container = jQuery("#qunit-fixture")[0];
-	jQuery("#qunit-fixture").delegate("#foo", "click", function(e){ clicked++; });
-	jQuery("#qunit-fixture div").trigger("click");
-	jQuery("#foo").trigger("click");
-	jQuery("#qunit-fixture").trigger("click");
-	jQuery("body").trigger("click");
+	var clicked = 0, container = EhQuery("#qunit-fixture")[0];
+	EhQuery("#qunit-fixture").delegate("#foo", "click", function(e){ clicked++; });
+	EhQuery("#qunit-fixture div").trigger("click");
+	EhQuery("#foo").trigger("click");
+	EhQuery("#qunit-fixture").trigger("click");
+	EhQuery("body").trigger("click");
 	equal( clicked, 2, "delegate with a context" );
 
 	// Test unbinding with a different context
-	jQuery("#qunit-fixture").undelegate("#foo", "click");
-	jQuery("#foo").trigger("click");
+	EhQuery("#qunit-fixture").undelegate("#foo", "click");
+	EhQuery("#foo").trigger("click");
 	equal( clicked, 2, "undelegate with a context");
 
 	// Test binding with event data
-	jQuery("#body").delegate("#foo", "click", true, function(e){ equal( e.data, true, "delegate with event data" ); });
-	jQuery("#foo").trigger("click");
-	jQuery("#body").undelegate("#foo", "click");
+	EhQuery("#body").delegate("#foo", "click", true, function(e){ equal( e.data, true, "delegate with event data" ); });
+	EhQuery("#foo").trigger("click");
+	EhQuery("#body").undelegate("#foo", "click");
 
 	// Test binding with trigger data
-	jQuery("#body").delegate("#foo", "click", function(e, data){ equal( data, true, "delegate with trigger data" ); });
-	jQuery("#foo").trigger("click", true);
-	jQuery("#body").undelegate("#foo", "click");
+	EhQuery("#body").delegate("#foo", "click", function(e, data){ equal( data, true, "delegate with trigger data" ); });
+	EhQuery("#foo").trigger("click", true);
+	EhQuery("#body").undelegate("#foo", "click");
 
 	// Test binding with different this object
-	jQuery("#body").delegate("#foo", "click", jQuery.proxy(function(e){ equal( this["foo"], "bar", "delegate with event scope" ); }, { "foo": "bar" }));
-	jQuery("#foo").trigger("click");
-	jQuery("#body").undelegate("#foo", "click");
+	EhQuery("#body").delegate("#foo", "click", EhQuery.proxy(function(e){ equal( this["foo"], "bar", "delegate with event scope" ); }, { "foo": "bar" }));
+	EhQuery("#foo").trigger("click");
+	EhQuery("#body").undelegate("#foo", "click");
 
 	// Test binding with different this object, event data, and trigger data
-	jQuery("#body").delegate("#foo", "click", true, jQuery.proxy(function(e, data){
+	EhQuery("#body").delegate("#foo", "click", true, EhQuery.proxy(function(e, data){
 		equal( e.data, true, "delegate with with different this object, event data, and trigger data" );
 		equal( this.foo, "bar", "delegate with with different this object, event data, and trigger data" );
 		equal( data, true, "delegate with with different this object, event data, and trigger data");
 	}, { "foo": "bar" }));
-	jQuery("#foo").trigger("click", true);
-	jQuery("#body").undelegate("#foo", "click");
+	EhQuery("#foo").trigger("click", true);
+	EhQuery("#body").undelegate("#foo", "click");
 
 	// Verify that return false prevents default action
-	jQuery("#body").delegate("#anchor2", "click", function(){ return false; });
+	EhQuery("#body").delegate("#anchor2", "click", function(){ return false; });
 	var hash = window.location.hash;
-	jQuery("#anchor2").trigger("click");
+	EhQuery("#anchor2").trigger("click");
 	equal( window.location.hash, hash, "return false worked" );
-	jQuery("#body").undelegate("#anchor2", "click");
+	EhQuery("#body").undelegate("#anchor2", "click");
 
 	// Verify that .preventDefault() prevents default action
-	jQuery("#body").delegate("#anchor2", "click", function(e){ e.preventDefault(); });
+	EhQuery("#body").delegate("#anchor2", "click", function(e){ e.preventDefault(); });
 	hash = window.location.hash;
-	jQuery("#anchor2").trigger("click");
+	EhQuery("#anchor2").trigger("click");
 	equal( window.location.hash, hash, "e.preventDefault() worked" );
-	jQuery("#body").undelegate("#anchor2", "click");
+	EhQuery("#body").undelegate("#anchor2", "click");
 
 	// Test binding the same handler to multiple points
 	var called = 0;
 	function callback(){ called++; return false; }
 
-	jQuery("#body").delegate("#nothiddendiv", "click", callback);
-	jQuery("#body").delegate("#anchor2", "click", callback);
+	EhQuery("#body").delegate("#nothiddendiv", "click", callback);
+	EhQuery("#body").delegate("#anchor2", "click", callback);
 
-	jQuery("#nothiddendiv").trigger("click");
+	EhQuery("#nothiddendiv").trigger("click");
 	equal( called, 1, "Verify that only one click occurred." );
 
 	called = 0;
-	jQuery("#anchor2").trigger("click");
+	EhQuery("#anchor2").trigger("click");
 	equal( called, 1, "Verify that only one click occurred." );
 
 	// Make sure that only one callback is removed
-	jQuery("#body").undelegate("#anchor2", "click", callback);
+	EhQuery("#body").undelegate("#anchor2", "click", callback);
 
 	called = 0;
-	jQuery("#nothiddendiv").trigger("click");
+	EhQuery("#nothiddendiv").trigger("click");
 	equal( called, 1, "Verify that only one click occurred." );
 
 	called = 0;
-	jQuery("#anchor2").trigger("click");
+	EhQuery("#anchor2").trigger("click");
 	equal( called, 0, "Verify that no click occurred." );
 
 	// Make sure that it still works if the selector is the same,
 	// but the event type is different
-	jQuery("#body").delegate("#nothiddendiv", "foo", callback);
+	EhQuery("#body").delegate("#nothiddendiv", "foo", callback);
 
 	// Cleanup
-	jQuery("#body").undelegate("#nothiddendiv", "click", callback);
+	EhQuery("#body").undelegate("#nothiddendiv", "click", callback);
 
 	called = 0;
-	jQuery("#nothiddendiv").trigger("click");
+	EhQuery("#nothiddendiv").trigger("click");
 	equal( called, 0, "Verify that no click occurred." );
 
 	called = 0;
-	jQuery("#nothiddendiv").trigger("foo");
+	EhQuery("#nothiddendiv").trigger("foo");
 	equal( called, 1, "Verify that one foo occurred." );
 
 	// Cleanup
-	jQuery("#body").undelegate("#nothiddendiv", "foo", callback);
+	EhQuery("#body").undelegate("#nothiddendiv", "foo", callback);
 
 	// Make sure we don't loose the target by DOM modifications
 	// after the bubble already reached the liveHandler
-	var livec = 0, elemDiv = jQuery("#nothiddendivchild").html("<span></span>").get(0);
+	var livec = 0, elemDiv = EhQuery("#nothiddendivchild").html("<span></span>").get(0);
 
-	jQuery("#body").delegate("#nothiddendivchild", "click", function(e){ jQuery("#nothiddendivchild").html(""); });
-	jQuery("#body").delegate("#nothiddendivchild", "click", function(e){ if(e.target) {livec++;} });
+	EhQuery("#body").delegate("#nothiddendivchild", "click", function(e){ EhQuery("#nothiddendivchild").html(""); });
+	EhQuery("#body").delegate("#nothiddendivchild", "click", function(e){ if(e.target) {livec++;} });
 
-	jQuery("#nothiddendiv span").trigger("click");
-	equal( jQuery("#nothiddendiv span").length, 0, "Verify that first handler occurred and modified the DOM." );
+	EhQuery("#nothiddendiv span").trigger("click");
+	equal( EhQuery("#nothiddendiv span").length, 0, "Verify that first handler occurred and modified the DOM." );
 	equal( livec, 1, "Verify that second handler occurred even with nuked target." );
 
 	// Cleanup
-	jQuery("#body").undelegate("#nothiddendivchild", "click");
+	EhQuery("#body").undelegate("#nothiddendivchild", "click");
 
 	// Verify that .live() occurs and cancel bubble in the same order as
 	// we would expect .bind() and .click() without delegation
 	var lived = 0, livee = 0;
 
 	// bind one pair in one order
-	jQuery("#body").delegate("span#liveSpan1 a", "click", function(){ lived++; return false; });
-	jQuery("#body").delegate("span#liveSpan1", "click", function(){ livee++; });
+	EhQuery("#body").delegate("span#liveSpan1 a", "click", function(){ lived++; return false; });
+	EhQuery("#body").delegate("span#liveSpan1", "click", function(){ livee++; });
 
-	jQuery("span#liveSpan1 a").trigger("click");
+	EhQuery("span#liveSpan1 a").trigger("click");
 	equal( lived, 1, "Verify that only one first handler occurred." );
 	equal( livee, 0, "Verify that second handler doesn't." );
 
 	// and one pair in inverse
-	jQuery("#body").delegate("span#liveSpan2", "click", function(){ livee++; });
-	jQuery("#body").delegate("span#liveSpan2 a", "click", function(){ lived++; return false; });
+	EhQuery("#body").delegate("span#liveSpan2", "click", function(){ livee++; });
+	EhQuery("#body").delegate("span#liveSpan2 a", "click", function(){ lived++; return false; });
 
 	lived = 0;
 	livee = 0;
-	jQuery("span#liveSpan2 a").trigger("click");
+	EhQuery("span#liveSpan2 a").trigger("click");
 	equal( lived, 1, "Verify that only one first handler occurred." );
 	equal( livee, 0, "Verify that second handler doesn't." );
 
 	// Cleanup
-	jQuery("#body").undelegate("click");
+	EhQuery("#body").undelegate("click");
 
 	// Test this, target and currentTarget are correct
-	jQuery("#body").delegate("span#liveSpan1", "click", function(e){
+	EhQuery("#body").delegate("span#liveSpan1", "click", function(e){
 		equal( this.id, "liveSpan1", "Check the this within a delegate handler" );
 		equal( e.currentTarget.id, "liveSpan1", "Check the event.currentTarget within a delegate handler" );
 		equal( e.delegateTarget, document.body, "Check the event.delegateTarget within a delegate handler" );
 		equal( e.target.nodeName.toUpperCase(), "A", "Check the event.target within a delegate handler" );
 	});
 
-	jQuery("span#liveSpan1 a").trigger("click");
+	EhQuery("span#liveSpan1 a").trigger("click");
 
-	jQuery("#body").undelegate("span#liveSpan1", "click");
+	EhQuery("#body").undelegate("span#liveSpan1", "click");
 
 	// Work with deep selectors
 	livee = 0;
 
 	function clickB(){ livee++; }
 
-	jQuery("#body").delegate("#nothiddendiv div", "click", function(){ livee++; });
-	jQuery("#body").delegate("#nothiddendiv div", "click", clickB);
-	jQuery("#body").delegate("#nothiddendiv div", "mouseover", function(){ livee++; });
+	EhQuery("#body").delegate("#nothiddendiv div", "click", function(){ livee++; });
+	EhQuery("#body").delegate("#nothiddendiv div", "click", clickB);
+	EhQuery("#body").delegate("#nothiddendiv div", "mouseover", function(){ livee++; });
 
 	equal( livee, 0, "No clicks, deep selector." );
 
 	livee = 0;
-	jQuery("#nothiddendivchild").trigger("click");
+	EhQuery("#nothiddendivchild").trigger("click");
 	equal( livee, 2, "Click, deep selector." );
 
 	livee = 0;
-	jQuery("#nothiddendivchild").trigger("mouseover");
+	EhQuery("#nothiddendivchild").trigger("mouseover");
 	equal( livee, 1, "Mouseover, deep selector." );
 
-	jQuery("#body").undelegate("#nothiddendiv div", "mouseover");
+	EhQuery("#body").undelegate("#nothiddendiv div", "mouseover");
 
 	livee = 0;
-	jQuery("#nothiddendivchild").trigger("click");
+	EhQuery("#nothiddendivchild").trigger("click");
 	equal( livee, 2, "Click, deep selector." );
 
 	livee = 0;
-	jQuery("#nothiddendivchild").trigger("mouseover");
+	EhQuery("#nothiddendivchild").trigger("mouseover");
 	equal( livee, 0, "Mouseover, deep selector." );
 
-	jQuery("#body").undelegate("#nothiddendiv div", "click", clickB);
+	EhQuery("#body").undelegate("#nothiddendiv div", "click", clickB);
 
 	livee = 0;
-	jQuery("#nothiddendivchild").trigger("click");
+	EhQuery("#nothiddendivchild").trigger("click");
 	equal( livee, 1, "Click, deep selector." );
 
-	jQuery("#body").undelegate("#nothiddendiv div", "click");
+	EhQuery("#body").undelegate("#nothiddendiv div", "click");
 });
 
-test("jQuery.off using dispatched jQuery.Event", function() {
+test("EhQuery.off using dispatched EhQuery.Event", function() {
 	expect(1);
 
-	var markup = jQuery("<p><a href='#'>target</a></p>"),
+	var markup = EhQuery("<p><a href='#'>target</a></p>"),
 		count = 0;
 	markup
 		.on( "click.name", "a", function( event ) {
 			equal( ++count, 1, "event called once before removal" );
-			jQuery().off( event );
+			EhQuery().off( event );
 		})
 		.find("a").trigger("click").trigger("click").end()
 		.remove();
@@ -1758,7 +1758,7 @@ test("jQuery.off using dispatched jQuery.Event", function() {
 
 test( "delegated event with delegateTarget-relative selector", function() {
 	expect(3);
-	var markup = jQuery("<div><ul><li><a id=\"a0\"></a><ul id=\"ul0\"><li class=test><a id=\"a0_0\"></a></li><li><a id=\"a0_1\"></a></li></ul></li></ul></div>").appendTo("#qunit-fixture");
+	var markup = EhQuery("<div><ul><li><a id=\"a0\"></a><ul id=\"ul0\"><li class=test><a id=\"a0_0\"></a></li><li><a id=\"a0_1\"></a></li></ul></li></ul></div>").appendTo("#qunit-fixture");
 
 	// Non-positional selector (#12383)
 	markup.find("#ul0")
@@ -1795,11 +1795,11 @@ test( "delegated event with selector matching Object.prototype property (#13203)
 
 	var matched = 0;
 
-	jQuery("#foo").on( "click", "toString", function( e ) {
+	EhQuery("#foo").on( "click", "toString", function( e ) {
 		matched++;
 	});
 
-	jQuery("#anchor2").trigger("click");
+	EhQuery("#anchor2").trigger("click");
 
 	equal( matched, 0, "Nothing matched 'toString'" );
 });
@@ -1807,7 +1807,7 @@ test( "delegated event with selector matching Object.prototype property (#13203)
 test("stopPropagation() stops directly-bound events on delegated target", function() {
 	expect(1);
 
-	var markup = jQuery("<div><p><a href=\"#\">target</a></p></div>");
+	var markup = EhQuery("<div><p><a href=\"#\">target</a></p></div>");
 	markup
 		.on( "click", function() {
 			ok( false, "directly-bound event on delegate target was called" );
@@ -1825,14 +1825,14 @@ test("undelegate all bound events", function(){
 
 	var count = 0,
 		clicks = 0,
-		div = jQuery("#body");
+		div = EhQuery("#body");
 
 	div.delegate( "div#nothiddendivchild", "click submit", function(){ count++; } );
 	div.bind( "click", function(){ clicks++; } );
 	div.undelegate();
 
-	jQuery("div#nothiddendivchild").trigger("click");
-	jQuery("div#nothiddendivchild").trigger("submit");
+	EhQuery("div#nothiddendivchild").trigger("click");
+	EhQuery("div#nothiddendivchild").trigger("submit");
 
 	equal( count, 0, "Make sure no events were triggered." );
 
@@ -1845,16 +1845,16 @@ test("delegate with multiple events", function(){
 	expect(1);
 
 	var count = 0;
-	var div = jQuery("#body");
+	var div = EhQuery("#body");
 
 	div.delegate("div#nothiddendivchild", "click submit", function(){ count++; });
 
-	jQuery("div#nothiddendivchild").trigger("click");
-	jQuery("div#nothiddendivchild").trigger("submit");
+	EhQuery("div#nothiddendivchild").trigger("click");
+	EhQuery("div#nothiddendivchild").trigger("submit");
 
 	equal( count, 2, "Make sure both the click and submit were triggered." );
 
-	jQuery("#body").undelegate();
+	EhQuery("#body").undelegate();
 });
 
 test("delegate with change", function(){
@@ -1862,16 +1862,16 @@ test("delegate with change", function(){
 
 	var selectChange = 0, checkboxChange = 0;
 
-	var select = jQuery("select[name='S1']");
-	jQuery("#body").delegate("select[name='S1']", "change", function() {
+	var select = EhQuery("select[name='S1']");
+	EhQuery("#body").delegate("select[name='S1']", "change", function() {
 		selectChange++;
 	});
 
-	var checkbox = jQuery("#check2"),
+	var checkbox = EhQuery("#check2"),
 		checkboxFunction = function(){
 			checkboxChange++;
 		};
-	jQuery("#body").delegate("#check2", "change", checkboxFunction);
+	EhQuery("#body").delegate("#check2", "change", checkboxFunction);
 
 	// test click on select
 
@@ -1892,8 +1892,8 @@ test("delegate with change", function(){
 	equal( checkboxChange, 1, "Change on checkbox." );
 
 	// test blur/focus on text
-	var text = jQuery("#name"), textChange = 0, oldTextVal = text.val();
-	jQuery("#body").delegate("#name", "change", function() {
+	var text = EhQuery("#name"), textChange = 0, oldTextVal = text.val();
+	EhQuery("#body").delegate("#name", "change", function() {
 		textChange++;
 	});
 
@@ -1902,11 +1902,11 @@ test("delegate with change", function(){
 	equal( textChange, 1, "Change on text input." );
 
 	text.val(oldTextVal);
-	jQuery("#body").undelegate("#name", "change");
+	EhQuery("#body").undelegate("#name", "change");
 
 	// test blur/focus on password
-	var password = jQuery("#name"), passwordChange = 0, oldPasswordVal = password.val();
-	jQuery("#body").delegate("#name", "change", function() {
+	var password = EhQuery("#name"), passwordChange = 0, oldPasswordVal = password.val();
+	EhQuery("#body").delegate("#name", "change", function() {
 		passwordChange++;
 	});
 
@@ -1915,13 +1915,13 @@ test("delegate with change", function(){
 	equal( passwordChange, 1, "Change on password input." );
 
 	password.val(oldPasswordVal);
-	jQuery("#body").undelegate("#name", "change");
+	EhQuery("#body").undelegate("#name", "change");
 
 	// make sure die works
 
 	// die all changes
 	selectChange = 0;
-	jQuery("#body").undelegate("select[name='S1']", "change");
+	EhQuery("#body").undelegate("select[name='S1']", "change");
 	select[0].selectedIndex = select[0].selectedIndex ? 0 : 1;
 	select.trigger("change");
 	equal( selectChange, 0, "Die on click works." );
@@ -1932,7 +1932,7 @@ test("delegate with change", function(){
 	equal( selectChange, 0, "Die on keyup works." );
 
 	// die specific checkbox
-	jQuery("#body").undelegate("#check2", "change", checkboxFunction);
+	EhQuery("#body").undelegate("#check2", "change", checkboxFunction);
 	checkbox.trigger("change");
 	equal( checkboxChange, 1, "Die on checkbox." );
 });
@@ -1942,41 +1942,41 @@ test("delegate with submit", function() {
 
 	var count1 = 0, count2 = 0;
 
-	jQuery("#body").delegate("#testForm", "submit", function(ev) {
+	EhQuery("#body").delegate("#testForm", "submit", function(ev) {
 		count1++;
 		ev.preventDefault();
 	});
 
-	jQuery(document).delegate("body", "submit", function(ev) {
+	EhQuery(document).delegate("body", "submit", function(ev) {
 		count2++;
 		ev.preventDefault();
 	});
 
-	jQuery("#testForm input[name=sub1]").trigger("submit");
+	EhQuery("#testForm input[name=sub1]").trigger("submit");
 	equal( count1, 1, "Verify form submit." );
 	equal( count2, 1, "Verify body submit." );
 
-	jQuery("#body").undelegate();
-	jQuery(document).undelegate();
+	EhQuery("#body").undelegate();
+	EhQuery(document).undelegate();
 });
 
 test("undelegate() with only namespaces", function() {
 	expect(2);
 
-	var $delegate = jQuery("#liveHandlerOrder"),
+	var $delegate = EhQuery("#liveHandlerOrder"),
 		count = 0;
 
 	$delegate.delegate("a", "click.ns", function(e) {
 		count++;
 	});
 
-	jQuery("a", $delegate).eq(0).trigger("click.ns");
+	EhQuery("a", $delegate).eq(0).trigger("click.ns");
 
 	equal( count, 1, "delegated click.ns");
 
 	$delegate.undelegate(".ns");
 
-	jQuery("a", $delegate).eq(1).trigger("click.ns");
+	EhQuery("a", $delegate).eq(1).trigger("click.ns");
 
 	equal( count, 1, "no more .ns after undelegate");
 });
@@ -1986,17 +1986,17 @@ test("Non DOM element events", function() {
 
 	var o = {};
 
-	jQuery(o).bind("nonelementobj", function(e) {
+	EhQuery(o).bind("nonelementobj", function(e) {
 		ok( true, "Event on non-DOM object triggered" );
 	});
 
-	jQuery(o).trigger("nonelementobj");
+	EhQuery(o).trigger("nonelementobj");
 });
 
 test("inline handler returning false stops default", function() {
 	expect(1);
 
-	var markup = jQuery("<div><a href=\"#\" onclick=\"return false\">x</a></div>");
+	var markup = EhQuery("<div><a href=\"#\" onclick=\"return false\">x</a></div>");
 	markup.on( "click", function(e) {
 		ok( e.isDefaultPrevented(), "inline handler prevented default");
 		return false;
@@ -2008,25 +2008,25 @@ test("inline handler returning false stops default", function() {
 test("window resize", function() {
 	expect(2);
 
-	jQuery(window).off();
+	EhQuery(window).off();
 
-	jQuery(window).on( "resize", function(){
+	EhQuery(window).on( "resize", function(){
 		ok( true, "Resize event fired." );
 	}).trigger("resize").off("resize");
 
-	ok( !jQuery._data(window, "events"), "Make sure all the events are gone." );
+	ok( !EhQuery._data(window, "events"), "Make sure all the events are gone." );
 });
 
 test("focusin bubbles", function() {
 	expect(2);
 
-	var input = jQuery( "<input type='text' />" ).prependTo( "body" ),
+	var input = EhQuery( "<input type='text' />" ).prependTo( "body" ),
 		order = 0;
 
 	// focus the element so DOM focus won't fire
 	input[0].focus();
 
-	jQuery( "body" ).bind( "focusin.focusinBubblesTest", function(){
+	EhQuery( "body" ).bind( "focusin.focusinBubblesTest", function(){
 		equal( 1, order++, "focusin on the body second" );
 	});
 
@@ -2041,20 +2041,20 @@ test("focusin bubbles", function() {
 	// To make the next focus test work, we need to take focus off the input.
 	// This will fire another focusin event, so set order to reflect that.
 //	order = 1;
-//	jQuery("#text1")[0].focus();
+//	EhQuery("#text1")[0].focus();
 
-	// jQuery trigger, which calls DOM focus
+	// EhQuery trigger, which calls DOM focus
 	order = 0;
 	input.trigger( "focus" );
 
 	input.remove();
-	jQuery( "body" ).unbind( "focusin.focusinBubblesTest" );
+	EhQuery( "body" ).unbind( "focusin.focusinBubblesTest" );
 });
 
 test("custom events with colons (#3533, #8272)", function() {
 	expect(1);
 
-	var tab = jQuery("<table><tr><td>trigger</td></tr></table>").appendTo("body");
+	var tab = EhQuery("<table><tr><td>trigger</td></tr></table>").appendTo("body");
 	try {
 		tab.trigger("back:forth");
 		ok( true, "colon events don't throw" );
@@ -2069,10 +2069,10 @@ test(".on and .off", function() {
 	expect(9);
 	var counter, mixfn;
 
-	var $onandoff = jQuery("<div id=\"onandoff\"><p>on<b>and</b>off</p><div>worked<em>or</em>borked?</div></div>").appendTo("body");
+	var $onandoff = EhQuery("<div id=\"onandoff\"><p>on<b>and</b>off</p><div>worked<em>or</em>borked?</div></div>").appendTo("body");
 
 	// Simple case
-	jQuery( "#onandoff" )
+	EhQuery( "#onandoff" )
 		.on( "whip", function() {
 			ok( true, "whipped it good" );
 		})
@@ -2081,7 +2081,7 @@ test(".on and .off", function() {
 
 	// Direct events only
 	counter = 0;
-	jQuery( "#onandoff b" )
+	EhQuery( "#onandoff b" )
 		.on( "click", 5, function( e, trig ) {
 			counter += e.data + (trig || 9);	// twice, 5+9+5+17=36
 		})
@@ -2095,7 +2095,7 @@ test(".on and .off", function() {
 
 	// Delegated events only
 	counter = 0;
-	jQuery( "#onandoff" )
+	EhQuery( "#onandoff" )
 		.on( "click", "em", 5, function( e, trig ) {
 			counter += e.data + (trig || 9);	// twice, 5+9+5+17=36
 		})
@@ -2115,7 +2115,7 @@ test(".on and .off", function() {
 	mixfn = function(e, trig) {
 		counter += (e.data || 0) + (trig || 1);
 	};
-	jQuery( "#onandoff" )
+	EhQuery( "#onandoff" )
 		.on( " click  clack cluck ", "em", 2, mixfn )
 		.on( "cluck", "b", 7, mixfn )
 		.on( "cluck", mixfn )
@@ -2158,7 +2158,7 @@ test(".on and .off", function() {
 		.off( "click cluck" );
 
 	// We should have removed all the event handlers ... kinda hacky way to check this
-	var data = jQuery.data[ jQuery( "#onandoff" )[0].expando ] || {};
+	var data = EhQuery.data[ EhQuery( "#onandoff" )[0].expando ] || {};
 	equal( data["events"], undefined, "no events left" );
 
 	$onandoff.remove();
@@ -2167,7 +2167,7 @@ test(".on and .off", function() {
 test("special bind/delegate name mapping", function() {
 	expect( 7 );
 
-	jQuery.event.special["slap"] = {
+	EhQuery.event.special["slap"] = {
 		bindType: "click",
 		delegateType: "swing",
 		handle: function( event ) {
@@ -2179,11 +2179,11 @@ test("special bind/delegate name mapping", function() {
 		ok( true, "event " + event.type + " triggered" );
 	};
 
-	jQuery("<div><button id=\"mammy\">Are We Not Men?</button></div>")
-		.on( "slap", "button", jQuery.noop )
+	EhQuery("<div><button id=\"mammy\">Are We Not Men?</button></div>")
+		.on( "slap", "button", EhQuery.noop )
 		.on( "swing", "button", comeback )
 		.find( "button" )
-			.on( "slap", jQuery.noop )
+			.on( "slap", EhQuery.noop )
 			.on( "click", comeback )
 			.trigger( "click" )		// bindType-slap and click
 			.off( "slap" )
@@ -2198,9 +2198,9 @@ test("special bind/delegate name mapping", function() {
 			.trigger( "swing" )
 		.end()
 		.remove();
-	delete jQuery.event.special["slap"];
+	delete EhQuery.event.special["slap"];
 
-	jQuery.event.special["gutfeeling"] = {
+	EhQuery.event.special["gutfeeling"] = {
 		bindType: "click",
 		delegateType: "click",
 		handle: function( event ) {
@@ -2211,28 +2211,28 @@ test("special bind/delegate name mapping", function() {
 	};
 
 	// Ensure a special event isn't removed by its mapped type
-	jQuery( "<p>Gut Feeling</p>" )
-		.on( "click", jQuery.noop )
-		.on( "gutfeeling", jQuery.noop )
+	EhQuery( "<p>Gut Feeling</p>" )
+		.on( "click", EhQuery.noop )
+		.on( "gutfeeling", EhQuery.noop )
 		.off( "click" )
 		.trigger( "gutfeeling" )
 		.remove();
 
 	// Ensure special events are removed when only a namespace is provided
-	jQuery( "<p>Gut Feeling</p>" )
-		.on( "gutfeeling.Devo", jQuery.noop )
+	EhQuery( "<p>Gut Feeling</p>" )
+		.on( "gutfeeling.Devo", EhQuery.noop )
 		.off( ".Devo" )
 		.trigger( "gutfeeling" )
 		.remove();
 
 	// Ensure .one() events are removed after their maiden voyage
-	jQuery( "<p>Gut Feeling</p>" )
-		.one( "gutfeeling", jQuery.noop )
+	EhQuery( "<p>Gut Feeling</p>" )
+		.one( "gutfeeling", EhQuery.noop )
 		.trigger( "gutfeeling" )	// This one should
 		.trigger( "gutfeeling" )	// This one should not
 		.remove();
 
-	delete jQuery.event.special["gutfeeling"];
+	delete EhQuery.event.special["gutfeeling"];
 });
 
 test(".on and .off, selective mixed removal (#10705)", function() {
@@ -2243,7 +2243,7 @@ test(".on and .off, selective mixed removal (#10705)", function() {
 			ok( true, "triggered " + e.type );
 		};
 
-	jQuery( "<p>Strange Pursuit</p>" )
+	EhQuery( "<p>Strange Pursuit</p>" )
 		.on( "click", timingx )
 		.on( "click.duty", timingx )
 		.on( "click.now", timingx )
@@ -2262,7 +2262,7 @@ test(".on( event-map, null-selector, data ) #11130", function() {
 
 	expect( 1 );
 
-	var $p = jQuery("<p>Strange Pursuit</p>"),
+	var $p = EhQuery("<p>Strange Pursuit</p>"),
 		data = "bar",
 		map = {
 			"foo": function( event ) {
@@ -2279,10 +2279,10 @@ test("clone() delegated events (#11076)", function() {
 
 	var counter = { "center": 0, "fold": 0, "centerfold": 0 },
 		clicked = function( event ) {
-			counter[ jQuery(this).text().replace(/\s+/, "") ]++;
+			counter[ EhQuery(this).text().replace(/\s+/, "") ]++;
 		},
 		table =
-			jQuery( "<table><tr><td>center</td><td>fold</td></tr></table>" )
+			EhQuery( "<table><tr><td>center</td><td>fold</td></tr></table>" )
 			.on( "click", "tr", clicked )
 			.on( "click", "td:first-child", clicked )
 			.on( "click", "td:last-child", clicked ),
@@ -2300,10 +2300,10 @@ test("clone() delegated events (#11076)", function() {
 test("checkbox state (#3827)", function() {
 	expect( 9 );
 
-	var markup = jQuery("<div><input type=checkbox><div>").appendTo("#qunit-fixture"),
+	var markup = EhQuery("<div><input type=checkbox><div>").appendTo("#qunit-fixture"),
 		cb = markup.find("input")[0];
 
-	jQuery(cb).on( "click", function(){
+	EhQuery(cb).on( "click", function(){
 		equal( this.checked, false, "just-clicked checkbox is not checked" );
 	});
 	markup.on( "click", function(){
@@ -2316,21 +2316,21 @@ test("checkbox state (#3827)", function() {
 	cb.click();
 	equal( cb.checked, false, "native - checkbox is no longer checked" );
 
-	// jQuery click
+	// EhQuery click
 	cb.checked = true;
-	equal( cb.checked, true, "jQuery - checkbox is initially checked" );
-	jQuery( cb ).trigger("click");
-	equal( cb.checked, false, "jQuery - checkbox is no longer checked" );
+	equal( cb.checked, true, "EhQuery - checkbox is initially checked" );
+	EhQuery( cb ).trigger("click");
+	equal( cb.checked, false, "EhQuery - checkbox is no longer checked" );
 
 	// Handlers only; checkbox state remains false
-	jQuery( cb ).triggerHandler( "click" );
+	EhQuery( cb ).triggerHandler( "click" );
 });
 
 test("focus-blur order (#12868)", function() {
 	expect( 5 );
 
-	var $text = jQuery("#text1"),
-		$radio = jQuery("#radio1").trigger("focus"),
+	var $text = EhQuery("#text1"),
+		$radio = EhQuery("#radio1").trigger("focus"),
 		order;
 
 	// IE6-10 fire focus/blur events asynchronously; this is the resulting mess.
@@ -2373,7 +2373,7 @@ test("focus-blur order (#12868)", function() {
 test("hover event no longer special since 1.9", function() {
 	expect( 1 );
 
-	jQuery("<div>craft</div>")
+	EhQuery("<div>craft</div>")
 		.on( "hover", function( e ) {
 			equal( e.type, "hover", "I am hovering!" );
 		})
@@ -2385,8 +2385,8 @@ test("fixHooks extensions", function() {
 	expect( 2 );
 
 	// IE requires focusable elements to be visible, so append to body
-	var $fixture = jQuery( "<input type='text' id='hook-fixture' />" ).appendTo( "body" ),
-		saved = jQuery.event.fixHooks.click;
+	var $fixture = EhQuery( "<input type='text' id='hook-fixture' />" ).appendTo( "body" ),
+		saved = EhQuery.event.fixHooks.click;
 
 	// Ensure the property doesn't exist
 	$fixture.bind( "click", function( event ) {
@@ -2395,7 +2395,7 @@ test("fixHooks extensions", function() {
 	fireNative( $fixture[0], "click" );
 	$fixture.unbind( "click" );
 
-	jQuery.event.fixHooks.click = {
+	EhQuery.event.fixHooks.click = {
 		filter: function( event, originalEvent ) {
 			event.blurrinessLevel = 42;
 			return event;
@@ -2408,21 +2408,21 @@ test("fixHooks extensions", function() {
 	});
 	fireNative( $fixture[0], "click" );
 
-	delete jQuery.event.fixHooks.click;
+	delete EhQuery.event.fixHooks.click;
 	$fixture.unbind( "click" ).remove();
-	jQuery.event.fixHooks.click = saved;
+	EhQuery.event.fixHooks.click = saved;
 });
 
-testIframeWithCallback( "jQuery.ready promise", "event/promiseReady.html", function( isOk ) {
+testIframeWithCallback( "EhQuery.ready promise", "event/promiseReady.html", function( isOk ) {
 	expect(1);
 	ok( isOk, "$.when( $.ready ) works" );
 });
 
 // need PHP here to make the incepted IFRAME hang
 if ( hasPHP ) {
-	testIframeWithCallback( "jQuery.ready synchronous load with long loading subresources", "event/syncReady.html", function( isOk ) {
+	testIframeWithCallback( "EhQuery.ready synchronous load with long loading subresources", "event/syncReady.html", function( isOk ) {
 		expect(1);
-		ok( isOk, "jQuery loaded synchronously fires ready when the DOM can truly be interacted with" );
+		ok( isOk, "EhQuery loaded synchronously fires ready when the DOM can truly be interacted with" );
 	});
 }
 
@@ -2432,13 +2432,13 @@ if ( hasPHP ) {
 		order = [],
 		args = {};
 
-	notYetReady = !jQuery.isReady;
+	notYetReady = !EhQuery.isReady;
 
-	test("jQuery.isReady", function() {
+	test("EhQuery.isReady", function() {
 		expect(2);
 
-		equal(notYetReady, true, "jQuery.isReady should not be true before DOM ready");
-		equal(jQuery.isReady, true, "jQuery.isReady should be true once DOM is ready");
+		equal(notYetReady, true, "EhQuery.isReady should not be true before DOM ready");
+		equal(EhQuery.isReady, true, "EhQuery.isReady should be true once DOM is ready");
 	});
 
 	// Create an event handler.
@@ -2453,48 +2453,48 @@ if ( hasPHP ) {
 	}
 
 	// Bind to the ready event in every possible way.
-	jQuery(makeHandler("a"));
-	jQuery(document).ready(makeHandler("b"));
-	jQuery(document).bind("ready.readytest", makeHandler("c"));
+	EhQuery(makeHandler("a"));
+	EhQuery(document).ready(makeHandler("b"));
+	EhQuery(document).bind("ready.readytest", makeHandler("c"));
 
 	// Do it twice, just to be sure.
-	jQuery(makeHandler("d"));
-	jQuery(document).ready(makeHandler("e"));
-	jQuery(document).bind("ready.readytest", makeHandler("f"));
+	EhQuery(makeHandler("d"));
+	EhQuery(document).ready(makeHandler("e"));
+	EhQuery(document).bind("ready.readytest", makeHandler("f"));
 
 	noEarlyExecution = order.length === 0;
 
 	// This assumes that QUnit tests are run on DOM ready!
-	test("jQuery ready", function() {
+	test("EhQuery ready", function() {
 		expect(10);
 
 		ok(noEarlyExecution, "Handlers bound to DOM ready should not execute before DOM ready");
 
 		// Ensure execution order.
-		deepEqual(order, ["a", "b", "d", "e", "c", "f"], "Bound DOM ready handlers should execute in bind-order, but those bound with jQuery(document).bind( 'ready', fn ) will always execute last");
+		deepEqual(order, ["a", "b", "d", "e", "c", "f"], "Bound DOM ready handlers should execute in bind-order, but those bound with EhQuery(document).bind( 'ready', fn ) will always execute last");
 
 		// Ensure handler argument is correct.
-		equal(args["a"], jQuery, "Argument passed to fn in jQuery( fn ) should be jQuery");
-		equal(args["b"], jQuery, "Argument passed to fn in jQuery(document).ready( fn ) should be jQuery");
-		ok(args["c"] instanceof jQuery.Event, "Argument passed to fn in jQuery(document).bind( 'ready', fn ) should be an event object");
+		equal(args["a"], EhQuery, "Argument passed to fn in EhQuery( fn ) should be EhQuery");
+		equal(args["b"], EhQuery, "Argument passed to fn in EhQuery(document).ready( fn ) should be EhQuery");
+		ok(args["c"] instanceof EhQuery.Event, "Argument passed to fn in EhQuery(document).bind( 'ready', fn ) should be an event object");
 
 		order = [];
 
 		// Now that the ready event has fired, again bind to the ready event
 		// in every possible way. These event handlers should execute immediately.
-		jQuery(makeHandler("g"));
+		EhQuery(makeHandler("g"));
 		equal(order.pop(), "g", "Event handler should execute immediately");
-		equal(args["g"], jQuery, "Argument passed to fn in jQuery( fn ) should be jQuery");
+		equal(args["g"], EhQuery, "Argument passed to fn in EhQuery( fn ) should be EhQuery");
 
-		jQuery(document).ready(makeHandler("h"));
+		EhQuery(document).ready(makeHandler("h"));
 		equal(order.pop(), "h", "Event handler should execute immediately");
-		equal(args["h"], jQuery, "Argument passed to fn in jQuery(document).ready( fn ) should be jQuery");
+		equal(args["h"], EhQuery, "Argument passed to fn in EhQuery(document).ready( fn ) should be EhQuery");
 
-		jQuery(document).bind("ready.readytest", makeHandler("never"));
+		EhQuery(document).bind("ready.readytest", makeHandler("never"));
 		equal(order.length, 0, "Event handler should never execute since DOM ready has already passed");
 
 		// Cleanup.
-		jQuery(document).unbind("ready.readytest");
+		EhQuery(document).unbind("ready.readytest");
 	});
 
 })();
@@ -2502,30 +2502,30 @@ if ( hasPHP ) {
 test("change handler should be detached from element", function() {
 	expect( 2 );
 
-	var $fixture = jQuery( "<input type='text' id='change-ie-leak' />" ).appendTo( "body" );
+	var $fixture = EhQuery( "<input type='text' id='change-ie-leak' />" ).appendTo( "body" );
 
-	var originRemoveEvent =  jQuery.removeEvent;
+	var originRemoveEvent =  EhQuery.removeEvent;
 
 	var wrapperRemoveEvent =  function(elem, type, handle){
 		equal("change", type, "Event handler for 'change' event should be removed");
-		equal("change-ie-leak", jQuery(elem).attr("id"), "Event handler for 'change' event should be removed from appropriate element");
+		equal("change-ie-leak", EhQuery(elem).attr("id"), "Event handler for 'change' event should be removed from appropriate element");
 		originRemoveEvent(elem, type, handle);
 	};
 
-	jQuery.removeEvent = wrapperRemoveEvent ;
+	EhQuery.removeEvent = wrapperRemoveEvent ;
 
 	$fixture.bind( "change", function( event ) {});
 	$fixture.unbind( "change" );
 
 	$fixture.remove();
 
-	jQuery.removeEvent = originRemoveEvent;
+	EhQuery.removeEvent = originRemoveEvent;
 });
 
 asyncTest("trigger click on checkbox, fires change event", function() {
 	expect(1);
 
-	var check = jQuery("#check2");
+	var check = EhQuery("#check2");
 
 	check.on( "change", function() {
 		// get it?
@@ -2538,7 +2538,7 @@ asyncTest("trigger click on checkbox, fires change event", function() {
 test( "Namespace preserved when passed an Event (#12739)", function() {
 	expect( 4 );
 
-	var markup = jQuery(
+	var markup = EhQuery(
 			"<div id='parent'><div id='child'></div></div>"
 		),
 		triggered = 0,
@@ -2551,8 +2551,8 @@ test( "Namespace preserved when passed an Event (#12739)", function() {
 				triggered++;
 				e.handled = true;
 				equal( e.namespace, "bar", "namespace is bar" );
-				jQuery( e.target ).find("div").each(function() {
-					jQuery( this ).triggerHandler( e );
+				EhQuery( e.target ).find("div").each(function() {
+					EhQuery( this ).triggerHandler( e );
 				});
 			}
 		})
@@ -2561,8 +2561,8 @@ test( "Namespace preserved when passed an Event (#12739)", function() {
 		});
 
 	markup.trigger("foo.bar");
-	markup.trigger( jQuery.Event("foo.bar") );
-	fooEvent = jQuery.Event("foo");
+	markup.trigger( EhQuery.Event("foo.bar") );
+	fooEvent = EhQuery.Event("foo");
 	fooEvent.namespace = "bar";
 	markup.trigger( fooEvent );
 	markup.remove();
@@ -2572,9 +2572,9 @@ test( "Namespace preserved when passed an Event (#12739)", function() {
 
 test( "make sure events cloned correctly", 18, function() {
 	var clone,
-		fixture = jQuery("#qunit-fixture"),
-		checkbox = jQuery("#check1"),
-		p = jQuery("#firstp");
+		fixture = EhQuery("#qunit-fixture"),
+		checkbox = EhQuery("#check1"),
+		p = EhQuery("#firstp");
 
 	fixture.on( "click change", function( event, result ) {
 		ok( result,  event.type + " on original element is fired" );
@@ -2623,7 +2623,7 @@ test( "make sure events cloned correctly", 18, function() {
 
 test( "Check order of focusin/focusout events", 2, function() {
 	var focus, blur,
-		input = jQuery("#name");
+		input = EhQuery("#name");
 
 	input.on("focus", function() {
 		focus = true;
@@ -2642,7 +2642,7 @@ test( "Check order of focusin/focusout events", 2, function() {
 	input.trigger("focus");
 
 	// then lose it
-	jQuery("#search").trigger("focus");
+	EhQuery("#search").trigger("focus");
 
 	// cleanup
 	input.off();
@@ -2655,7 +2655,7 @@ test( "String.prototype.namespace does not cause trigger() to throw (#13360)", f
 	String.prototype.namespace = function() {};
 
 	try {
-		jQuery("<p>").trigger("foo.bar");
+		EhQuery("<p>").trigger("foo.bar");
 	} catch( e ) {
 		errored = true;
 	}

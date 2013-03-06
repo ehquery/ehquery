@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr" id="html">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>jQuery Local File Test</title>
+	<title>EhQuery Local File Test</title>
 	<!-- Includes -->
 	<script src="jquery.js"></script>
 	<style>
@@ -11,7 +11,7 @@
 	</style>
 </head>
 <body>
-	<h1>jQuery Local File Test</h1>
+	<h1>EhQuery Local File Test</h1>
 	<h2>
 		Introduction
 	</h2>
@@ -47,12 +47,12 @@
 	<ul id="log">
 	</ul>
 	<script>
-		var logUL = jQuery( "#log" );
+		var logUL = EhQuery( "#log" );
 		function doLog( message, args ) {
-			jQuery( "<li />").appendTo( logUL ).text( message + ': "' + Array.prototype.join.call( args, '" - "' ) + '"' );
+			EhQuery( "<li />").appendTo( logUL ).text( message + ': "' + Array.prototype.join.call( args, '" - "' ) + '"' );
 		}
-		jQuery.ajax( "./data/badjson.js" , {
-			context: jQuery( "#success" ),
+		EhQuery.ajax( "./data/badjson.js" , {
+			context: EhQuery( "#success" ),
 			dataType: "text"
 		}).success(function( data, _, xhr ) {
 			doLog( "Success (" + xhr.status + ")" , arguments );
@@ -61,8 +61,8 @@
 			doLog( "Success (" + xhr.status + ")" , arguments );
 			this.addClass( "error" ).text( "FAIL" );
 		});
-		jQuery.ajax( "./data/doesnotexist.ext" , {
-			context: jQuery( "#error" ),
+		EhQuery.ajax( "./data/doesnotexist.ext" , {
+			context: EhQuery( "#error" ),
 			dataType: "text"
 		}).error(function( xhr ) {
 			doLog( "Error (" + xhr.status + ")" , arguments );

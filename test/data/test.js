@@ -1,3 +1,3 @@
 var testBar = "bar";
-jQuery("#ap").html("bar");
+EhQuery("#ap").html("bar");
 ok( true, "test.js executed");

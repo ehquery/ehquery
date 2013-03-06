@@ -28,11 +28,11 @@ wrapMap.optgroup = wrapMap.option;
 wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.col = wrapMap.thead;
 wrapMap.th = wrapMap.td;
 
-jQuery.fn.extend({
+EhQuery.fn.extend({
 	text: function( value ) {
-		return jQuery.access( this, function( value ) {
+		return EhQuery.access( this, function( value ) {
 			return value === undefined ?
-				jQuery.text( this ) :
+				EhQuery.text( this ) :
 				this.empty().append( ( this[ 0 ] && this[ 0 ].ownerDocument || document ).createTextNode( value ) );
 		}, null, value, arguments.length );
 	},
@@ -40,16 +40,16 @@ jQuery.fn.extend({
 	wrapAll: function( html ) {
 		var wrap;
 
-		if ( jQuery.isFunction( html ) ) {
+		if ( EhQuery.isFunction( html ) ) {
 			return this.each(function( i ) {
-				jQuery( this ).wrapAll( html.call(this, i) );
+				EhQuery( this ).wrapAll( html.call(this, i) );
 			});
 		}
 
 		if ( this[ 0 ] ) {
 
 			// The elements to wrap the target around
-			wrap = jQuery( html, this[ 0 ].ownerDocument ).eq( 0 ).clone( true );
+			wrap = EhQuery( html, this[ 0 ].ownerDocument ).eq( 0 ).clone( true );
 
 			if ( this[ 0 ].parentNode ) {
 				wrap.insertBefore( this[ 0 ] );
@@ -70,14 +70,14 @@ jQuery.fn.extend({
 	},
 
 	wrapInner: function( html ) {
-		if ( jQuery.isFunction( html ) ) {
+		if ( EhQuery.isFunction( html ) ) {
 			return this.each(function( i ) {
-				jQuery( this ).wrapInner( html.call(this, i) );
+				EhQuery( this ).wrapInner( html.call(this, i) );
 			});
 		}
 
 		return this.each(function() {
-			var self = jQuery( this ),
+			var self = EhQuery( this ),
 				contents = self.contents();
 
 			if ( contents.length ) {
@@ -90,17 +90,17 @@ jQuery.fn.extend({
 	},
 
 	wrap: function( html ) {
-		var isFunction = jQuery.isFunction( html );
+		var isFunction = EhQuery.isFunction( html );
 
 		return this.each(function( i ) {
-			jQuery( this ).wrapAll( isFunction ? html.call(this, i) : html );
+			EhQuery( this ).wrapAll( isFunction ? html.call(this, i) : html );
 		});
 	},
 
 	unwrap: function() {
 		return this.parent().each(function() {
-			if ( !jQuery.nodeName( this, "body" ) ) {
-				jQuery( this ).replaceWith( this.childNodes );
+			if ( !EhQuery.nodeName( this, "body" ) ) {
+				EhQuery( this ).replaceWith( this.childNodes );
 			}
 		}).end();
 	},
@@ -146,13 +146,13 @@ jQuery.fn.extend({
 		for ( ; i < l; i++ ) {
 			elem = this[ i ];
 
-			if ( !selector || jQuery.filter( selector, [ elem ] ).length > 0 ) {
+			if ( !selector || EhQuery.filter( selector, [ elem ] ).length > 0 ) {
 				if ( !keepData && elem.nodeType === 1 ) {
-					jQuery.cleanData( getAll( elem ) );
+					EhQuery.cleanData( getAll( elem ) );
 				}
 
 				if ( elem.parentNode ) {
-					if ( keepData && jQuery.contains( elem.ownerDocument, elem ) ) {
+					if ( keepData && EhQuery.contains( elem.ownerDocument, elem ) ) {
 						setGlobalEval( getAll( elem, "script" ) );
 					}
 					elem.parentNode.removeChild( elem );
@@ -174,7 +174,7 @@ jQuery.fn.extend({
 			if ( elem.nodeType === 1 ) {
 
 				// Prevent memory leaks
-				jQuery.cleanData( getAll( elem, false ) );
+				EhQuery.cleanData( getAll( elem, false ) );
 
 				// Remove any remaining nodes
 				elem.textContent = "";
@@ -189,12 +189,12 @@ jQuery.fn.extend({
 		deepDataAndEvents = deepDataAndEvents == null ? dataAndEvents : deepDataAndEvents;
 
 		return this.map( function () {
-			return jQuery.clone( this, dataAndEvents, deepDataAndEvents );
+			return EhQuery.clone( this, dataAndEvents, deepDataAndEvents );
 		});
 	},
 
 	html: function( value ) {
-		return jQuery.access( this, function( value ) {
+		return EhQuery.access( this, function( value ) {
 			var elem = this[ 0 ] || {},
 				i = 0,
 				l = this.length;
@@ -215,7 +215,7 @@ jQuery.fn.extend({
 
 						// Remove element nodes and prevent memory leaks
 						if ( elem.nodeType === 1 ) {
-							jQuery.cleanData( getAll( elem, false ) );
+							EhQuery.cleanData( getAll( elem, false ) );
 							elem.innerHTML = value;
 						}
 					}
@@ -233,12 +233,12 @@ jQuery.fn.extend({
 	},
 
 	replaceWith: function( value ) {
-		var isFunction = jQuery.isFunction( value );
+		var isFunction = EhQuery.isFunction( value );
 
 		// Make sure that the elements are removed from the DOM before they are inserted
 		// this can help fix replacing a parent with child elements
 		if ( !isFunction && typeof value !== "string" ) {
-			value = jQuery( value ).not( this ).detach();
+			value = EhQuery( value ).not( this ).detach();
 		}
 
 		return value !== "" ?
@@ -247,7 +247,7 @@ jQuery.fn.extend({
 					parent = this.parentNode;
 
 				if ( parent ) {
-					jQuery( this ).remove();
+					EhQuery( this ).remove();
 					parent.insertBefore( elem, next );
 				}
 			}) :
@@ -269,10 +269,10 @@ jQuery.fn.extend({
 			set = this,
 			iNoClone = l - 1,
 			value = args[ 0 ],
-			isFunction = jQuery.isFunction( value );
+			isFunction = EhQuery.isFunction( value );
 
 		// We can't cloneNode fragments that contain checked, in WebKit
-		if ( isFunction || !( l <= 1 || typeof value !== "string" || jQuery.support.checkClone || !rchecked.test( value ) ) ) {
+		if ( isFunction || !( l <= 1 || typeof value !== "string" || EhQuery.support.checkClone || !rchecked.test( value ) ) ) {
 			return this.each(function( index ) {
 				var self = set.eq( index );
 				if ( isFunction ) {
@@ -283,7 +283,7 @@ jQuery.fn.extend({
 		}
 
 		if ( l ) {
-			fragment = jQuery.buildFragment( args, this[ 0 ].ownerDocument, false, this );
+			fragment = EhQuery.buildFragment( args, this[ 0 ].ownerDocument, false, this );
 			first = fragment.firstChild;
 
 			if ( fragment.childNodes.length === 1 ) {
@@ -291,8 +291,8 @@ jQuery.fn.extend({
 			}
 
 			if ( first ) {
-				table = table && jQuery.nodeName( first, "tr" );
-				scripts = jQuery.map( getAll( fragment, "script" ), disableScript );
+				table = table && EhQuery.nodeName( first, "tr" );
+				scripts = EhQuery.map( getAll( fragment, "script" ), disableScript );
 				hasScripts = scripts.length;
 
 				// Use the original fragment for the last item instead of the first because it can end up
@@ -301,18 +301,18 @@ jQuery.fn.extend({
 					node = fragment;
 
 					if ( i !== iNoClone ) {
-						node = jQuery.clone( node, true, true );
+						node = EhQuery.clone( node, true, true );
 
 						// Keep references to cloned scripts for later restoration
 						if ( hasScripts ) {
 							// Support: QtWebKit
-							// jQuery.merge because core_push.apply(_, arraylike) throws
-							jQuery.merge( scripts, getAll( node, "script" ) );
+							// EhQuery.merge because core_push.apply(_, arraylike) throws
+							EhQuery.merge( scripts, getAll( node, "script" ) );
 						}
 					}
 
 					callback.call(
-						table && jQuery.nodeName( this[ i ], "table" ) ?
+						table && EhQuery.nodeName( this[ i ], "table" ) ?
 							findOrAppend( this[ i ], "tbody" ) :
 							this[ i ],
 						node,
@@ -324,17 +324,17 @@ jQuery.fn.extend({
 					doc = scripts[ scripts.length - 1 ].ownerDocument;
 
 					// Reenable scripts
-					jQuery.map( scripts, restoreScript );
+					EhQuery.map( scripts, restoreScript );
 
 					// Evaluate executable scripts on first document insertion
 					for ( i = 0; i < hasScripts; i++ ) {
 						node = scripts[ i ];
 						if ( rscriptType.test( node.type || "" ) &&
-							!data_priv.access( node, "globalEval" ) && jQuery.contains( doc, node ) ) {
+							!data_priv.access( node, "globalEval" ) && EhQuery.contains( doc, node ) ) {
 
 							if ( node.src ) {
 								// Hope ajax is available...
-								jQuery.ajax({
+								EhQuery.ajax({
 									url: node.src,
 									type: "GET",
 									dataType: "script",
@@ -343,7 +343,7 @@ jQuery.fn.extend({
 									"throws": true
 								});
 							} else {
-								jQuery.globalEval( node.textContent.replace( rcleanScript, "" ) );
+								EhQuery.globalEval( node.textContent.replace( rcleanScript, "" ) );
 							}
 						}
 					}
@@ -355,23 +355,23 @@ jQuery.fn.extend({
 	}
 });
 
-jQuery.each({
+EhQuery.each({
 	appendTo: "append",
 	prependTo: "prepend",
 	insertBefore: "before",
 	insertAfter: "after",
 	replaceAll: "replaceWith"
 }, function( name, original ) {
-	jQuery.fn[ name ] = function( selector ) {
+	EhQuery.fn[ name ] = function( selector ) {
 		var elems,
 			ret = [],
-			insert = jQuery( selector ),
+			insert = EhQuery( selector ),
 			last = insert.length - 1,
 			i = 0;
 
 		for ( ; i <= last; i++ ) {
 			elems = i === last ? this : this.clone( true );
-			jQuery( insert[ i ] )[ original ]( elems );
+			EhQuery( insert[ i ] )[ original ]( elems );
 
 			// Support: QtWebKit
 			// .get() because core_push.apply(_, arraylike) throws
@@ -382,15 +382,15 @@ jQuery.each({
 	};
 });
 
-jQuery.extend({
+EhQuery.extend({
 	clone: function( elem, dataAndEvents, deepDataAndEvents ) {
 		var i, l, srcElements, destElements,
 			clone = elem.cloneNode( true ),
-			inPage = jQuery.contains( elem.ownerDocument, elem );
+			inPage = EhQuery.contains( elem.ownerDocument, elem );
 
 		// Support: IE >=9
 		// Fix Cloning issues
-		if ( !jQuery.support.noCloneChecked && ( elem.nodeType === 1 || elem.nodeType === 11 ) && !jQuery.isXMLDoc( elem ) ) {
+		if ( !EhQuery.support.noCloneChecked && ( elem.nodeType === 1 || elem.nodeType === 11 ) && !EhQuery.isXMLDoc( elem ) ) {
 
 			// We eschew Sizzle here for performance reasons: http://jsperf.com/getall-vs-sizzle/2
 			destElements = getAll( clone );
@@ -438,10 +438,10 @@ jQuery.extend({
 			if ( elem || elem === 0 ) {
 
 				// Add nodes directly
-				if ( jQuery.type( elem ) === "object" ) {
+				if ( EhQuery.type( elem ) === "object" ) {
 					// Support: QtWebKit
-					// jQuery.merge because core_push.apply(_, arraylike) throws
-					jQuery.merge( nodes, elem.nodeType ? [ elem ] : elem );
+					// EhQuery.merge because core_push.apply(_, arraylike) throws
+					EhQuery.merge( nodes, elem.nodeType ? [ elem ] : elem );
 
 				// Convert non-html into a text node
 				} else if ( !rhtml.test( elem ) ) {
@@ -463,8 +463,8 @@ jQuery.extend({
 					}
 
 					// Support: QtWebKit
-					// jQuery.merge because core_push.apply(_, arraylike) throws
-					jQuery.merge( nodes, tmp.childNodes );
+					// EhQuery.merge because core_push.apply(_, arraylike) throws
+					EhQuery.merge( nodes, tmp.childNodes );
 
 					// Remember the top-level container
 					tmp = fragment.firstChild;
@@ -484,11 +484,11 @@ jQuery.extend({
 
 			// #4087 - If origin and destination elements are the same, and this is
 			// that element, do not do anything
-			if ( selection && jQuery.inArray( elem, selection ) !== -1 ) {
+			if ( selection && EhQuery.inArray( elem, selection ) !== -1 ) {
 				continue;
 			}
 
-			contains = jQuery.contains( elem.ownerDocument, elem );
+			contains = EhQuery.contains( elem.ownerDocument, elem );
 
 			// Append to fragment
 			tmp = getAll( fragment.appendChild( elem ), "script" );
@@ -516,23 +516,23 @@ jQuery.extend({
 		var data, elem, type,
 			l = elems.length,
 			i = 0,
-			special = jQuery.event.special;
+			special = EhQuery.event.special;
 
 		for ( ; i < l; i++ ) {
 			elem = elems[ i ];
 
-			if ( acceptData || jQuery.acceptData( elem ) ) {
+			if ( acceptData || EhQuery.acceptData( elem ) ) {
 
 				data = data_priv.access( elem );
 
 				if ( data ) {
 					for ( type in data.events ) {
 						if ( special[ type ] ) {
-							jQuery.event.remove( elem, type );
+							EhQuery.event.remove( elem, type );
 
-						// This is a shortcut to avoid jQuery.event.remove's overhead
+						// This is a shortcut to avoid EhQuery.event.remove's overhead
 						} else {
-							jQuery.removeEvent( elem, type, data.handle );
+							EhQuery.removeEvent( elem, type, data.handle );
 						}
 					}
 				}
@@ -587,7 +587,7 @@ function cloneCopyEvent( src, dest ) {
 	// 1. Copy private data: events, handlers, etc.
 	if ( data_priv.hasData( src ) ) {
 		pdataOld = data_priv.access( src );
-		pdataCur = jQuery.extend( {}, pdataOld );
+		pdataCur = EhQuery.extend( {}, pdataOld );
 		events = pdataOld.events;
 
 		data_priv.set( dest, pdataCur );
@@ -598,7 +598,7 @@ function cloneCopyEvent( src, dest ) {
 
 			for ( type in events ) {
 				for ( i = 0, l = events[ type ].length; i < l; i++ ) {
-					jQuery.event.add( dest, type, events[ type ][ i ] );
+					EhQuery.event.add( dest, type, events[ type ][ i ] );
 				}
 			}
 		}
@@ -607,7 +607,7 @@ function cloneCopyEvent( src, dest ) {
 	// 2. Copy user data
 	if ( data_user.hasData( src ) ) {
 		udataOld = data_user.access( src );
-		udataCur = jQuery.extend( {}, udataOld );
+		udataCur = EhQuery.extend( {}, udataOld );
 
 		data_user.set( dest, udataCur );
 	}
@@ -619,8 +619,8 @@ function getAll( context, tag ) {
 			context.querySelectorAll ? context.querySelectorAll( tag || "*" ) :
 			[];
 
-	return tag === undefined || tag && jQuery.nodeName( context, tag ) ?
-		jQuery.merge( [ context ], ret ) :
+	return tag === undefined || tag && EhQuery.nodeName( context, tag ) ?
+		EhQuery.merge( [ context ], ret ) :
 		ret;
 }
 

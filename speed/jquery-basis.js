@@ -1,5 +1,5 @@
 /*!
- * jQuery JavaScript Library v1.4.2
+ * EhQuery JavaScript Library v1.4.2
  * http://jquery.com/
  *
  * Copyright 2010, John Resig
@@ -15,14 +15,14 @@
  */
 (function( window, undefined ) {
 
-// Define a local copy of jQuery
-var jQuery = function( selector, context ) {
-		// The jQuery object is actually just the init constructor 'enhanced'
-		return new jQuery.fn.init( selector, context );
+// Define a local copy of EhQuery
+var EhQuery = function( selector, context ) {
+		// The EhQuery object is actually just the init constructor 'enhanced'
+		return new EhQuery.fn.init( selector, context );
 	},
 
-	// Map over jQuery in case of overwrite
-	_jQuery = window.jQuery,
+	// Map over EhQuery in case of overwrite
+	_EhQuery = window.EhQuery,
 
 	// Map over the $ in case of overwrite
 	_$ = window.$,
@@ -30,8 +30,8 @@ var jQuery = function( selector, context ) {
 	// Use the correct document accordingly with window argument (sandbox)
 	document = window.document,
 
-	// A central reference to the root jQuery(document)
-	rootjQuery,
+	// A central reference to the root EhQuery(document)
+	rootEhQuery,
 
 	// A simple way to check for HTML strings or ID strings
 	// (both of which we optimize for)
@@ -49,15 +49,15 @@ var jQuery = function( selector, context ) {
 	// Match a standalone tag
 	rsingleTag = /^<(\w+)\s*\/?>(?:<\/\1>)?$/,
 
-	// Keep a UserAgent string for use with jQuery.browser
+	// Keep a UserAgent string for use with EhQuery.browser
 	userAgent = navigator.userAgent,
 
 	// For matching the engine and version of the browser
 	browserMatch,
-	
+
 	// Has the ready events already been bound?
 	readyBound = false,
-	
+
 	// The functions to execute on DOM ready
 	readyList = [],
 
@@ -71,7 +71,7 @@ var jQuery = function( selector, context ) {
 	slice = Array.prototype.slice,
 	indexOf = Array.prototype.indexOf;
 
-jQuery.fn = jQuery.prototype = {
+EhQuery.fn = EhQuery.prototype = {
 	init: function( selector, context ) {
 		var match, elem, ret, doc;
 
@@ -86,7 +86,7 @@ jQuery.fn = jQuery.prototype = {
 			this.length = 1;
 			return this;
 		}
-		
+
 		// The body element only exists once, optimize finding it
 		if ( selector === "body" && !context ) {
 			this.context = document;
@@ -113,9 +113,9 @@ jQuery.fn = jQuery.prototype = {
 					ret = rsingleTag.exec( selector );
 
 					if ( ret ) {
-						if ( jQuery.isPlainObject( context ) ) {
+						if ( EhQuery.isPlainObject( context ) ) {
 							selector = [ document.createElement( ret[1] ) ];
-							jQuery.fn.attr.call( selector, context, true );
+							EhQuery.fn.attr.call( selector, context, true );
 
 						} else {
 							selector = [ doc.createElement( ret[1] ) ];
@@ -125,9 +125,9 @@ jQuery.fn = jQuery.prototype = {
 						ret = buildFragment( [ match[1] ], [ doc ] );
 						selector = (ret.cacheable ? ret.fragment.cloneNode(true) : ret.fragment).childNodes;
 					}
-					
-					return jQuery.merge( this, selector );
-					
+
+					return EhQuery.merge( this, selector );
+
 				// HANDLE: $("#id")
 				} else {
 					elem = document.getElementById( match[2] );
@@ -136,10 +136,10 @@ jQuery.fn = jQuery.prototype = {
 						// Handle the case where IE and Opera return items
 						// by name instead of ID
 						if ( elem.id !== match[2] ) {
-							return rootjQuery.find( selector );
+							return rootEhQuery.find( selector );
 						}
 
-						// Otherwise, we inject the element directly into the jQuery object
+						// Otherwise, we inject the element directly into the EhQuery object
 						this.length = 1;
 						this[0] = elem;
 					}
@@ -154,22 +154,22 @@ jQuery.fn = jQuery.prototype = {
 				this.selector = selector;
 				this.context = document;
 				selector = document.getElementsByTagName( selector );
-				return jQuery.merge( this, selector );
+				return EhQuery.merge( this, selector );
 
 			// HANDLE: $(expr, $(...))
 			} else if ( !context || context.jquery ) {
-				return (context || rootjQuery).find( selector );
+				return (context || rootEhQuery).find( selector );
 
 			// HANDLE: $(expr, context)
 			// (which is just equivalent to: $(context).find(expr)
 			} else {
-				return jQuery( context ).find( selector );
+				return EhQuery( context ).find( selector );
 			}
 
 		// HANDLE: $(function)
 		// Shortcut for document ready
-		} else if ( jQuery.isFunction( selector ) ) {
-			return rootjQuery.ready( selector );
+		} else if ( EhQuery.isFunction( selector ) ) {
+			return rootEhQuery.ready( selector );
 		}
 
 		if (selector.selector !== undefined) {
@@ -177,16 +177,16 @@ jQuery.fn = jQuery.prototype = {
 			this.context = selector.context;
 		}
 
-		return jQuery.makeArray( selector, this );
+		return EhQuery.makeArray( selector, this );
 	},
 
 	// Start with an empty selector
 	selector: "",
 
-	// The current version of jQuery being used
+	// The current version of EhQuery being used
 	jquery: "1.4.2",
 
-	// The default length of a jQuery object is 0
+	// The default length of a EhQuery object is 0
 	length: 0,
 
 	// The number of elements contained in the matched element set
@@ -213,14 +213,14 @@ jQuery.fn = jQuery.prototype = {
 	// Take an array of elements and push it onto the stack
 	// (returning the new matched element set)
 	pushStack: function( elems, name, selector ) {
-		// Build a new jQuery matched element set
-		var ret = jQuery();
+		// Build a new EhQuery matched element set
+		var ret = EhQuery();
 
-		if ( jQuery.isArray( elems ) ) {
+		if ( EhQuery.isArray( elems ) ) {
 			push.apply( ret, elems );
-		
+
 		} else {
-			jQuery.merge( ret, elems );
+			EhQuery.merge( ret, elems );
 		}
 
 		// Add the old object onto the stack (as a reference)
@@ -242,17 +242,17 @@ jQuery.fn = jQuery.prototype = {
 	// (You can seed the arguments with an array of args, but this is
 	// only used internally.)
 	each: function( callback, args ) {
-		return jQuery.each( this, callback, args );
+		return EhQuery.each( this, callback, args );
 	},
-	
+
 	ready: function( fn ) {
 		// Attach the listeners
-		jQuery.bindReady();
+		EhQuery.bindReady();
 
 		// If the DOM is already ready
-		if ( jQuery.isReady ) {
+		if ( EhQuery.isReady ) {
 			// Execute the function immediately
-			fn.call( document, jQuery );
+			fn.call( document, EhQuery );
 
 		// Otherwise, remember the function for later
 		} else if ( readyList ) {
@@ -262,7 +262,7 @@ jQuery.fn = jQuery.prototype = {
 
 		return this;
 	},
-	
+
 	eq: function( i ) {
 		return i === -1 ?
 			this.slice( i ) :
@@ -283,26 +283,26 @@ jQuery.fn = jQuery.prototype = {
 	},
 
 	map: function( callback ) {
-		return this.pushStack( jQuery.map(this, function( elem, i ) {
+		return this.pushStack( EhQuery.map(this, function( elem, i ) {
 			return callback.call( elem, i, elem );
 		}));
 	},
-	
+
 	end: function() {
-		return this.prevObject || jQuery(null);
+		return this.prevObject || EhQuery(null);
 	},
 
 	// For internal use only.
-	// Behaves like an Array's method, not like a jQuery method.
+	// Behaves like an Array's method, not like a EhQuery method.
 	push: push,
 	sort: [].sort,
 	splice: [].splice
 };
 
-// Give the init function the jQuery prototype for later instantiation
-jQuery.fn.init.prototype = jQuery.fn;
+// Give the init function the EhQuery prototype for later instantiation
+EhQuery.fn.init.prototype = EhQuery.fn;
 
-jQuery.extend = jQuery.fn.extend = function() {
+EhQuery.extend = EhQuery.fn.extend = function() {
 	// copy reference to target object
 	var target = arguments[0] || {}, i = 1, length = arguments.length, deep = false, options, name, src, copy;
 
@@ -315,11 +315,11 @@ jQuery.extend = jQuery.fn.extend = function() {
 	}
 
 	// Handle case when target is a string or something (possible in deep copy)
-	if ( typeof target !== "object" && !jQuery.isFunction(target) ) {
+	if ( typeof target !== "object" && !EhQuery.isFunction(target) ) {
 		target = {};
 	}
 
-	// extend jQuery itself if only one argument is passed
+	// extend EhQuery itself if only one argument is passed
 	if ( length === i ) {
 		target = this;
 		--i;
@@ -339,12 +339,12 @@ jQuery.extend = jQuery.fn.extend = function() {
 				}
 
 				// Recurse if we're merging object literal values or arrays
-				if ( deep && copy && ( jQuery.isPlainObject(copy) || jQuery.isArray(copy) ) ) {
-					var clone = src && ( jQuery.isPlainObject(src) || jQuery.isArray(src) ) ? src
-						: jQuery.isArray(copy) ? [] : {};
+				if ( deep && copy && ( EhQuery.isPlainObject(copy) || EhQuery.isArray(copy) ) ) {
+					var clone = src && ( EhQuery.isPlainObject(src) || EhQuery.isArray(src) ) ? src
+						: EhQuery.isArray(copy) ? [] : {};
 
 					// Never move original objects, clone them
-					target[ name ] = jQuery.extend( deep, clone, copy );
+					target[ name ] = EhQuery.extend( deep, clone, copy );
 
 				// Don't bring in undefined values
 				} else if ( copy !== undefined ) {
@@ -358,38 +358,38 @@ jQuery.extend = jQuery.fn.extend = function() {
 	return target;
 };
 
-jQuery.extend({
+EhQuery.extend({
 	noConflict: function( deep ) {
 		window.$ = _$;
 
 		if ( deep ) {
-			window.jQuery = _jQuery;
+			window.EhQuery = _EhQuery;
 		}
 
-		return jQuery;
+		return EhQuery;
 	},
-	
+
 	// Is the DOM ready to be used? Set to true once it occurs.
 	isReady: false,
-	
+
 	// Handle when the DOM is ready
 	ready: function() {
 		// Make sure that the DOM is not already loaded
-		if ( !jQuery.isReady ) {
+		if ( !EhQuery.isReady ) {
 			// Make sure body exists, at least, in case IE gets a little overzealous (ticket #5443).
 			if ( !document.body ) {
-				return setTimeout( jQuery.ready, 13 );
+				return setTimeout( EhQuery.ready, 13 );
 			}
 
 			// Remember that the DOM is ready
-			jQuery.isReady = true;
+			EhQuery.isReady = true;
 
 			// If there are functions bound, to execute
 			if ( readyList ) {
 				// Execute all of them
 				var fn, i = 0;
 				while ( (fn = readyList[ i++ ]) ) {
-					fn.call( document, jQuery );
+					fn.call( document, EhQuery );
 				}
 
 				// Reset the list of functions
@@ -397,12 +397,12 @@ jQuery.extend({
 			}
 
 			// Trigger any bound ready events
-			if ( jQuery.fn.triggerHandler ) {
-				jQuery( document ).triggerHandler( "ready" );
+			if ( EhQuery.fn.triggerHandler ) {
+				EhQuery( document ).triggerHandler( "ready" );
 			}
 		}
 	},
-	
+
 	bindReady: function() {
 		if ( readyBound ) {
 			return;
@@ -413,25 +413,25 @@ jQuery.extend({
 		// Catch cases where $(document).ready() is called after the
 		// browser event has already occurred.
 		if ( document.readyState === "complete" ) {
-			return jQuery.ready();
+			return EhQuery.ready();
 		}
 
 		// Mozilla, Opera and webkit nightlies currently support this event
 		if ( document.addEventListener ) {
 			// Use the handy event callback
 			document.addEventListener( "DOMContentLoaded", DOMContentLoaded, false );
-			
+
 			// A fallback to window.onload, that will always work
-			window.addEventListener( "load", jQuery.ready, false );
+			window.addEventListener( "load", EhQuery.ready, false );
 
 		// If IE event model is used
 		} else if ( document.attachEvent ) {
 			// ensure firing before onload,
 			// maybe late but safe also for iframes
 			document.attachEvent("onreadystatechange", DOMContentLoaded);
-			
+
 			// A fallback to window.onload, that will always work
-			window.attachEvent( "onload", jQuery.ready );
+			window.attachEvent( "onload", EhQuery.ready );
 
 			// If IE and not a frame
 			// continually check to see if the document is ready
@@ -465,20 +465,20 @@ jQuery.extend({
 		if ( !obj || toString.call(obj) !== "[object Object]" || obj.nodeType || obj.setInterval ) {
 			return false;
 		}
-		
+
 		// Not own constructor property must be Object
 		if ( obj.constructor
 			&& !hasOwnProperty.call(obj, "constructor")
 			&& !hasOwnProperty.call(obj.constructor.prototype, "isPrototypeOf") ) {
 			return false;
 		}
-		
+
 		// Own properties are enumerated firstly, so to speed up,
 		// if last one is own, then all properties are own.
-	
+
 		var key;
 		for ( key in obj ) {}
-		
+
 		return key === undefined || hasOwnProperty.call( obj, key );
 	},
 
@@ -488,19 +488,19 @@ jQuery.extend({
 		}
 		return true;
 	},
-	
+
 	error: function( msg ) {
 		throw msg;
 	},
-	
+
 	parseJSON: function( data ) {
 		if ( typeof data !== "string" || !data ) {
 			return null;
 		}
 
 		// Make sure leading/trailing whitespace is removed (IE can't handle it)
-		data = jQuery.trim( data );
-		
+		data = EhQuery.trim( data );
+
 		// Make sure the incoming data is actual JSON
 		// Logic borrowed from http://json.org/json2.js
 		if ( /^[\],:{}\s]*$/.test(data.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, "@")
@@ -513,7 +513,7 @@ jQuery.extend({
 				(new Function("return " + data))();
 
 		} else {
-			jQuery.error( "Invalid JSON: " + data );
+			EhQuery.error( "Invalid JSON: " + data );
 		}
 	},
 
@@ -527,7 +527,7 @@ jQuery.extend({
 			var head = document.head || document.getElementsByTagName("head")[0] || document.documentElement,
 				script = document.createElement("script");
 
-			if ( jQuery.support.scriptEval ) {
+			if ( EhQuery.support.scriptEval ) {
 				script.appendChild( document.createTextNode( data ) );
 			} else {
 				script.text = data;
@@ -548,7 +548,7 @@ jQuery.extend({
 	each: function( object, callback, args ) {
 		var name, i = 0,
 			length = object.length,
-			isObj = length === undefined || jQuery.isFunction(object);
+			isObj = length === undefined || EhQuery.isFunction(object);
 
 		if ( args ) {
 			if ( isObj ) {
@@ -594,10 +594,10 @@ jQuery.extend({
 			// The window, strings (and functions) also have 'length'
 			// The extra typeof function check is to prevent crashes
 			// in Safari 2 (See: #3039)
-			if ( array.length == null || typeof array === "string" || jQuery.isFunction(array) || (typeof array !== "function" && array.setInterval) ) {
+			if ( array.length == null || typeof array === "string" || EhQuery.isFunction(array) || (typeof array !== "function" && array.setInterval) ) {
 				push.call( ret, array );
 			} else {
-				jQuery.merge( ret, array );
+				EhQuery.merge( ret, array );
 			}
 		}
 
@@ -625,7 +625,7 @@ jQuery.extend({
 			for ( var l = second.length; j < l; j++ ) {
 				first[ i++ ] = second[ j ];
 			}
-		
+
 		} else {
 			while ( second[j] !== undefined ) {
 				first[ i++ ] = second[ j++ ];
@@ -678,7 +678,7 @@ jQuery.extend({
 				fn = thisObject[ proxy ];
 				proxy = undefined;
 
-			} else if ( proxy && !jQuery.isFunction( proxy ) ) {
+			} else if ( proxy && !EhQuery.isFunction( proxy ) ) {
 				thisObject = proxy;
 				proxy = undefined;
 			}
@@ -692,15 +692,15 @@ jQuery.extend({
 
 		// Set the guid of unique handler to the same of original handler, so it can be removed
 		if ( fn ) {
-			proxy.guid = fn.guid = fn.guid || proxy.guid || jQuery.guid++;
+			proxy.guid = fn.guid = fn.guid || proxy.guid || EhQuery.guid++;
 		}
 
 		// So proxy can be declared as an argument
 		return proxy;
 	},
 
-	// Use of jQuery.browser is frowned upon.
-	// More details: http://docs.jquery.com/Utilities/jQuery.browser
+	// Use of EhQuery.browser is frowned upon.
+	// More details: http://docs.jquery.com/Utilities/EhQuery.browser
 	uaMatch: function( ua ) {
 		ua = ua.toLowerCase();
 
@@ -716,31 +716,31 @@ jQuery.extend({
 	browser: {}
 });
 
-browserMatch = jQuery.uaMatch( userAgent );
+browserMatch = EhQuery.uaMatch( userAgent );
 if ( browserMatch.browser ) {
-	jQuery.browser[ browserMatch.browser ] = true;
-	jQuery.browser.version = browserMatch.version;
+	EhQuery.browser[ browserMatch.browser ] = true;
+	EhQuery.browser.version = browserMatch.version;
 }
 
-// Deprecated, use jQuery.browser.webkit instead
-if ( jQuery.browser.webkit ) {
-	jQuery.browser.safari = true;
+// Deprecated, use EhQuery.browser.webkit instead
+if ( EhQuery.browser.webkit ) {
+	EhQuery.browser.safari = true;
 }
 
 if ( indexOf ) {
-	jQuery.inArray = function( elem, array ) {
+	EhQuery.inArray = function( elem, array ) {
 		return indexOf.call( array, elem );
 	};
 }
 
-// All jQuery objects should point back to these
-rootjQuery = jQuery(document);
+// All EhQuery objects should point back to these
+rootEhQuery = EhQuery(document);
 
 // Cleanup functions for the document ready method
 if ( document.addEventListener ) {
 	DOMContentLoaded = function() {
 		document.removeEventListener( "DOMContentLoaded", DOMContentLoaded, false );
-		jQuery.ready();
+		EhQuery.ready();
 	};
 
 } else if ( document.attachEvent ) {
@@ -748,14 +748,14 @@ if ( document.addEventListener ) {
 		// Make sure body exists, at least, in case IE gets a little overzealous (ticket #5443).
 		if ( document.readyState === "complete" ) {
 			document.detachEvent( "onreadystatechange", DOMContentLoaded );
-			jQuery.ready();
+			EhQuery.ready();
 		}
 	};
 }
 
 // The DOM ready check for Internet Explorer
 function doScrollCheck() {
-	if ( jQuery.isReady ) {
+	if ( EhQuery.isReady ) {
 		return;
 	}
 
@@ -769,18 +769,18 @@ function doScrollCheck() {
 	}
 
 	// and execute any waiting functions
-	jQuery.ready();
+	EhQuery.ready();
 }
 
 function evalScript( i, elem ) {
 	if ( elem.src ) {
-		jQuery.ajax({
+		EhQuery.ajax({
 			url: elem.src,
 			async: false,
 			dataType: "script"
 		});
 	} else {
-		jQuery.globalEval( elem.text || elem.textContent || elem.innerHTML || "" );
+		EhQuery.globalEval( elem.text || elem.textContent || elem.innerHTML || "" );
 	}
 
 	if ( elem.parentNode ) {
@@ -792,7 +792,7 @@ function evalScript( i, elem ) {
 // The value/s can be optionally by executed if its a function
 function access( elems, key, value, exec, fn, pass ) {
 	var length = elems.length;
-	
+
 	// Setting many attributes
 	if ( typeof key === "object" ) {
 		for ( var k in key ) {
@@ -800,19 +800,19 @@ function access( elems, key, value, exec, fn, pass ) {
 		}
 		return elems;
 	}
-	
+
 	// Setting one attribute
 	if ( value !== undefined ) {
 		// Optionally, function values get executed if exec is true
-		exec = !pass && exec && jQuery.isFunction(value);
-		
+		exec = !pass && exec && EhQuery.isFunction(value);
+
 		for ( var i = 0; i < length; i++ ) {
 			fn( elems[i], key, exec ? value.call( elems[i], i, fn( elems[i], key ) ) : value, pass );
 		}
-		
+
 		return elems;
 	}
-	
+
 	// Getting an attribute
 	return length ? fn( elems[0], key ) : undefined;
 }
@@ -822,7 +822,7 @@ function now() {
 }
 (function() {
 
-	jQuery.support = {};
+	EhQuery.support = {};
 
 	var root = document.documentElement,
 		script = document.createElement("script"),
@@ -840,7 +840,7 @@ function now() {
 		return;
 	}
 
-	jQuery.support = {
+	EhQuery.support = {
 		// IE strips leading whitespace when .innerHTML is used
 		leadingWhitespace: div.firstChild.nodeType === 3,
 
@@ -899,7 +899,7 @@ function now() {
 	// tag with appendChild/createTextNode
 	// (IE doesn't support this, fails, and uses .text instead)
 	if ( window[ id ] ) {
-		jQuery.support.scriptEval = true;
+		EhQuery.support.scriptEval = true;
 		delete window[ id ];
 	}
 
@@ -907,9 +907,9 @@ function now() {
 	// Fails in Internet Explorer
 	try {
 		delete script.test;
-	
+
 	} catch(e) {
-		jQuery.support.deleteExpando = false;
+		EhQuery.support.deleteExpando = false;
 	}
 
 	root.removeChild( script );
@@ -918,7 +918,7 @@ function now() {
 		div.attachEvent("onclick", function click() {
 			// Cloning a node shouldn't copy over any
 			// bound event handlers (IE does this)
-			jQuery.support.noCloneEvent = false;
+			EhQuery.support.noCloneEvent = false;
 			div.detachEvent("onclick", click);
 		});
 		div.cloneNode(true).fireEvent("onclick");
@@ -931,16 +931,16 @@ function now() {
 	fragment.appendChild( div.firstChild );
 
 	// WebKit doesn't clone checked state correctly in fragments
-	jQuery.support.checkClone = fragment.cloneNode(true).cloneNode(true).lastChild.checked;
+	EhQuery.support.checkClone = fragment.cloneNode(true).cloneNode(true).lastChild.checked;
 
 	// Figure out if the W3C box model works as expected
 	// document.body must exist before we can do this
-	jQuery(function() {
+	EhQuery(function() {
 		var div = document.createElement("div");
 		div.style.width = div.style.paddingLeft = "1px";
 
 		document.body.appendChild( div );
-		jQuery.boxModel = jQuery.support.boxModel = div.offsetWidth === 2;
+		EhQuery.boxModel = EhQuery.support.boxModel = div.offsetWidth === 2;
 		document.body.removeChild( div ).style.display = 'none';
 
 		div = null;
@@ -948,28 +948,28 @@ function now() {
 
 	// Technique from Juriy Zaytsev
 	// http://thinkweb2.com/projects/prototype/detecting-event-support-without-browser-sniffing/
-	var eventSupported = function( eventName ) { 
-		var el = document.createElement("div"); 
-		eventName = "on" + eventName; 
+	var eventSupported = function( eventName ) {
+		var el = document.createElement("div");
+		eventName = "on" + eventName;
 
-		var isSupported = (eventName in el); 
-		if ( !isSupported ) { 
-			el.setAttribute(eventName, "return;"); 
-			isSupported = typeof el[eventName] === "function"; 
-		} 
-		el = null; 
+		var isSupported = (eventName in el);
+		if ( !isSupported ) {
+			el.setAttribute(eventName, "return;");
+			isSupported = typeof el[eventName] === "function";
+		}
+		el = null;
 
-		return isSupported; 
+		return isSupported;
 	};
-	
-	jQuery.support.submitBubbles = eventSupported("submit");
-	jQuery.support.changeBubbles = eventSupported("change");
+
+	EhQuery.support.submitBubbles = eventSupported("submit");
+	EhQuery.support.changeBubbles = eventSupported("change");
 
 	// release memory in IE
 	root = script = div = all = a = null;
 })();
 
-jQuery.props = {
+EhQuery.props = {
 	"for": "htmlFor",
 	"class": "className",
 	readonly: "readOnly",
@@ -981,11 +981,11 @@ jQuery.props = {
 	usemap: "useMap",
 	frameborder: "frameBorder"
 };
-var expando = "jQuery" + now(), uuid = 0, windowData = {};
+var expando = "EhQuery" + now(), uuid = 0, windowData = {};
 
-jQuery.extend({
+EhQuery.extend({
 	cache: {},
-	
+
 	expando:expando,
 
 	// The following elements throw uncatchable exceptions if you
@@ -997,7 +997,7 @@ jQuery.extend({
 	},
 
 	data: function( elem, name, data ) {
-		if ( elem.nodeName && jQuery.noData[elem.nodeName.toLowerCase()] ) {
+		if ( elem.nodeName && EhQuery.noData[elem.nodeName.toLowerCase()] ) {
 			return;
 		}
 
@@ -1005,14 +1005,14 @@ jQuery.extend({
 			windowData :
 			elem;
 
-		var id = elem[ expando ], cache = jQuery.cache, thisCache;
+		var id = elem[ expando ], cache = EhQuery.cache, thisCache;
 
 		if ( !id && typeof name === "string" && data === undefined ) {
 			return null;
 		}
 
 		// Compute a unique ID for the element
-		if ( !id ) { 
+		if ( !id ) {
 			id = ++uuid;
 		}
 
@@ -1020,7 +1020,7 @@ jQuery.extend({
 		// want to manipulate it.
 		if ( typeof name === "object" ) {
 			elem[ expando ] = id;
-			thisCache = cache[ id ] = jQuery.extend(true, {}, name);
+			thisCache = cache[ id ] = EhQuery.extend(true, {}, name);
 
 		} else if ( !cache[ id ] ) {
 			elem[ expando ] = id;
@@ -1038,7 +1038,7 @@ jQuery.extend({
 	},
 
 	removeData: function( elem, name ) {
-		if ( elem.nodeName && jQuery.noData[elem.nodeName.toLowerCase()] ) {
+		if ( elem.nodeName && EhQuery.noData[elem.nodeName.toLowerCase()] ) {
 			return;
 		}
 
@@ -1046,7 +1046,7 @@ jQuery.extend({
 			windowData :
 			elem;
 
-		var id = elem[ expando ], cache = jQuery.cache, thisCache = cache[ id ];
+		var id = elem[ expando ], cache = EhQuery.cache, thisCache = cache[ id ];
 
 		// If we want to remove a specific section of the element's data
 		if ( name ) {
@@ -1055,18 +1055,18 @@ jQuery.extend({
 				delete thisCache[ name ];
 
 				// If we've removed all the data, remove the element's cache
-				if ( jQuery.isEmptyObject(thisCache) ) {
-					jQuery.removeData( elem );
+				if ( EhQuery.isEmptyObject(thisCache) ) {
+					EhQuery.removeData( elem );
 				}
 			}
 
 		// Otherwise, we want to remove all of the element's data
 		} else {
-			if ( jQuery.support.deleteExpando ) {
-				delete elem[ jQuery.expando ];
+			if ( EhQuery.support.deleteExpando ) {
+				delete elem[ EhQuery.expando ];
 
 			} else if ( elem.removeAttribute ) {
-				elem.removeAttribute( jQuery.expando );
+				elem.removeAttribute( EhQuery.expando );
 			}
 
 			// Completely remove the data cache
@@ -1075,14 +1075,14 @@ jQuery.extend({
 	}
 });
 
-jQuery.fn.extend({
+EhQuery.fn.extend({
 	data: function( key, value ) {
 		if ( typeof key === "undefined" && this.length ) {
-			return jQuery.data( this[0] );
+			return EhQuery.data( this[0] );
 
 		} else if ( typeof key === "object" ) {
 			return this.each(function() {
-				jQuery.data( this, key );
+				EhQuery.data( this, key );
 			});
 		}
 
@@ -1093,40 +1093,40 @@ jQuery.fn.extend({
 			var data = this.triggerHandler("getData" + parts[1] + "!", [parts[0]]);
 
 			if ( data === undefined && this.length ) {
-				data = jQuery.data( this[0], key );
+				data = EhQuery.data( this[0], key );
 			}
 			return data === undefined && parts[1] ?
 				this.data( parts[0] ) :
 				data;
 		} else {
 			return this.trigger("setData" + parts[1] + "!", [parts[0], value]).each(function() {
-				jQuery.data( this, key, value );
+				EhQuery.data( this, key, value );
 			});
 		}
 	},
 
 	removeData: function( key ) {
 		return this.each(function() {
-			jQuery.removeData( this, key );
+			EhQuery.removeData( this, key );
 		});
 	}
 });
-jQuery.extend({
+EhQuery.extend({
 	queue: function( elem, type, data ) {
 		if ( !elem ) {
 			return;
 		}
 
 		type = (type || "fx") + "queue";
-		var q = jQuery.data( elem, type );
+		var q = EhQuery.data( elem, type );
 
 		// Speed up dequeue by getting out quickly if this is just a lookup
 		if ( !data ) {
 			return q || [];
 		}
 
-		if ( !q || jQuery.isArray(data) ) {
-			q = jQuery.data( elem, type, jQuery.makeArray(data) );
+		if ( !q || EhQuery.isArray(data) ) {
+			q = EhQuery.data( elem, type, EhQuery.makeArray(data) );
 
 		} else {
 			q.push( data );
@@ -1138,7 +1138,7 @@ jQuery.extend({
 	dequeue: function( elem, type ) {
 		type = type || "fx";
 
-		var queue = jQuery.queue( elem, type ), fn = queue.shift();
+		var queue = EhQuery.queue( elem, type ), fn = queue.shift();
 
 		// If the fx queue is dequeued, always remove the progress sentinel
 		if ( fn === "inprogress" ) {
@@ -1153,13 +1153,13 @@ jQuery.extend({
 			}
 
 			fn.call(elem, function() {
-				jQuery.dequeue(elem, type);
+				EhQuery.dequeue(elem, type);
 			});
 		}
 	}
 });
 
-jQuery.fn.extend({
+EhQuery.fn.extend({
 	queue: function( type, data ) {
 		if ( typeof type !== "string" ) {
 			data = type;
@@ -1167,32 +1167,32 @@ jQuery.fn.extend({
 		}
 
 		if ( data === undefined ) {
-			return jQuery.queue( this[0], type );
+			return EhQuery.queue( this[0], type );
 		}
 		return this.each(function( i, elem ) {
-			var queue = jQuery.queue( this, type, data );
+			var queue = EhQuery.queue( this, type, data );
 
 			if ( type === "fx" && queue[0] !== "inprogress" ) {
-				jQuery.dequeue( this, type );
+				EhQuery.dequeue( this, type );
 			}
 		});
 	},
 	dequeue: function( type ) {
 		return this.each(function() {
-			jQuery.dequeue( this, type );
+			EhQuery.dequeue( this, type );
 		});
 	},
 
 	// Based off of the plugin by Clint Helfers, with permission.
 	// http://blindsignals.com/index.php/2009/07/jquery-delay/
 	delay: function( time, type ) {
-		time = jQuery.fx ? jQuery.fx.speeds[time] || time : time;
+		time = EhQuery.fx ? EhQuery.fx.speeds[time] || time : time;
 		type = type || "fx";
 
 		return this.queue( type, function() {
 			var elem = this;
 			setTimeout(function() {
-				jQuery.dequeue( elem, type );
+				EhQuery.dequeue( elem, type );
 			}, time );
 		});
 	},
@@ -1210,14 +1210,14 @@ var rclass = /[\n\t]/g,
 	rclickable = /^(a|area)$/i,
 	rradiocheck = /radio|checkbox/;
 
-jQuery.fn.extend({
+EhQuery.fn.extend({
 	attr: function( name, value ) {
-		return access( this, name, value, true, jQuery.attr );
+		return access( this, name, value, true, EhQuery.attr );
 	},
 
 	removeAttr: function( name, fn ) {
 		return this.each(function(){
-			jQuery.attr( this, name, "" );
+			EhQuery.attr( this, name, "" );
 			if ( this.nodeType === 1 ) {
 				this.removeAttribute( name );
 			}
@@ -1225,9 +1225,9 @@ jQuery.fn.extend({
 	},
 
 	addClass: function( value ) {
-		if ( jQuery.isFunction(value) ) {
+		if ( EhQuery.isFunction(value) ) {
 			return this.each(function(i) {
-				var self = jQuery(this);
+				var self = EhQuery(this);
 				self.addClass( value.call(this, i, self.attr("class")) );
 			});
 		}
@@ -1249,7 +1249,7 @@ jQuery.fn.extend({
 								setClass += " " + classNames[c];
 							}
 						}
-						elem.className = jQuery.trim( setClass );
+						elem.className = EhQuery.trim( setClass );
 					}
 				}
 			}
@@ -1259,9 +1259,9 @@ jQuery.fn.extend({
 	},
 
 	removeClass: function( value ) {
-		if ( jQuery.isFunction(value) ) {
+		if ( EhQuery.isFunction(value) ) {
 			return this.each(function(i) {
-				var self = jQuery(this);
+				var self = EhQuery(this);
 				self.removeClass( value.call(this, i, self.attr("class")) );
 			});
 		}
@@ -1278,7 +1278,7 @@ jQuery.fn.extend({
 						for ( var c = 0, cl = classNames.length; c < cl; c++ ) {
 							className = className.replace(" " + classNames[c] + " ", " ");
 						}
-						elem.className = jQuery.trim( className );
+						elem.className = EhQuery.trim( className );
 
 					} else {
 						elem.className = "";
@@ -1293,9 +1293,9 @@ jQuery.fn.extend({
 	toggleClass: function( value, stateVal ) {
 		var type = typeof value, isBool = typeof stateVal === "boolean";
 
-		if ( jQuery.isFunction( value ) ) {
+		if ( EhQuery.isFunction( value ) ) {
 			return this.each(function(i) {
-				var self = jQuery(this);
+				var self = EhQuery(this);
 				self.toggleClass( value.call(this, i, self.attr("class"), stateVal), stateVal );
 			});
 		}
@@ -1303,7 +1303,7 @@ jQuery.fn.extend({
 		return this.each(function() {
 			if ( type === "string" ) {
 				// toggle individual class names
-				var className, i = 0, self = jQuery(this),
+				var className, i = 0, self = EhQuery(this),
 					state = stateVal,
 					classNames = value.split( rspace );
 
@@ -1316,11 +1316,11 @@ jQuery.fn.extend({
 			} else if ( type === "undefined" || type === "boolean" ) {
 				if ( this.className ) {
 					// store className if set
-					jQuery.data( this, "__className__", this.className );
+					EhQuery.data( this, "__className__", this.className );
 				}
 
 				// toggle whole className
-				this.className = this.className || value === false ? "" : jQuery.data( this, "__className__" ) || "";
+				this.className = this.className || value === false ? "" : EhQuery.data( this, "__className__" ) || "";
 			}
 		});
 	},
@@ -1341,12 +1341,12 @@ jQuery.fn.extend({
 			var elem = this[0];
 
 			if ( elem ) {
-				if ( jQuery.nodeName( elem, "option" ) ) {
+				if ( EhQuery.nodeName( elem, "option" ) ) {
 					return (elem.attributes.value || {}).specified ? elem.value : elem.text;
 				}
 
 				// We need to handle select boxes special
-				if ( jQuery.nodeName( elem, "select" ) ) {
+				if ( EhQuery.nodeName( elem, "select" ) ) {
 					var index = elem.selectedIndex,
 						values = [],
 						options = elem.options,
@@ -1363,7 +1363,7 @@ jQuery.fn.extend({
 
 						if ( option.selected ) {
 							// Get the specific value for the option
-							value = jQuery(option).val();
+							value = EhQuery(option).val();
 
 							// We don't need an array for one selects
 							if ( one ) {
@@ -1379,10 +1379,10 @@ jQuery.fn.extend({
 				}
 
 				// Handle the case where in Webkit "" is returned instead of "on" if a value isn't specified
-				if ( rradiocheck.test( elem.type ) && !jQuery.support.checkOn ) {
+				if ( rradiocheck.test( elem.type ) && !EhQuery.support.checkOn ) {
 					return elem.getAttribute("value") === null ? "on" : elem.value;
 				}
-				
+
 
 				// Everything else, we just grab the value
 				return (elem.value || "").replace(rreturn, "");
@@ -1392,10 +1392,10 @@ jQuery.fn.extend({
 			return undefined;
 		}
 
-		var isFunction = jQuery.isFunction(value);
+		var isFunction = EhQuery.isFunction(value);
 
 		return this.each(function(i) {
-			var self = jQuery(this), val = value;
+			var self = EhQuery(this), val = value;
 
 			if ( this.nodeType !== 1 ) {
 				return;
@@ -1411,14 +1411,14 @@ jQuery.fn.extend({
 				val += "";
 			}
 
-			if ( jQuery.isArray(val) && rradiocheck.test( this.type ) ) {
-				this.checked = jQuery.inArray( self.val(), val ) >= 0;
+			if ( EhQuery.isArray(val) && rradiocheck.test( this.type ) ) {
+				this.checked = EhQuery.inArray( self.val(), val ) >= 0;
 
-			} else if ( jQuery.nodeName( this, "select" ) ) {
-				var values = jQuery.makeArray(val);
+			} else if ( EhQuery.nodeName( this, "select" ) ) {
+				var values = EhQuery.makeArray(val);
 
-				jQuery( "option", this ).each(function() {
-					this.selected = jQuery.inArray( jQuery(this).val(), values ) >= 0;
+				EhQuery( "option", this ).each(function() {
+					this.selected = EhQuery.inArray( EhQuery(this).val(), values ) >= 0;
 				});
 
 				if ( !values.length ) {
@@ -1432,7 +1432,7 @@ jQuery.fn.extend({
 	}
 });
 
-jQuery.extend({
+EhQuery.extend({
 	attrFn: {
 		val: true,
 		css: true,
@@ -1443,23 +1443,23 @@ jQuery.extend({
 		height: true,
 		offset: true
 	},
-		
+
 	attr: function( elem, name, value, pass ) {
 		// don't set attributes on text and comment nodes
 		if ( !elem || elem.nodeType === 3 || elem.nodeType === 8 ) {
 			return undefined;
 		}
 
-		if ( pass && name in jQuery.attrFn ) {
-			return jQuery(elem)[name](value);
+		if ( pass && name in EhQuery.attrFn ) {
+			return EhQuery(elem)[name](value);
 		}
 
-		var notxml = elem.nodeType !== 1 || !jQuery.isXMLDoc( elem ),
+		var notxml = elem.nodeType !== 1 || !EhQuery.isXMLDoc( elem ),
 			// Whether we are setting (or getting)
 			set = value !== undefined;
 
 		// Try to normalize/fix the name
-		name = notxml && jQuery.props[ name ] || name;
+		name = notxml && EhQuery.props[ name ] || name;
 
 		// Only do all the following if this is a node (faster for style)
 		if ( elem.nodeType === 1 ) {
@@ -1468,11 +1468,11 @@ jQuery.extend({
 
 			// Safari mis-reports the default selected property of an option
 			// Accessing the parent's selectedIndex property fixes it
-			if ( name === "selected" && !jQuery.support.optSelected ) {
+			if ( name === "selected" && !EhQuery.support.optSelected ) {
 				var parent = elem.parentNode;
 				if ( parent ) {
 					parent.selectedIndex;
-	
+
 					// Make sure that it also works with optgroups, see #5701
 					if ( parent.parentNode ) {
 						parent.parentNode.selectedIndex;
@@ -1485,14 +1485,14 @@ jQuery.extend({
 				if ( set ) {
 					// We can't allow the type property to be changed (since it causes problems in IE)
 					if ( name === "type" && rtype.test( elem.nodeName ) && elem.parentNode ) {
-						jQuery.error( "type property can't be changed" );
+						EhQuery.error( "type property can't be changed" );
 					}
 
 					elem[ name ] = value;
 				}
 
 				// browsers index elements by id/name on forms, give priority to attributes.
-				if ( jQuery.nodeName( elem, "form" ) && elem.getAttributeNode(name) ) {
+				if ( EhQuery.nodeName( elem, "form" ) && elem.getAttributeNode(name) ) {
 					return elem.getAttributeNode( name ).nodeValue;
 				}
 
@@ -1511,7 +1511,7 @@ jQuery.extend({
 				return elem[ name ];
 			}
 
-			if ( !jQuery.support.style && notxml && name === "style" ) {
+			if ( !EhQuery.support.style && notxml && name === "style" ) {
 				if ( set ) {
 					elem.style.cssText = "" + value;
 				}
@@ -1524,7 +1524,7 @@ jQuery.extend({
 				elem.setAttribute( name, "" + value );
 			}
 
-			var attr = !jQuery.support.hrefNormalized && notxml && special ?
+			var attr = !EhQuery.support.hrefNormalized && notxml && special ?
 					// Some attributes require a special call on IE
 					elem.getAttribute( name, 2 ) :
 					elem.getAttribute( name );
@@ -1535,7 +1535,7 @@ jQuery.extend({
 
 		// elem is actually elem.style ... set the style
 		// Using attr for specific style information is now deprecated. Use style instead.
-		return jQuery.style( elem, name, value );
+		return EhQuery.style( elem, name, value );
 	}
 });
 var rnamespaces = /\.(.*)$/,
@@ -1550,7 +1550,7 @@ var rnamespaces = /\.(.*)$/,
  * Many of the ideas behind this code originated from
  * Dean Edwards' addEvent library.
  */
-jQuery.event = {
+EhQuery.event = {
 
 	// Bind an event to an element
 	// Original by Dean Edwards
@@ -1574,11 +1574,11 @@ jQuery.event = {
 
 		// Make sure that the function being executed has a unique ID
 		if ( !handler.guid ) {
-			handler.guid = jQuery.guid++;
+			handler.guid = EhQuery.guid++;
 		}
 
 		// Init the element's event structure
-		var elemData = jQuery.data( elem );
+		var elemData = EhQuery.data( elem );
 
 		// If no elemData is found then we must be trying to bind to one of the
 		// banned noData elements
@@ -1593,8 +1593,8 @@ jQuery.event = {
 			elemData.handle = eventHandle = function() {
 				// Handle the second event of a trigger and when
 				// an event is called after a page has unloaded
-				return typeof jQuery !== "undefined" && !jQuery.event.triggered ?
-					jQuery.event.handle.apply( eventHandle.elem, arguments ) :
+				return typeof EhQuery !== "undefined" && !EhQuery.event.triggered ?
+					EhQuery.event.handle.apply( eventHandle.elem, arguments ) :
 					undefined;
 			};
 		}
@@ -1604,14 +1604,14 @@ jQuery.event = {
 		eventHandle.elem = elem;
 
 		// Handle multiple events separated by a space
-		// jQuery(...).bind("mouseover mouseout", fn);
+		// EhQuery(...).bind("mouseover mouseout", fn);
 		types = types.split(" ");
 
 		var type, i = 0, namespaces;
 
 		while ( (type = types[ i++ ]) ) {
 			handleObj = handleObjIn ?
-				jQuery.extend({}, handleObjIn) :
+				EhQuery.extend({}, handleObjIn) :
 				{ handler: handler, data: data };
 
 			// Namespaced event handlers
@@ -1630,7 +1630,7 @@ jQuery.event = {
 
 			// Get the current list of functions bound to this event
 			var handlers = events[ type ],
-				special = jQuery.event.special[ type ] || {};
+				special = EhQuery.event.special[ type ] || {};
 
 			// Init the event handler queue
 			if ( !handlers ) {
@@ -1649,9 +1649,9 @@ jQuery.event = {
 					}
 				}
 			}
-			
-			if ( special.add ) { 
-				special.add.call( elem, handleObj ); 
+
+			if ( special.add ) {
+				special.add.call( elem, handleObj );
 
 				if ( !handleObj.handler.guid ) {
 					handleObj.handler.guid = handler.guid;
@@ -1662,7 +1662,7 @@ jQuery.event = {
 			handlers.push( handleObj );
 
 			// Keep track of which events have been used, for global triggering
-			jQuery.event.global[ type ] = true;
+			EhQuery.event.global[ type ] = true;
 		}
 
 		// Nullify elem to prevent memory leaks in IE
@@ -1679,7 +1679,7 @@ jQuery.event = {
 		}
 
 		var ret, type, fn, i = 0, all, namespaces, namespace, special, eventType, handleObj, origType,
-			elemData = jQuery.data( elem ),
+			elemData = EhQuery.data( elem ),
 			events = elemData && elemData.events;
 
 		if ( !elemData || !events ) {
@@ -1697,14 +1697,14 @@ jQuery.event = {
 			types = types || "";
 
 			for ( type in events ) {
-				jQuery.event.remove( elem, type + types );
+				EhQuery.event.remove( elem, type + types );
 			}
 
 			return;
 		}
 
 		// Handle multiple events separated by a space
-		// jQuery(...).unbind("mouseover mouseout", fn);
+		// EhQuery(...).unbind("mouseover mouseout", fn);
 		types = types.split(" ");
 
 		while ( (type = types[ i++ ]) ) {
@@ -1718,8 +1718,8 @@ jQuery.event = {
 				namespaces = type.split(".");
 				type = namespaces.shift();
 
-				namespace = new RegExp("(^|\\.)" + 
-					jQuery.map( namespaces.slice(0).sort(), fcleanup ).join("\\.(?:.*\\.)?") + "(\\.|$)")
+				namespace = new RegExp("(^|\\.)" +
+					EhQuery.map( namespaces.slice(0).sort(), fcleanup ).join("\\.(?:.*\\.)?") + "(\\.|$)")
 			}
 
 			eventType = events[ type ];
@@ -1733,7 +1733,7 @@ jQuery.event = {
 					handleObj = eventType[ j ];
 
 					if ( all || namespace.test( handleObj.namespace ) ) {
-						jQuery.event.remove( elem, origType, handleObj.handler, j );
+						EhQuery.event.remove( elem, origType, handleObj.handler, j );
 						eventType.splice( j--, 1 );
 					}
 				}
@@ -1741,7 +1741,7 @@ jQuery.event = {
 				continue;
 			}
 
-			special = jQuery.event.special[ type ] || {};
+			special = EhQuery.event.special[ type ] || {};
 
 			for ( var j = pos || 0; j < eventType.length; j++ ) {
 				handleObj = eventType[ j ];
@@ -1776,7 +1776,7 @@ jQuery.event = {
 		}
 
 		// Remove the expando if it's no longer used
-		if ( jQuery.isEmptyObject( events ) ) {
+		if ( EhQuery.isEmptyObject( events ) ) {
 			var handle = elemData.handle;
 			if ( handle ) {
 				handle.elem = null;
@@ -1785,8 +1785,8 @@ jQuery.event = {
 			delete elemData.events;
 			delete elemData.handle;
 
-			if ( jQuery.isEmptyObject( elemData ) ) {
-				jQuery.removeData( elem );
+			if ( EhQuery.isEmptyObject( elemData ) ) {
+				EhQuery.removeData( elem );
 			}
 		}
 	},
@@ -1799,12 +1799,12 @@ jQuery.event = {
 
 		if ( !bubbling ) {
 			event = typeof event === "object" ?
-				// jQuery.Event object
+				// EhQuery.Event object
 				event[expando] ? event :
 				// Object literal
-				jQuery.extend( jQuery.Event(type), event ) :
+				EhQuery.extend( EhQuery.Event(type), event ) :
 				// Just the event type (string)
-				jQuery.Event(type);
+				EhQuery.Event(type);
 
 			if ( type.indexOf("!") >= 0 ) {
 				event.type = type = type.slice(0, -1);
@@ -1817,10 +1817,10 @@ jQuery.event = {
 				event.stopPropagation();
 
 				// Only trigger if we've ever bound an event for it
-				if ( jQuery.event.global[ type ] ) {
-					jQuery.each( jQuery.cache, function() {
+				if ( EhQuery.event.global[ type ] ) {
+					EhQuery.each( EhQuery.cache, function() {
 						if ( this.events && this.events[type] ) {
-							jQuery.event.trigger( event, data, this.handle.elem );
+							EhQuery.event.trigger( event, data, this.handle.elem );
 						}
 					});
 				}
@@ -1838,14 +1838,14 @@ jQuery.event = {
 			event.target = elem;
 
 			// Clone the incoming data, if any
-			data = jQuery.makeArray( data );
+			data = EhQuery.makeArray( data );
 			data.unshift( event );
 		}
 
 		event.currentTarget = elem;
 
 		// Trigger the event, it is assumed that "handle" is a function
-		var handle = jQuery.data( elem, "handle" );
+		var handle = EhQuery.data( elem, "handle" );
 		if ( handle ) {
 			handle.apply( elem, data );
 		}
@@ -1854,7 +1854,7 @@ jQuery.event = {
 
 		// Trigger an inline bound script
 		try {
-			if ( !(elem && elem.nodeName && jQuery.noData[elem.nodeName.toLowerCase()]) ) {
+			if ( !(elem && elem.nodeName && EhQuery.noData[elem.nodeName.toLowerCase()]) ) {
 				if ( elem[ "on" + type ] && elem[ "on" + type ].apply( elem, data ) === false ) {
 					event.result = false;
 				}
@@ -1864,15 +1864,15 @@ jQuery.event = {
 		} catch (e) {}
 
 		if ( !event.isPropagationStopped() && parent ) {
-			jQuery.event.trigger( event, data, parent, true );
+			EhQuery.event.trigger( event, data, parent, true );
 
 		} else if ( !event.isDefaultPrevented() ) {
 			var target = event.target, old,
-				isClick = jQuery.nodeName(target, "a") && type === "click",
-				special = jQuery.event.special[ type ] || {};
+				isClick = EhQuery.nodeName(target, "a") && type === "click",
+				special = EhQuery.event.special[ type ] || {};
 
-			if ( (!special._default || special._default.call( elem, event ) === false) && 
-				!isClick && !(target && target.nodeName && jQuery.noData[target.nodeName.toLowerCase()]) ) {
+			if ( (!special._default || special._default.call( elem, event ) === false) &&
+				!isClick && !(target && target.nodeName && EhQuery.noData[target.nodeName.toLowerCase()]) ) {
 
 				try {
 					if ( target[ type ] ) {
@@ -1883,7 +1883,7 @@ jQuery.event = {
 							target[ "on" + type ] = null;
 						}
 
-						jQuery.event.triggered = true;
+						EhQuery.event.triggered = true;
 						target[ type ]();
 					}
 
@@ -1894,7 +1894,7 @@ jQuery.event = {
 					target[ "on" + type ] = old;
 				}
 
-				jQuery.event.triggered = false;
+				EhQuery.event.triggered = false;
 			}
 		}
 	},
@@ -1902,7 +1902,7 @@ jQuery.event = {
 	handle: function( event ) {
 		var all, handlers, namespaces, namespace, events;
 
-		event = arguments[0] = jQuery.event.fix( event || window.event );
+		event = arguments[0] = EhQuery.event.fix( event || window.event );
 		event.currentTarget = this;
 
 		// Namespaced event handlers
@@ -1914,7 +1914,7 @@ jQuery.event = {
 			namespace = new RegExp("(^|\\.)" + namespaces.slice(0).sort().join("\\.(?:.*\\.)?") + "(\\.|$)");
 		}
 
-		var events = jQuery.data(this, "events"), handlers = events[ event.type ];
+		var events = EhQuery.data(this, "events"), handlers = events[ event.type ];
 
 		if ( events && handlers ) {
 			// Clone the handlers to prevent manipulation
@@ -1930,7 +1930,7 @@ jQuery.event = {
 					event.handler = handleObj.handler;
 					event.data = handleObj.data;
 					event.handleObj = handleObj;
-	
+
 					var ret = handleObj.handler.apply( this, arguments );
 
 					if ( ret !== undefined ) {
@@ -1961,7 +1961,7 @@ jQuery.event = {
 		// store a copy of the original event object
 		// and "clone" to set read-only properties
 		var originalEvent = event;
-		event = jQuery.Event( originalEvent );
+		event = EhQuery.Event( originalEvent );
 
 		for ( var i = this.props.length, prop; i; ) {
 			prop = this.props[ --i ];
@@ -2009,29 +2009,29 @@ jQuery.event = {
 		return event;
 	},
 
-	// Deprecated, use jQuery.guid instead
+	// Deprecated, use EhQuery.guid instead
 	guid: 1E8,
 
-	// Deprecated, use jQuery.proxy instead
-	proxy: jQuery.proxy,
+	// Deprecated, use EhQuery.proxy instead
+	proxy: EhQuery.proxy,
 
 	special: {
 		ready: {
 			// Make sure the ready event is setup
-			setup: jQuery.bindReady,
-			teardown: jQuery.noop
+			setup: EhQuery.bindReady,
+			teardown: EhQuery.noop
 		},
 
 		live: {
 			add: function( handleObj ) {
-				jQuery.event.add( this, handleObj.origType, jQuery.extend({}, handleObj, {handler: liveHandler}) ); 
+				EhQuery.event.add( this, handleObj.origType, EhQuery.extend({}, handleObj, {handler: liveHandler}) );
 			},
 
 			remove: function( handleObj ) {
 				var remove = true,
 					type = handleObj.origType.replace(rnamespaces, "");
-				
-				jQuery.each( jQuery.data(this, "events").live || [], function() {
+
+				EhQuery.each( EhQuery.data(this, "events").live || [], function() {
 					if ( type === this.origType.replace(rnamespaces, "") ) {
 						remove = false;
 						return false;
@@ -2039,7 +2039,7 @@ jQuery.event = {
 				});
 
 				if ( remove ) {
-					jQuery.event.remove( this, handleObj.origType, liveHandler );
+					EhQuery.event.remove( this, handleObj.origType, liveHandler );
 				}
 			}
 
@@ -2066,15 +2066,15 @@ jQuery.event = {
 var removeEvent = document.removeEventListener ?
 	function( elem, type, handle ) {
 		elem.removeEventListener( type, handle, false );
-	} : 
+	} :
 	function( elem, type, handle ) {
 		elem.detachEvent( "on" + type, handle );
 	};
 
-jQuery.Event = function( src ) {
+EhQuery.Event = function( src ) {
 	// Allow instantiation without the 'new' keyword
 	if ( !this.preventDefault ) {
-		return new jQuery.Event( src );
+		return new EhQuery.Event( src );
 	}
 
 	// Event object
@@ -2101,9 +2101,9 @@ function returnTrue() {
 	return true;
 }
 
-// jQuery.Event is based on DOM3 Events as specified by the ECMAScript Language Binding
+// EhQuery.Event is based on DOM3 Events as specified by the ECMAScript Language Binding
 // http://www.w3.org/TR/2003/WD-DOM-Level-3-Events-20030331/ecma-script-binding.html
-jQuery.Event.prototype = {
+EhQuery.Event.prototype = {
 	preventDefault: function() {
 		this.isDefaultPrevented = returnTrue;
 
@@ -2111,7 +2111,7 @@ jQuery.Event.prototype = {
 		if ( !e ) {
 			return;
 		}
-		
+
 		// if preventDefault exists run it on the original event
 		if ( e.preventDefault ) {
 			e.preventDefault();
@@ -2143,7 +2143,7 @@ jQuery.Event.prototype = {
 };
 
 // Checks if an event happened on an element within another element
-// Used in jQuery.event.special.mouseenter and mouseleave handlers
+// Used in EhQuery.event.special.mouseenter and mouseleave handlers
 var withinElement = function( event ) {
 	// Check if mouse(over|out) are still within the same parent element
 	var parent = event.relatedTarget;
@@ -2161,7 +2161,7 @@ var withinElement = function( event ) {
 			event.type = event.data;
 
 			// handle event if we actually just moused on to a non sub-element
-			jQuery.event.handle.apply( this, arguments );
+			EhQuery.event.handle.apply( this, arguments );
 		}
 
 	// assuming we've left the element since we most likely mousedover a xul element
@@ -2172,42 +2172,42 @@ var withinElement = function( event ) {
 // liveHandler will take care of the rest.
 delegate = function( event ) {
 	event.type = event.data;
-	jQuery.event.handle.apply( this, arguments );
+	EhQuery.event.handle.apply( this, arguments );
 };
 
 // Create mouseenter and mouseleave events
-jQuery.each({
+EhQuery.each({
 	mouseenter: "mouseover",
 	mouseleave: "mouseout"
 }, function( orig, fix ) {
-	jQuery.event.special[ orig ] = {
+	EhQuery.event.special[ orig ] = {
 		setup: function( data ) {
-			jQuery.event.add( this, fix, data && data.selector ? delegate : withinElement, orig );
+			EhQuery.event.add( this, fix, data && data.selector ? delegate : withinElement, orig );
 		},
 		teardown: function( data ) {
-			jQuery.event.remove( this, fix, data && data.selector ? delegate : withinElement );
+			EhQuery.event.remove( this, fix, data && data.selector ? delegate : withinElement );
 		}
 	};
 });
 
 // submit delegation
-if ( !jQuery.support.submitBubbles ) {
+if ( !EhQuery.support.submitBubbles ) {
 
-	jQuery.event.special.submit = {
+	EhQuery.event.special.submit = {
 		setup: function( data, namespaces ) {
 			if ( this.nodeName.toLowerCase() !== "form" ) {
-				jQuery.event.add(this, "click.specialSubmit", function( e ) {
+				EhQuery.event.add(this, "click.specialSubmit", function( e ) {
 					var elem = e.target, type = elem.type;
 
-					if ( (type === "submit" || type === "image") && jQuery( elem ).closest("form").length ) {
+					if ( (type === "submit" || type === "image") && EhQuery( elem ).closest("form").length ) {
 						return trigger( "submit", this, arguments );
 					}
 				});
-	 
-				jQuery.event.add(this, "keypress.specialSubmit", function( e ) {
+
+				EhQuery.event.add(this, "keypress.specialSubmit", function( e ) {
 					var elem = e.target, type = elem.type;
 
-					if ( (type === "text" || type === "password") && jQuery( elem ).closest("form").length && e.keyCode === 13 ) {
+					if ( (type === "text" || type === "password") && EhQuery( elem ).closest("form").length && e.keyCode === 13 ) {
 						return trigger( "submit", this, arguments );
 					}
 				});
@@ -2218,14 +2218,14 @@ if ( !jQuery.support.submitBubbles ) {
 		},
 
 		teardown: function( namespaces ) {
-			jQuery.event.remove( this, ".specialSubmit" );
+			EhQuery.event.remove( this, ".specialSubmit" );
 		}
 	};
 
 }
 
 // change delegation, happens here so we have bind.
-if ( !jQuery.support.changeBubbles ) {
+if ( !EhQuery.support.changeBubbles ) {
 
 	var formElems = /textarea|input|select/i,
 
@@ -2239,7 +2239,7 @@ if ( !jQuery.support.changeBubbles ) {
 
 		} else if ( type === "select-multiple" ) {
 			val = elem.selectedIndex > -1 ?
-				jQuery.map( elem.options, function( elem ) {
+				EhQuery.map( elem.options, function( elem ) {
 					return elem.selected;
 				}).join("-") :
 				"";
@@ -2258,27 +2258,27 @@ if ( !jQuery.support.changeBubbles ) {
 			return;
 		}
 
-		data = jQuery.data( elem, "_change_data" );
+		data = EhQuery.data( elem, "_change_data" );
 		val = getVal(elem);
 
 		// the current data will be also retrieved by beforeactivate
 		if ( e.type !== "focusout" || elem.type !== "radio" ) {
-			jQuery.data( elem, "_change_data", val );
+			EhQuery.data( elem, "_change_data", val );
 		}
-		
+
 		if ( data === undefined || val === data ) {
 			return;
 		}
 
 		if ( data != null || val ) {
 			e.type = "change";
-			return jQuery.event.trigger( e, arguments[1], elem );
+			return EhQuery.event.trigger( e, arguments[1], elem );
 		}
 	};
 
-	jQuery.event.special.change = {
+	EhQuery.event.special.change = {
 		filters: {
-			focusout: testChange, 
+			focusout: testChange,
 
 			click: function( e ) {
 				var elem = e.target, type = elem.type;
@@ -2305,7 +2305,7 @@ if ( !jQuery.support.changeBubbles ) {
 			// information/focus[in] is not needed anymore
 			beforeactivate: function( e ) {
 				var elem = e.target;
-				jQuery.data( elem, "_change_data", getVal(elem) );
+				EhQuery.data( elem, "_change_data", getVal(elem) );
 			}
 		},
 
@@ -2315,49 +2315,49 @@ if ( !jQuery.support.changeBubbles ) {
 			}
 
 			for ( var type in changeFilters ) {
-				jQuery.event.add( this, type + ".specialChange", changeFilters[type] );
+				EhQuery.event.add( this, type + ".specialChange", changeFilters[type] );
 			}
 
 			return formElems.test( this.nodeName );
 		},
 
 		teardown: function( namespaces ) {
-			jQuery.event.remove( this, ".specialChange" );
+			EhQuery.event.remove( this, ".specialChange" );
 
 			return formElems.test( this.nodeName );
 		}
 	};
 
-	changeFilters = jQuery.event.special.change.filters;
+	changeFilters = EhQuery.event.special.change.filters;
 }
 
 function trigger( type, elem, args ) {
 	args[0].type = type;
-	return jQuery.event.handle.apply( elem, args );
+	return EhQuery.event.handle.apply( elem, args );
 }
 
 // Create "bubbling" focus and blur events
 if ( document.addEventListener ) {
-	jQuery.each({ focus: "focusin", blur: "focusout" }, function( orig, fix ) {
-		jQuery.event.special[ fix ] = {
+	EhQuery.each({ focus: "focusin", blur: "focusout" }, function( orig, fix ) {
+		EhQuery.event.special[ fix ] = {
 			setup: function() {
 				this.addEventListener( orig, handler, true );
-			}, 
-			teardown: function() { 
+			},
+			teardown: function() {
 				this.removeEventListener( orig, handler, true );
 			}
 		};
 
-		function handler( e ) { 
-			e = jQuery.event.fix( e );
+		function handler( e ) {
+			e = EhQuery.event.fix( e );
 			e.type = fix;
-			return jQuery.event.handle.call( this, e );
+			return EhQuery.event.handle.call( this, e );
 		}
 	});
 }
 
-jQuery.each(["bind", "one"], function( i, name ) {
-	jQuery.fn[ name ] = function( type, data, fn ) {
+EhQuery.each(["bind", "one"], function( i, name ) {
+	EhQuery.fn[ name ] = function( type, data, fn ) {
 		// Handle object literals
 		if ( typeof type === "object" ) {
 			for ( var key in type ) {
@@ -2365,14 +2365,14 @@ jQuery.each(["bind", "one"], function( i, name ) {
 			}
 			return this;
 		}
-		
-		if ( jQuery.isFunction( data ) ) {
+
+		if ( EhQuery.isFunction( data ) ) {
 			fn = data;
 			data = undefined;
 		}
 
-		var handler = name === "one" ? jQuery.proxy( fn, function( event ) {
-			jQuery( this ).unbind( event, handler );
+		var handler = name === "one" ? EhQuery.proxy( fn, function( event ) {
+			EhQuery( this ).unbind( event, handler );
 			return fn.apply( this, arguments );
 		}) : fn;
 
@@ -2381,7 +2381,7 @@ jQuery.each(["bind", "one"], function( i, name ) {
 
 		} else {
 			for ( var i = 0, l = this.length; i < l; i++ ) {
-				jQuery.event.add( this[i], type, handler, data );
+				EhQuery.event.add( this[i], type, handler, data );
 			}
 		}
 
@@ -2389,7 +2389,7 @@ jQuery.each(["bind", "one"], function( i, name ) {
 	};
 });
 
-jQuery.fn.extend({
+EhQuery.fn.extend({
 	unbind: function( type, fn ) {
 		// Handle object literals
 		if ( typeof type === "object" && !type.preventDefault ) {
@@ -2399,38 +2399,38 @@ jQuery.fn.extend({
 
 		} else {
 			for ( var i = 0, l = this.length; i < l; i++ ) {
-				jQuery.event.remove( this[i], type, fn );
+				EhQuery.event.remove( this[i], type, fn );
 			}
 		}
 
 		return this;
 	},
-	
+
 	delegate: function( selector, types, data, fn ) {
 		return this.live( types, data, fn, selector );
 	},
-	
+
 	undelegate: function( selector, types, fn ) {
 		if ( arguments.length === 0 ) {
 				return this.unbind( "live" );
-		
+
 		} else {
 			return this.die( types, null, fn, selector );
 		}
 	},
-	
+
 	trigger: function( type, data ) {
 		return this.each(function() {
-			jQuery.event.trigger( type, data, this );
+			EhQuery.event.trigger( type, data, this );
 		});
 	},
 
 	triggerHandler: function( type, data ) {
 		if ( this[0] ) {
-			var event = jQuery.Event( type );
+			var event = EhQuery.Event( type );
 			event.preventDefault();
 			event.stopPropagation();
-			jQuery.event.trigger( event, data, this[0] );
+			EhQuery.event.trigger( event, data, this[0] );
 			return event.result;
 		}
 	},
@@ -2441,13 +2441,13 @@ jQuery.fn.extend({
 
 		// link all the functions, so any of them can unbind this click handler
 		while ( i < args.length ) {
-			jQuery.proxy( fn, args[ i++ ] );
+			EhQuery.proxy( fn, args[ i++ ] );
 		}
 
-		return this.click( jQuery.proxy( fn, function( event ) {
+		return this.click( EhQuery.proxy( fn, function( event ) {
 			// Figure out which function to execute
-			var lastToggle = ( jQuery.data( this, "lastToggle" + fn.guid ) || 0 ) % i;
-			jQuery.data( this, "lastToggle" + fn.guid, lastToggle + 1 );
+			var lastToggle = ( EhQuery.data( this, "lastToggle" + fn.guid ) || 0 ) % i;
+			EhQuery.data( this, "lastToggle" + fn.guid, lastToggle + 1 );
 
 			// Make sure that clicks stop
 			event.preventDefault();
@@ -2469,13 +2469,13 @@ var liveMap = {
 	mouseleave: "mouseout"
 };
 
-jQuery.each(["live", "die"], function( i, name ) {
-	jQuery.fn[ name ] = function( types, data, fn, origSelector /* Internal Use Only */ ) {
+EhQuery.each(["live", "die"], function( i, name ) {
+	EhQuery.fn[ name ] = function( types, data, fn, origSelector /* Internal Use Only */ ) {
 		var type, i = 0, match, namespaces, preType,
 			selector = origSelector || this.selector,
-			context = origSelector ? this : jQuery( this.context );
+			context = origSelector ? this : EhQuery( this.context );
 
-		if ( jQuery.isFunction( data ) ) {
+		if ( EhQuery.isFunction( data ) ) {
 			fn = data;
 			data = undefined;
 		}
@@ -2509,7 +2509,7 @@ jQuery.each(["live", "die"], function( i, name ) {
 			if ( name === "live" ) {
 				// bind live handler
 				context.each(function(){
-					jQuery.event.add( this, liveConvert( type, selector ),
+					EhQuery.event.add( this, liveConvert( type, selector ),
 						{ data: data, selector: selector, handler: fn, origType: type, origHandler: fn, preType: preType } );
 				});
 
@@ -2518,7 +2518,7 @@ jQuery.each(["live", "die"], function( i, name ) {
 				context.unbind( liveConvert( type, selector ), fn );
 			}
 		}
-		
+
 		return this;
 	}
 });
@@ -2526,7 +2526,7 @@ jQuery.each(["live", "die"], function( i, name ) {
 function liveHandler( event ) {
 	var stop, elems = [], selectors = [], args = arguments,
 		related, match, handleObj, elem, j, i, l, data,
-		events = jQuery.data( this, "events" );
+		events = EhQuery.data( this, "events" );
 
 	// Make sure we avoid non-left-click bubbling in Firefox (#3861)
 	if ( event.liveFired === this || !events || !events.live || event.button && event.type === "click" ) {
@@ -2548,7 +2548,7 @@ function liveHandler( event ) {
 		}
 	}
 
-	match = jQuery( event.target ).closest( selectors, event.currentTarget );
+	match = EhQuery( event.target ).closest( selectors, event.currentTarget );
 
 	for ( i = 0, l = match.length; i < l; i++ ) {
 		for ( j = 0; j < live.length; j++ ) {
@@ -2560,7 +2560,7 @@ function liveHandler( event ) {
 
 				// Those two events require additional checking
 				if ( handleObj.preType === "mouseenter" || handleObj.preType === "mouseleave" ) {
-					related = jQuery( event.relatedTarget ).closest( handleObj.selector )[0];
+					related = EhQuery( event.relatedTarget ).closest( handleObj.selector )[0];
 				}
 
 				if ( !related || related !== elem ) {
@@ -2589,17 +2589,17 @@ function liveConvert( type, selector ) {
 	return "live." + (type && type !== "*" ? type + "." : "") + selector.replace(/\./g, "`").replace(/ /g, "&");
 }
 
-jQuery.each( ("blur focus focusin focusout load resize scroll unload click dblclick " +
+EhQuery.each( ("blur focus focusin focusout load resize scroll unload click dblclick " +
 	"mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
 	"change select submit keydown keypress keyup error").split(" "), function( i, name ) {
 
 	// Handle event binding
-	jQuery.fn[ name ] = function( fn ) {
+	EhQuery.fn[ name ] = function( fn ) {
 		return fn ? this.bind( name, fn ) : this.trigger( name );
 	};
 
-	if ( jQuery.attrFn ) {
-		jQuery.attrFn[ name ] = true;
+	if ( EhQuery.attrFn ) {
+		EhQuery.attrFn[ name ] = true;
 	}
 });
 
@@ -2609,11 +2609,11 @@ jQuery.each( ("blur focus focusin focusout load resize scroll unload click dblcl
 //  - http://isaacschlueter.com/2006/10/msie-memory-leaks/
 if ( window.attachEvent && !window.addEventListener ) {
 	window.attachEvent("onunload", function() {
-		for ( var id in jQuery.cache ) {
-			if ( jQuery.cache[ id ].handle ) {
+		for ( var id in EhQuery.cache ) {
+			if ( EhQuery.cache[ id ].handle ) {
 				// Try/Catch is to handle iframes being unloaded, see #4280
 				try {
-					jQuery.event.remove( jQuery.cache[ id ].handle.elem );
+					EhQuery.event.remove( EhQuery.cache[ id ].handle.elem );
 				} catch(e) {}
 			}
 		}
@@ -2649,20 +2649,20 @@ var Sizzle = function(selector, context, results, seed) {
 	if ( context.nodeType !== 1 && context.nodeType !== 9 ) {
 		return [];
 	}
-	
+
 	if ( !selector || typeof selector !== "string" ) {
 		return results;
 	}
 
 	var parts = [], m, set, checkSet, extra, prune = true, contextXML = isXML(context),
 		soFar = selector;
-	
+
 	// Reset the position of the chunker regexp (start from head)
 	while ( (chunker.exec(""), m = chunker.exec(soFar)) !== null ) {
 		soFar = m[3];
-		
+
 		parts.push( m[1] );
-		
+
 		if ( m[2] ) {
 			extra = m[3];
 			break;
@@ -2683,7 +2683,7 @@ var Sizzle = function(selector, context, results, seed) {
 				if ( Expr.relative[ selector ] ) {
 					selector += parts.shift();
 				}
-				
+
 				set = posProcess( selector, set );
 			}
 		}
@@ -2794,7 +2794,7 @@ Sizzle.find = function(expr, context, isXML){
 
 	for ( var i = 0, l = Expr.order.length; i < l; i++ ) {
 		var type = Expr.order[i], match;
-		
+
 		if ( (match = Expr.leftMatch[ type ].exec( expr )) ) {
 			var left = match[1];
 			match.splice(1,1);
@@ -3068,7 +3068,7 @@ var Expr = Sizzle.selectors = {
 		},
 		ATTR: function(match, curLoop, inplace, result, not, isXML){
 			var name = match[1].replace(/\\/g, "");
-			
+
 			if ( !isXML && Expr.attrMap[name] ) {
 				match[1] = Expr.attrMap[name];
 			}
@@ -3094,7 +3094,7 @@ var Expr = Sizzle.selectors = {
 			} else if ( Expr.match.POS.test( match[0] ) || Expr.match.CHILD.test( match[0] ) ) {
 				return true;
 			}
-			
+
 			return match;
 		},
 		POS: function(match){
@@ -3215,18 +3215,18 @@ var Expr = Sizzle.selectors = {
 				case 'only':
 				case 'first':
 					while ( (node = node.previousSibling) )	 {
-						if ( node.nodeType === 1 ) { 
-							return false; 
+						if ( node.nodeType === 1 ) {
+							return false;
 						}
 					}
-					if ( type === "first" ) { 
-						return true; 
+					if ( type === "first" ) {
+						return true;
 					}
 					node = elem;
 				case 'last':
 					while ( (node = node.nextSibling) )	 {
-						if ( node.nodeType === 1 ) { 
-							return false; 
+						if ( node.nodeType === 1 ) {
+							return false;
 						}
 					}
 					return true;
@@ -3236,20 +3236,20 @@ var Expr = Sizzle.selectors = {
 					if ( first === 1 && last === 0 ) {
 						return true;
 					}
-					
+
 					var doneName = match[0],
 						parent = elem.parentNode;
-	
+
 					if ( parent && (parent.sizcache !== doneName || !elem.nodeIndex) ) {
 						var count = 0;
 						for ( node = parent.firstChild; node; node = node.nextSibling ) {
 							if ( node.nodeType === 1 ) {
 								node.nodeIndex = ++count;
 							}
-						} 
+						}
 						parent.sizcache = doneName;
 					}
-					
+
 					var diff = elem.nodeIndex - last;
 					if ( first === 0 ) {
 						return diff === 0;
@@ -3325,7 +3325,7 @@ var makeArray = function(array, results) {
 		results.push.apply( results, array );
 		return results;
 	}
-	
+
 	return array;
 };
 
@@ -3517,7 +3517,7 @@ if ( document.querySelectorAll ) {
 		if ( div.querySelectorAll && div.querySelectorAll(".TEST").length === 0 ) {
 			return;
 		}
-	
+
 		Sizzle = function(query, context, extra, seed){
 			context = context || document;
 
@@ -3528,7 +3528,7 @@ if ( document.querySelectorAll ) {
 					return makeArray( context.querySelectorAll(query), extra );
 				} catch(e){}
 			}
-		
+
 			return oldSizzle(query, context, extra, seed);
 		};
 
@@ -3557,7 +3557,7 @@ if ( document.querySelectorAll ) {
 	if ( div.getElementsByClassName("e").length === 1 ) {
 		return;
 	}
-	
+
 	Expr.order.splice(1, 0, "CLASS");
 	Expr.find.CLASS = function(match, context, isXML) {
 		if ( typeof context.getElementsByClassName !== "undefined" && !isXML ) {
@@ -3645,7 +3645,7 @@ var contains = document.compareDocumentPosition ? function(a, b){
 
 var isXML = function(elem){
 	// documentElement is verified for cases where it doesn't yet exist
-	// (such as loading iframes in IE - #4833) 
+	// (such as loading iframes in IE - #4833)
 	var documentElement = (elem ? elem.ownerDocument || elem : 0).documentElement;
 	return documentElement ? documentElement.nodeName !== "HTML" : false;
 };
@@ -3671,13 +3671,13 @@ var posProcess = function(selector, context){
 };
 
 // EXPOSE
-jQuery.find = Sizzle;
-jQuery.expr = Sizzle.selectors;
-jQuery.expr[":"] = jQuery.expr.filters;
-jQuery.unique = Sizzle.uniqueSort;
-jQuery.text = getText;
-jQuery.isXMLDoc = isXML;
-jQuery.contains = contains;
+EhQuery.find = Sizzle;
+EhQuery.expr = Sizzle.selectors;
+EhQuery.expr[":"] = EhQuery.expr.filters;
+EhQuery.unique = Sizzle.uniqueSort;
+EhQuery.text = getText;
+EhQuery.isXMLDoc = isXML;
+EhQuery.contains = contains;
 
 return;
 
@@ -3692,40 +3692,40 @@ var runtil = /Until$/,
 
 // Implement the identical functionality for filter and not
 var winnow = function( elements, qualifier, keep ) {
-	if ( jQuery.isFunction( qualifier ) ) {
-		return jQuery.grep(elements, function( elem, i ) {
+	if ( EhQuery.isFunction( qualifier ) ) {
+		return EhQuery.grep(elements, function( elem, i ) {
 			return !!qualifier.call( elem, i, elem ) === keep;
 		});
 
 	} else if ( qualifier.nodeType ) {
-		return jQuery.grep(elements, function( elem, i ) {
+		return EhQuery.grep(elements, function( elem, i ) {
 			return (elem === qualifier) === keep;
 		});
 
 	} else if ( typeof qualifier === "string" ) {
-		var filtered = jQuery.grep(elements, function( elem ) {
+		var filtered = EhQuery.grep(elements, function( elem ) {
 			return elem.nodeType === 1;
 		});
 
 		if ( isSimple.test( qualifier ) ) {
-			return jQuery.filter(qualifier, filtered, !keep);
+			return EhQuery.filter(qualifier, filtered, !keep);
 		} else {
-			qualifier = jQuery.filter( qualifier, filtered );
+			qualifier = EhQuery.filter( qualifier, filtered );
 		}
 	}
 
-	return jQuery.grep(elements, function( elem, i ) {
-		return (jQuery.inArray( elem, qualifier ) >= 0) === keep;
+	return EhQuery.grep(elements, function( elem, i ) {
+		return (EhQuery.inArray( elem, qualifier ) >= 0) === keep;
 	});
 };
 
-jQuery.fn.extend({
+EhQuery.fn.extend({
 	find: function( selector ) {
 		var ret = this.pushStack( "", "find", selector ), length = 0;
 
 		for ( var i = 0, l = this.length; i < l; i++ ) {
 			length = ret.length;
-			jQuery.find( selector, this[i], ret );
+			EhQuery.find( selector, this[i], ret );
 
 			if ( i > 0 ) {
 				// Make sure that the results are unique
@@ -3744,10 +3744,10 @@ jQuery.fn.extend({
 	},
 
 	has: function( target ) {
-		var targets = jQuery( target );
+		var targets = EhQuery( target );
 		return this.filter(function() {
 			for ( var i = 0, l = targets.length; i < l; i++ ) {
-				if ( jQuery.contains( this, targets[i] ) ) {
+				if ( EhQuery.contains( this, targets[i] ) ) {
 					return true;
 				}
 			}
@@ -3761,13 +3761,13 @@ jQuery.fn.extend({
 	filter: function( selector ) {
 		return this.pushStack( winnow(this, selector, true), "filter", selector );
 	},
-	
+
 	is: function( selector ) {
-		return !!selector && jQuery.filter( selector, this ).length > 0;
+		return !!selector && EhQuery.filter( selector, this ).length > 0;
 	},
 
 	closest: function( selectors, context ) {
-		if ( jQuery.isArray( selectors ) ) {
+		if ( EhQuery.isArray( selectors ) ) {
 			var ret = [], cur = this[0], match, matches = {}, selector;
 
 			if ( cur && selectors.length ) {
@@ -3775,8 +3775,8 @@ jQuery.fn.extend({
 					selector = selectors[i];
 
 					if ( !matches[selector] ) {
-						matches[selector] = jQuery.expr.match.POS.test( selector ) ? 
-							jQuery( selector, context || this.context ) :
+						matches[selector] = EhQuery.expr.match.POS.test( selector ) ?
+							EhQuery( selector, context || this.context ) :
 							selector;
 					}
 				}
@@ -3785,7 +3785,7 @@ jQuery.fn.extend({
 					for ( selector in matches ) {
 						match = matches[selector];
 
-						if ( match.jquery ? match.index(cur) > -1 : jQuery(cur).is(match) ) {
+						if ( match.jquery ? match.index(cur) > -1 : EhQuery(cur).is(match) ) {
 							ret.push({ selector: selector, elem: cur });
 							delete matches[selector];
 						}
@@ -3797,12 +3797,12 @@ jQuery.fn.extend({
 			return ret;
 		}
 
-		var pos = jQuery.expr.match.POS.test( selectors ) ? 
-			jQuery( selectors, context || this.context ) : null;
+		var pos = EhQuery.expr.match.POS.test( selectors ) ?
+			EhQuery( selectors, context || this.context ) : null;
 
 		return this.map(function( i, cur ) {
 			while ( cur && cur.ownerDocument && cur !== context ) {
-				if ( pos ? pos.index(cur) > -1 : jQuery(cur).is(selectors) ) {
+				if ( pos ? pos.index(cur) > -1 : EhQuery(cur).is(selectors) ) {
 					return cur;
 				}
 				cur = cur.parentNode;
@@ -3810,31 +3810,31 @@ jQuery.fn.extend({
 			return null;
 		});
 	},
-	
+
 	// Determine the position of an element within
 	// the matched set of elements
 	index: function( elem ) {
 		if ( !elem || typeof elem === "string" ) {
-			return jQuery.inArray( this[0],
+			return EhQuery.inArray( this[0],
 				// If it receives a string, the selector is used
 				// If it receives nothing, the siblings are used
-				elem ? jQuery( elem ) : this.parent().children() );
+				elem ? EhQuery( elem ) : this.parent().children() );
 		}
 		// Locate the position of the desired element
-		return jQuery.inArray(
-			// If it receives a jQuery object, the first element is used
+		return EhQuery.inArray(
+			// If it receives a EhQuery object, the first element is used
 			elem.jquery ? elem[0] : elem, this );
 	},
 
 	add: function( selector, context ) {
 		var set = typeof selector === "string" ?
-				jQuery( selector, context || this.context ) :
-				jQuery.makeArray( selector ),
-			all = jQuery.merge( this.get(), set );
+				EhQuery( selector, context || this.context ) :
+				EhQuery.makeArray( selector ),
+			all = EhQuery.merge( this.get(), set );
 
 		return this.pushStack( isDisconnected( set[0] ) || isDisconnected( all[0] ) ?
 			all :
-			jQuery.unique( all ) );
+			EhQuery.unique( all ) );
 	},
 
 	andSelf: function() {
@@ -3848,59 +3848,59 @@ function isDisconnected( node ) {
 	return !node || !node.parentNode || node.parentNode.nodeType === 11;
 }
 
-jQuery.each({
+EhQuery.each({
 	parent: function( elem ) {
 		var parent = elem.parentNode;
 		return parent && parent.nodeType !== 11 ? parent : null;
 	},
 	parents: function( elem ) {
-		return jQuery.dir( elem, "parentNode" );
+		return EhQuery.dir( elem, "parentNode" );
 	},
 	parentsUntil: function( elem, i, until ) {
-		return jQuery.dir( elem, "parentNode", until );
+		return EhQuery.dir( elem, "parentNode", until );
 	},
 	next: function( elem ) {
-		return jQuery.nth( elem, 2, "nextSibling" );
+		return EhQuery.nth( elem, 2, "nextSibling" );
 	},
 	prev: function( elem ) {
-		return jQuery.nth( elem, 2, "previousSibling" );
+		return EhQuery.nth( elem, 2, "previousSibling" );
 	},
 	nextAll: function( elem ) {
-		return jQuery.dir( elem, "nextSibling" );
+		return EhQuery.dir( elem, "nextSibling" );
 	},
 	prevAll: function( elem ) {
-		return jQuery.dir( elem, "previousSibling" );
+		return EhQuery.dir( elem, "previousSibling" );
 	},
 	nextUntil: function( elem, i, until ) {
-		return jQuery.dir( elem, "nextSibling", until );
+		return EhQuery.dir( elem, "nextSibling", until );
 	},
 	prevUntil: function( elem, i, until ) {
-		return jQuery.dir( elem, "previousSibling", until );
+		return EhQuery.dir( elem, "previousSibling", until );
 	},
 	siblings: function( elem ) {
-		return jQuery.sibling( elem.parentNode.firstChild, elem );
+		return EhQuery.sibling( elem.parentNode.firstChild, elem );
 	},
 	children: function( elem ) {
-		return jQuery.sibling( elem.firstChild );
+		return EhQuery.sibling( elem.firstChild );
 	},
 	contents: function( elem ) {
-		return jQuery.nodeName( elem, "iframe" ) ?
+		return EhQuery.nodeName( elem, "iframe" ) ?
 			elem.contentDocument || elem.contentWindow.document :
-			jQuery.makeArray( elem.childNodes );
+			EhQuery.makeArray( elem.childNodes );
 	}
 }, function( name, fn ) {
-	jQuery.fn[ name ] = function( until, selector ) {
-		var ret = jQuery.map( this, fn, until );
-		
+	EhQuery.fn[ name ] = function( until, selector ) {
+		var ret = EhQuery.map( this, fn, until );
+
 		if ( !runtil.test( name ) ) {
 			selector = until;
 		}
 
 		if ( selector && typeof selector === "string" ) {
-			ret = jQuery.filter( selector, ret );
+			ret = EhQuery.filter( selector, ret );
 		}
 
-		ret = this.length > 1 ? jQuery.unique( ret ) : ret;
+		ret = this.length > 1 ? EhQuery.unique( ret ) : ret;
 
 		if ( (this.length > 1 || rmultiselector.test( selector )) && rparentsprev.test( name ) ) {
 			ret = ret.reverse();
@@ -3910,18 +3910,18 @@ jQuery.each({
 	};
 });
 
-jQuery.extend({
+EhQuery.extend({
 	filter: function( expr, elems, not ) {
 		if ( not ) {
 			expr = ":not(" + expr + ")";
 		}
 
-		return jQuery.find.matches(expr, elems);
+		return EhQuery.find.matches(expr, elems);
 	},
-	
+
 	dir: function( elem, dir, until ) {
 		var matched = [], cur = elem[dir];
-		while ( cur && cur.nodeType !== 9 && (until === undefined || cur.nodeType !== 1 || !jQuery( cur ).is( until )) ) {
+		while ( cur && cur.nodeType !== 9 && (until === undefined || cur.nodeType !== 1 || !EhQuery( cur ).is( until )) ) {
 			if ( cur.nodeType === 1 ) {
 				matched.push( cur );
 			}
@@ -3955,7 +3955,7 @@ jQuery.extend({
 		return r;
 	}
 });
-var rinlinejQuery = / jQuery\d+="(?:\d+|null)"/g,
+var rinlineEhQuery = / EhQuery\d+="(?:\d+|null)"/g,
 	rleadingWhitespace = /^\s+/,
 	rxhtmlTag = /(<([\w:]+)[^>]*?)\/>/g,
 	rselfClosing = /^(?:area|br|col|embed|hr|img|input|link|meta|param)$/i,
@@ -3985,15 +3985,15 @@ wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.the
 wrapMap.th = wrapMap.td;
 
 // IE can't serialize <link> and <script> tags normally
-if ( !jQuery.support.htmlSerialize ) {
+if ( !EhQuery.support.htmlSerialize ) {
 	wrapMap._default = [ 1, "div<div>", "</div>" ];
 }
 
-jQuery.fn.extend({
+EhQuery.fn.extend({
 	text: function( text ) {
-		if ( jQuery.isFunction(text) ) {
+		if ( EhQuery.isFunction(text) ) {
 			return this.each(function(i) {
-				var self = jQuery(this);
+				var self = EhQuery(this);
 				self.text( text.call(this, i, self.text()) );
 			});
 		}
@@ -4002,19 +4002,19 @@ jQuery.fn.extend({
 			return this.empty().append( (this[0] && this[0].ownerDocument || document).createTextNode( text ) );
 		}
 
-		return jQuery.text( this );
+		return EhQuery.text( this );
 	},
 
 	wrapAll: function( html ) {
-		if ( jQuery.isFunction( html ) ) {
+		if ( EhQuery.isFunction( html ) ) {
 			return this.each(function(i) {
-				jQuery(this).wrapAll( html.call(this, i) );
+				EhQuery(this).wrapAll( html.call(this, i) );
 			});
 		}
 
 		if ( this[0] ) {
 			// The elements to wrap the target around
-			var wrap = jQuery( html, this[0].ownerDocument ).eq(0).clone(true);
+			var wrap = EhQuery( html, this[0].ownerDocument ).eq(0).clone(true);
 
 			if ( this[0].parentNode ) {
 				wrap.insertBefore( this[0] );
@@ -4035,14 +4035,14 @@ jQuery.fn.extend({
 	},
 
 	wrapInner: function( html ) {
-		if ( jQuery.isFunction( html ) ) {
+		if ( EhQuery.isFunction( html ) ) {
 			return this.each(function(i) {
-				jQuery(this).wrapInner( html.call(this, i) );
+				EhQuery(this).wrapInner( html.call(this, i) );
 			});
 		}
 
 		return this.each(function() {
-			var self = jQuery( this ), contents = self.contents();
+			var self = EhQuery( this ), contents = self.contents();
 
 			if ( contents.length ) {
 				contents.wrapAll( html );
@@ -4055,14 +4055,14 @@ jQuery.fn.extend({
 
 	wrap: function( html ) {
 		return this.each(function() {
-			jQuery( this ).wrapAll( html );
+			EhQuery( this ).wrapAll( html );
 		});
 	},
 
 	unwrap: function() {
 		return this.parent().each(function() {
-			if ( !jQuery.nodeName( this, "body" ) ) {
-				jQuery( this ).replaceWith( this.childNodes );
+			if ( !EhQuery.nodeName( this, "body" ) ) {
+				EhQuery( this ).replaceWith( this.childNodes );
 			}
 		}).end();
 	},
@@ -4089,7 +4089,7 @@ jQuery.fn.extend({
 				this.parentNode.insertBefore( elem, this );
 			});
 		} else if ( arguments.length ) {
-			var set = jQuery(arguments[0]);
+			var set = EhQuery(arguments[0]);
 			set.push.apply( set, this.toArray() );
 			return this.pushStack( set, "before", arguments );
 		}
@@ -4102,18 +4102,18 @@ jQuery.fn.extend({
 			});
 		} else if ( arguments.length ) {
 			var set = this.pushStack( this, "after", arguments );
-			set.push.apply( set, jQuery(arguments[0]).toArray() );
+			set.push.apply( set, EhQuery(arguments[0]).toArray() );
 			return set;
 		}
 	},
-	
+
 	// keepData is for internal use only--do not document
 	remove: function( selector, keepData ) {
 		for ( var i = 0, elem; (elem = this[i]) != null; i++ ) {
-			if ( !selector || jQuery.filter( selector, [ elem ] ).length ) {
+			if ( !selector || EhQuery.filter( selector, [ elem ] ).length ) {
 				if ( !keepData && elem.nodeType === 1 ) {
-					jQuery.cleanData( elem.getElementsByTagName("*") );
-					jQuery.cleanData( [ elem ] );
+					EhQuery.cleanData( elem.getElementsByTagName("*") );
+					EhQuery.cleanData( [ elem ] );
 				}
 
 				if ( elem.parentNode ) {
@@ -4121,7 +4121,7 @@ jQuery.fn.extend({
 				}
 			}
 		}
-		
+
 		return this;
 	},
 
@@ -4129,7 +4129,7 @@ jQuery.fn.extend({
 		for ( var i = 0, elem; (elem = this[i]) != null; i++ ) {
 			// Remove element nodes and prevent memory leaks
 			if ( elem.nodeType === 1 ) {
-				jQuery.cleanData( elem.getElementsByTagName("*") );
+				EhQuery.cleanData( elem.getElementsByTagName("*") );
 			}
 
 			// Remove any remaining nodes
@@ -4137,14 +4137,14 @@ jQuery.fn.extend({
 				elem.removeChild( elem.firstChild );
 			}
 		}
-		
+
 		return this;
 	},
 
 	clone: function( events ) {
 		// Do the clone
 		var ret = this.map(function() {
-			if ( !jQuery.support.noCloneEvent && !jQuery.isXMLDoc(this) ) {
+			if ( !EhQuery.support.noCloneEvent && !EhQuery.isXMLDoc(this) ) {
 				// IE copies events bound via attachEvent when
 				// using cloneNode. Calling detachEvent on the
 				// clone will also remove the events from the original.
@@ -4160,7 +4160,7 @@ jQuery.fn.extend({
 					html = div.innerHTML;
 				}
 
-				return jQuery.clean([html.replace(rinlinejQuery, "")
+				return EhQuery.clean([html.replace(rinlineEhQuery, "")
 					// Handle the case in IE 8 where action=/test/> self-closes a tag
 					.replace(/=([^="'>\s]+\/)>/g, '="$1">')
 					.replace(rleadingWhitespace, "")], ownerDocument)[0];
@@ -4182,12 +4182,12 @@ jQuery.fn.extend({
 	html: function( value ) {
 		if ( value === undefined ) {
 			return this[0] && this[0].nodeType === 1 ?
-				this[0].innerHTML.replace(rinlinejQuery, "") :
+				this[0].innerHTML.replace(rinlineEhQuery, "") :
 				null;
 
 		// See if we can take a shortcut and just use innerHTML
 		} else if ( typeof value === "string" && !rnocache.test( value ) &&
-			(jQuery.support.leadingWhitespace || !rleadingWhitespace.test( value )) &&
+			(EhQuery.support.leadingWhitespace || !rleadingWhitespace.test( value )) &&
 			!wrapMap[ (rtagName.exec( value ) || ["", ""])[1].toLowerCase() ] ) {
 
 			value = value.replace(rxhtmlTag, fcloseTag);
@@ -4196,7 +4196,7 @@ jQuery.fn.extend({
 				for ( var i = 0, l = this.length; i < l; i++ ) {
 					// Remove element nodes and prevent memory leaks
 					if ( this[i].nodeType === 1 ) {
-						jQuery.cleanData( this[i].getElementsByTagName("*") );
+						EhQuery.cleanData( this[i].getElementsByTagName("*") );
 						this[i].innerHTML = value;
 					}
 				}
@@ -4206,9 +4206,9 @@ jQuery.fn.extend({
 				this.empty().append( value );
 			}
 
-		} else if ( jQuery.isFunction( value ) ) {
+		} else if ( EhQuery.isFunction( value ) ) {
 			this.each(function(i){
-				var self = jQuery(this), old = self.html();
+				var self = EhQuery(this), old = self.html();
 				self.empty().append(function(){
 					return value.call( this, i, old );
 				});
@@ -4225,30 +4225,30 @@ jQuery.fn.extend({
 		if ( this[0] && this[0].parentNode ) {
 			// Make sure that the elements are removed from the DOM before they are inserted
 			// this can help fix replacing a parent with child elements
-			if ( jQuery.isFunction( value ) ) {
+			if ( EhQuery.isFunction( value ) ) {
 				return this.each(function(i) {
-					var self = jQuery(this), old = self.html();
+					var self = EhQuery(this), old = self.html();
 					self.replaceWith( value.call( this, i, old ) );
 				});
 			}
 
 			if ( typeof value !== "string" ) {
-				value = jQuery(value).detach();
+				value = EhQuery(value).detach();
 			}
 
 			return this.each(function() {
 				var next = this.nextSibling, parent = this.parentNode;
 
-				jQuery(this).remove();
+				EhQuery(this).remove();
 
 				if ( next ) {
-					jQuery(next).before( value );
+					EhQuery(next).before( value );
 				} else {
-					jQuery(parent).append( value );
+					EhQuery(parent).append( value );
 				}
 			});
 		} else {
-			return this.pushStack( jQuery(jQuery.isFunction(value) ? value() : value), "replaceWith", value );
+			return this.pushStack( EhQuery(EhQuery.isFunction(value) ? value() : value), "replaceWith", value );
 		}
 	},
 
@@ -4260,15 +4260,15 @@ jQuery.fn.extend({
 		var results, first, value = args[0], scripts = [], fragment, parent;
 
 		// We can't cloneNode fragments that contain checked, in WebKit
-		if ( !jQuery.support.checkClone && arguments.length === 3 && typeof value === "string" && rchecked.test( value ) ) {
+		if ( !EhQuery.support.checkClone && arguments.length === 3 && typeof value === "string" && rchecked.test( value ) ) {
 			return this.each(function() {
-				jQuery(this).domManip( args, table, callback, true );
+				EhQuery(this).domManip( args, table, callback, true );
 			});
 		}
 
-		if ( jQuery.isFunction(value) ) {
+		if ( EhQuery.isFunction(value) ) {
 			return this.each(function(i) {
-				var self = jQuery(this);
+				var self = EhQuery(this);
 				args[0] = value.call(this, i, table ? self.html() : undefined);
 				self.domManip( args, table, callback );
 			});
@@ -4278,15 +4278,15 @@ jQuery.fn.extend({
 			parent = value && value.parentNode;
 
 			// If we're in a fragment, just use that instead of building a new one
-			if ( jQuery.support.parentNode && parent && parent.nodeType === 11 && parent.childNodes.length === this.length ) {
+			if ( EhQuery.support.parentNode && parent && parent.nodeType === 11 && parent.childNodes.length === this.length ) {
 				results = { fragment: parent };
 
 			} else {
 				results = buildFragment( args, this, scripts );
 			}
-			
+
 			fragment = results.fragment;
-			
+
 			if ( fragment.childNodes.length === 1 ) {
 				first = fragment = fragment.firstChild;
 			} else {
@@ -4294,7 +4294,7 @@ jQuery.fn.extend({
 			}
 
 			if ( first ) {
-				table = table && jQuery.nodeName( first, "tr" );
+				table = table && EhQuery.nodeName( first, "tr" );
 
 				for ( var i = 0, l = this.length; i < l; i++ ) {
 					callback.call(
@@ -4309,14 +4309,14 @@ jQuery.fn.extend({
 			}
 
 			if ( scripts.length ) {
-				jQuery.each( scripts, evalScript );
+				EhQuery.each( scripts, evalScript );
 			}
 		}
 
 		return this;
 
 		function root( elem, cur ) {
-			return jQuery.nodeName(elem, "table") ?
+			return EhQuery.nodeName(elem, "table") ?
 				(elem.getElementsByTagName("tbody")[0] ||
 				elem.appendChild(elem.ownerDocument.createElement("tbody"))) :
 				elem;
@@ -4332,7 +4332,7 @@ function cloneCopyEvent(orig, ret) {
 			return;
 		}
 
-		var oldData = jQuery.data( orig[i++] ), curData = jQuery.data( this, oldData ), events = oldData && oldData.events;
+		var oldData = EhQuery.data( orig[i++] ), curData = EhQuery.data( this, oldData ), events = oldData && oldData.events;
 
 		if ( events ) {
 			delete curData.handle;
@@ -4340,7 +4340,7 @@ function cloneCopyEvent(orig, ret) {
 
 			for ( var type in events ) {
 				for ( var handler in events[ type ] ) {
-					jQuery.event.add( this, type, events[ type ][ handler ], events[ type ][ handler ].data );
+					EhQuery.event.add( this, type, events[ type ][ handler ], events[ type ][ handler ].data );
 				}
 			}
 		}
@@ -4356,10 +4356,10 @@ function buildFragment( args, nodes, scripts ) {
 	// IE 6 doesn't like it when you put <object> or <embed> elements in a fragment
 	// Also, WebKit does not clone 'checked' attributes on cloneNode, so don't cache
 	if ( args.length === 1 && typeof args[0] === "string" && args[0].length < 512 && doc === document &&
-		!rnocache.test( args[0] ) && (jQuery.support.checkClone || !rchecked.test( args[0] )) ) {
+		!rnocache.test( args[0] ) && (EhQuery.support.checkClone || !rchecked.test( args[0] )) ) {
 
 		cacheable = true;
-		cacheresults = jQuery.fragments[ args[0] ];
+		cacheresults = EhQuery.fragments[ args[0] ];
 		if ( cacheresults ) {
 			if ( cacheresults !== 1 ) {
 				fragment = cacheresults;
@@ -4369,46 +4369,46 @@ function buildFragment( args, nodes, scripts ) {
 
 	if ( !fragment ) {
 		fragment = doc.createDocumentFragment();
-		jQuery.clean( args, doc, fragment, scripts );
+		EhQuery.clean( args, doc, fragment, scripts );
 	}
 
 	if ( cacheable ) {
-		jQuery.fragments[ args[0] ] = cacheresults ? fragment : 1;
+		EhQuery.fragments[ args[0] ] = cacheresults ? fragment : 1;
 	}
 
 	return { fragment: fragment, cacheable: cacheable };
 }
 
-jQuery.fragments = {};
+EhQuery.fragments = {};
 
-jQuery.each({
+EhQuery.each({
 	appendTo: "append",
 	prependTo: "prepend",
 	insertBefore: "before",
 	insertAfter: "after",
 	replaceAll: "replaceWith"
 }, function( name, original ) {
-	jQuery.fn[ name ] = function( selector ) {
-		var ret = [], insert = jQuery( selector ),
+	EhQuery.fn[ name ] = function( selector ) {
+		var ret = [], insert = EhQuery( selector ),
 			parent = this.length === 1 && this[0].parentNode;
-		
+
 		if ( parent && parent.nodeType === 11 && parent.childNodes.length === 1 && insert.length === 1 ) {
 			insert[ original ]( this[0] );
 			return this;
-			
+
 		} else {
 			for ( var i = 0, l = insert.length; i < l; i++ ) {
 				var elems = (i > 0 ? this.clone(true) : this).get();
-				jQuery.fn[ original ].apply( jQuery(insert[i]), elems );
+				EhQuery.fn[ original ].apply( EhQuery(insert[i]), elems );
 				ret = ret.concat( elems );
 			}
-		
+
 			return this.pushStack( ret, name, insert.selector );
 		}
 	};
 });
 
-jQuery.extend({
+EhQuery.extend({
 	clean: function( elems, context, fragment, scripts ) {
 		context = context || document;
 
@@ -4451,7 +4451,7 @@ jQuery.extend({
 				}
 
 				// Remove IE's autoinserted <tbody> from table fragments
-				if ( !jQuery.support.tbody ) {
+				if ( !EhQuery.support.tbody ) {
 
 					// String was a <table>, *may* have spurious <tbody>
 					var hasBody = rtbody.test(elem),
@@ -4464,7 +4464,7 @@ jQuery.extend({
 								[];
 
 					for ( var j = tbody.length - 1; j >= 0 ; --j ) {
-						if ( jQuery.nodeName( tbody[ j ], "tbody" ) && !tbody[ j ].childNodes.length ) {
+						if ( EhQuery.nodeName( tbody[ j ], "tbody" ) && !tbody[ j ].childNodes.length ) {
 							tbody[ j ].parentNode.removeChild( tbody[ j ] );
 						}
 					}
@@ -4472,7 +4472,7 @@ jQuery.extend({
 				}
 
 				// IE completely kills leading whitespace when innerHTML is used
-				if ( !jQuery.support.leadingWhitespace && rleadingWhitespace.test( elem ) ) {
+				if ( !EhQuery.support.leadingWhitespace && rleadingWhitespace.test( elem ) ) {
 					div.insertBefore( context.createTextNode( rleadingWhitespace.exec(elem)[0] ), div.firstChild );
 				}
 
@@ -4482,18 +4482,18 @@ jQuery.extend({
 			if ( elem.nodeType ) {
 				ret.push( elem );
 			} else {
-				ret = jQuery.merge( ret, elem );
+				ret = EhQuery.merge( ret, elem );
 			}
 		}
 
 		if ( fragment ) {
 			for ( var i = 0; ret[i]; i++ ) {
-				if ( scripts && jQuery.nodeName( ret[i], "script" ) && (!ret[i].type || ret[i].type.toLowerCase() === "text/javascript") ) {
+				if ( scripts && EhQuery.nodeName( ret[i], "script" ) && (!ret[i].type || ret[i].type.toLowerCase() === "text/javascript") ) {
 					scripts.push( ret[i].parentNode ? ret[i].parentNode.removeChild( ret[i] ) : ret[i] );
-				
+
 				} else {
 					if ( ret[i].nodeType === 1 ) {
-						ret.splice.apply( ret, [i + 1, 0].concat(jQuery.makeArray(ret[i].getElementsByTagName("script"))) );
+						ret.splice.apply( ret, [i + 1, 0].concat(EhQuery.makeArray(ret[i].getElementsByTagName("script"))) );
 					}
 					fragment.appendChild( ret[i] );
 				}
@@ -4502,36 +4502,36 @@ jQuery.extend({
 
 		return ret;
 	},
-	
+
 	cleanData: function( elems ) {
-		var data, id, cache = jQuery.cache,
-			special = jQuery.event.special,
-			deleteExpando = jQuery.support.deleteExpando;
-		
+		var data, id, cache = EhQuery.cache,
+			special = EhQuery.event.special,
+			deleteExpando = EhQuery.support.deleteExpando;
+
 		for ( var i = 0, elem; (elem = elems[i]) != null; i++ ) {
-			id = elem[ jQuery.expando ];
-			
+			id = elem[ EhQuery.expando ];
+
 			if ( id ) {
 				data = cache[ id ];
-				
+
 				if ( data.events ) {
 					for ( var type in data.events ) {
 						if ( special[ type ] ) {
-							jQuery.event.remove( elem, type );
+							EhQuery.event.remove( elem, type );
 
 						} else {
 							removeEvent( elem, type, data.handle );
 						}
 					}
 				}
-				
+
 				if ( deleteExpando ) {
-					delete elem[ jQuery.expando ];
+					delete elem[ EhQuery.expando ];
 
 				} else if ( elem.removeAttribute ) {
-					elem.removeAttribute( jQuery.expando );
+					elem.removeAttribute( EhQuery.expando );
 				}
-				
+
 				delete cache[ id ];
 			}
 		}
@@ -4554,26 +4554,26 @@ var rexclude = /z-?index|font-?weight|opacity|zoom|line-?height/i,
 	// cache check for defaultView.getComputedStyle
 	getComputedStyle = document.defaultView && document.defaultView.getComputedStyle,
 	// normalize float css property
-	styleFloat = jQuery.support.cssFloat ? "cssFloat" : "styleFloat",
+	styleFloat = EhQuery.support.cssFloat ? "cssFloat" : "styleFloat",
 	fcamelCase = function( all, letter ) {
 		return letter.toUpperCase();
 	};
 
-jQuery.fn.css = function( name, value ) {
+EhQuery.fn.css = function( name, value ) {
 	return access( this, name, value, true, function( elem, name, value ) {
 		if ( value === undefined ) {
-			return jQuery.curCSS( elem, name );
+			return EhQuery.curCSS( elem, name );
 		}
-		
+
 		if ( typeof value === "number" && !rexclude.test(name) ) {
 			value += "px";
 		}
 
-		jQuery.style( elem, name, value );
+		EhQuery.style( elem, name, value );
 	});
 };
 
-jQuery.extend({
+EhQuery.extend({
 	style: function( elem, name, value ) {
 		// don't set styles on text and comment nodes
 		if ( !elem || elem.nodeType === 3 || elem.nodeType === 8 ) {
@@ -4588,7 +4588,7 @@ jQuery.extend({
 		var style = elem.style || elem, set = value !== undefined;
 
 		// IE uses filters for opacity
-		if ( !jQuery.support.opacity && name === "opacity" ) {
+		if ( !EhQuery.support.opacity && name === "opacity" ) {
 			if ( set ) {
 				// IE has trouble with opacity if it does not have layout
 				// Force it by setting the zoom level
@@ -4596,7 +4596,7 @@ jQuery.extend({
 
 				// Set the alpha filter to set the opacity
 				var opacity = parseInt( value, 10 ) + "" === "NaN" ? "" : "alpha(opacity=" + value * 100 + ")";
-				var filter = style.filter || jQuery.curCSS( elem, "filter" ) || "";
+				var filter = style.filter || EhQuery.curCSS( elem, "filter" ) || "";
 				style.filter = ralpha.test(filter) ? filter.replace(ralpha, opacity) : opacity;
 			}
 
@@ -4630,15 +4630,15 @@ jQuery.extend({
 					return;
 				}
 
-				jQuery.each( which, function() {
+				EhQuery.each( which, function() {
 					if ( !extra ) {
-						val -= parseFloat(jQuery.curCSS( elem, "padding" + this, true)) || 0;
+						val -= parseFloat(EhQuery.curCSS( elem, "padding" + this, true)) || 0;
 					}
 
 					if ( extra === "margin" ) {
-						val += parseFloat(jQuery.curCSS( elem, "margin" + this, true)) || 0;
+						val += parseFloat(EhQuery.curCSS( elem, "margin" + this, true)) || 0;
 					} else {
-						val -= parseFloat(jQuery.curCSS( elem, "border" + this + "Width", true)) || 0;
+						val -= parseFloat(EhQuery.curCSS( elem, "border" + this + "Width", true)) || 0;
 					}
 				});
 			}
@@ -4646,20 +4646,20 @@ jQuery.extend({
 			if ( elem.offsetWidth !== 0 ) {
 				getWH();
 			} else {
-				jQuery.swap( elem, props, getWH );
+				EhQuery.swap( elem, props, getWH );
 			}
 
 			return Math.max(0, Math.round(val));
 		}
 
-		return jQuery.curCSS( elem, name, force );
+		return EhQuery.curCSS( elem, name, force );
 	},
 
 	curCSS: function( elem, name, force ) {
 		var ret, style = elem.style, filter;
 
 		// IE uses filters for opacity
-		if ( !jQuery.support.opacity && name === "opacity" && elem.currentStyle ) {
+		if ( !EhQuery.support.opacity && name === "opacity" && elem.currentStyle ) {
 			ret = ropacity.test(elem.currentStyle.filter || "") ?
 				(parseFloat(RegExp.$1) / 100) + "" :
 				"";
@@ -4750,8 +4750,8 @@ jQuery.extend({
 	}
 });
 
-if ( jQuery.expr && jQuery.expr.filters ) {
-	jQuery.expr.filters.hidden = function( elem ) {
+if ( EhQuery.expr && EhQuery.expr.filters ) {
+	EhQuery.expr.filters.hidden = function( elem ) {
 		var width = elem.offsetWidth, height = elem.offsetHeight,
 			skip = elem.nodeName.toLowerCase() === "tr";
 
@@ -4759,11 +4759,11 @@ if ( jQuery.expr && jQuery.expr.filters ) {
 			true :
 			width > 0 && height > 0 && !skip ?
 				false :
-				jQuery.curCSS(elem, "display") === "none";
+				EhQuery.curCSS(elem, "display") === "none";
 	};
 
-	jQuery.expr.filters.visible = function( elem ) {
-		return !jQuery.expr.filters.hidden( elem );
+	EhQuery.expr.filters.visible = function( elem ) {
+		return !EhQuery.expr.filters.hidden( elem );
 	};
 }
 var jsc = now(),
@@ -4777,9 +4777,9 @@ var jsc = now(),
 	r20 = /%20/g,
 
 	// Keep a copy of the old load method
-	_load = jQuery.fn.load;
+	_load = EhQuery.fn.load;
 
-jQuery.fn.extend({
+EhQuery.fn.extend({
 	load: function( url, params, callback ) {
 		if ( typeof url !== "string" ) {
 			return _load.call( this, url );
@@ -4801,14 +4801,14 @@ jQuery.fn.extend({
 		// If the second parameter was provided
 		if ( params ) {
 			// If it's a function
-			if ( jQuery.isFunction( params ) ) {
+			if ( EhQuery.isFunction( params ) ) {
 				// We assume that it's the callback
 				callback = params;
 				params = null;
 
 			// Otherwise, build a param string
 			} else if ( typeof params === "object" ) {
-				params = jQuery.param( params, jQuery.ajaxSettings.traditional );
+				params = EhQuery.param( params, EhQuery.ajaxSettings.traditional );
 				type = "POST";
 			}
 		}
@@ -4816,7 +4816,7 @@ jQuery.fn.extend({
 		var self = this;
 
 		// Request the remote document
-		jQuery.ajax({
+		EhQuery.ajax({
 			url: url,
 			type: type,
 			dataType: "html",
@@ -4827,7 +4827,7 @@ jQuery.fn.extend({
 					// See if a selector was specified
 					self.html( selector ?
 						// Create a dummy div to hold the results
-						jQuery("<div />")
+						EhQuery("<div />")
 							// inject the contents of the document in, removing the scripts
 							// to avoid any 'Permission Denied' errors in IE
 							.append(res.responseText.replace(rscript, ""))
@@ -4849,11 +4849,11 @@ jQuery.fn.extend({
 	},
 
 	serialize: function() {
-		return jQuery.param(this.serializeArray());
+		return EhQuery.param(this.serializeArray());
 	},
 	serializeArray: function() {
 		return this.map(function() {
-			return this.elements ? jQuery.makeArray(this.elements) : this;
+			return this.elements ? EhQuery.makeArray(this.elements) : this;
 		})
 		.filter(function() {
 			return this.name && !this.disabled &&
@@ -4861,12 +4861,12 @@ jQuery.fn.extend({
 					rinput.test(this.type));
 		})
 		.map(function( i, elem ) {
-			var val = jQuery(this).val();
+			var val = EhQuery(this).val();
 
 			return val == null ?
 				null :
-				jQuery.isArray(val) ?
-					jQuery.map( val, function( val, i ) {
+				EhQuery.isArray(val) ?
+					EhQuery.map( val, function( val, i ) {
 						return { name: elem.name, value: val };
 					}) :
 					{ name: elem.name, value: val };
@@ -4875,23 +4875,23 @@ jQuery.fn.extend({
 });
 
 // Attach a bunch of functions for handling common AJAX events
-jQuery.each( "ajaxStart ajaxStop ajaxComplete ajaxError ajaxSuccess ajaxSend".split(" "), function( i, o ) {
-	jQuery.fn[o] = function( f ) {
+EhQuery.each( "ajaxStart ajaxStop ajaxComplete ajaxError ajaxSuccess ajaxSend".split(" "), function( i, o ) {
+	EhQuery.fn[o] = function( f ) {
 		return this.bind(o, f);
 	};
 });
 
-jQuery.extend({
+EhQuery.extend({
 
 	get: function( url, data, callback, type ) {
 		// shift arguments if data argument was omitted
-		if ( jQuery.isFunction( data ) ) {
+		if ( EhQuery.isFunction( data ) ) {
 			type = type || callback;
 			callback = data;
 			data = null;
 		}
 
-		return jQuery.ajax({
+		return EhQuery.ajax({
 			type: "GET",
 			url: url,
 			data: data,
@@ -4901,22 +4901,22 @@ jQuery.extend({
 	},
 
 	getScript: function( url, callback ) {
-		return jQuery.get(url, null, callback, "script");
+		return EhQuery.get(url, null, callback, "script");
 	},
 
 	getJSON: function( url, data, callback ) {
-		return jQuery.get(url, data, callback, "json");
+		return EhQuery.get(url, data, callback, "json");
 	},
 
 	post: function( url, data, callback, type ) {
 		// shift arguments if data argument was omitted
-		if ( jQuery.isFunction( data ) ) {
+		if ( EhQuery.isFunction( data ) ) {
 			type = type || callback;
 			callback = data;
 			data = {};
 		}
 
-		return jQuery.ajax({
+		return EhQuery.ajax({
 			type: "POST",
 			url: url,
 			data: data,
@@ -4926,7 +4926,7 @@ jQuery.extend({
 	},
 
 	ajaxSetup: function( settings ) {
-		jQuery.extend( jQuery.ajaxSettings, settings );
+		EhQuery.extend( EhQuery.ajaxSettings, settings );
 	},
 
 	ajaxSettings: {
@@ -4946,7 +4946,7 @@ jQuery.extend({
 		// Create the request object; Microsoft failed to properly
 		// implement the XMLHttpRequest in IE7 (can't request local files),
 		// so we use the ActiveXObject when it is available
-		// This function can be overridden by calling jQuery.ajaxSetup
+		// This function can be overridden by calling EhQuery.ajaxSetup
 		xhr: window.XMLHttpRequest && (window.location.protocol !== "file:" || !window.ActiveXObject) ?
 			function() {
 				return new window.XMLHttpRequest();
@@ -4971,15 +4971,15 @@ jQuery.extend({
 	etag: {},
 
 	ajax: function( origSettings ) {
-		var s = jQuery.extend(true, {}, jQuery.ajaxSettings, origSettings);
-		
+		var s = EhQuery.extend(true, {}, EhQuery.ajaxSettings, origSettings);
+
 		var jsonp, status, data,
 			callbackContext = origSettings && origSettings.context || s,
 			type = s.type.toUpperCase();
 
 		// convert data if not already a string
 		if ( s.data && s.processData && typeof s.data !== "string" ) {
-			s.data = jQuery.param( s.data, s.traditional );
+			s.data = EhQuery.param( s.data, s.traditional );
 		}
 
 		// Handle JSONP Parameter Callbacks
@@ -5047,8 +5047,8 @@ jQuery.extend({
 		}
 
 		// Watch for a new set of requests
-		if ( s.global && ! jQuery.active++ ) {
-			jQuery.event.trigger( "ajaxStart" );
+		if ( s.global && ! EhQuery.active++ ) {
+			EhQuery.event.trigger( "ajaxStart" );
 		}
 
 		// Matches an absolute URL, and saves the domain
@@ -5120,12 +5120,12 @@ jQuery.extend({
 
 			// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
 			if ( s.ifModified ) {
-				if ( jQuery.lastModified[s.url] ) {
-					xhr.setRequestHeader("If-Modified-Since", jQuery.lastModified[s.url]);
+				if ( EhQuery.lastModified[s.url] ) {
+					xhr.setRequestHeader("If-Modified-Since", EhQuery.lastModified[s.url]);
 				}
 
-				if ( jQuery.etag[s.url] ) {
-					xhr.setRequestHeader("If-None-Match", jQuery.etag[s.url]);
+				if ( EhQuery.etag[s.url] ) {
+					xhr.setRequestHeader("If-None-Match", EhQuery.etag[s.url]);
 				}
 			}
 
@@ -5144,8 +5144,8 @@ jQuery.extend({
 		// Allow custom headers/mimetypes and early abort
 		if ( s.beforeSend && s.beforeSend.call(callbackContext, xhr, s) === false ) {
 			// Handle the global AJAX counter
-			if ( s.global && ! --jQuery.active ) {
-				jQuery.event.trigger( "ajaxStop" );
+			if ( s.global && ! --EhQuery.active ) {
+				EhQuery.event.trigger( "ajaxStop" );
 			}
 
 			// close opened socket
@@ -5169,19 +5169,19 @@ jQuery.extend({
 
 				requestDone = true;
 				if ( xhr ) {
-					xhr.onreadystatechange = jQuery.noop;
+					xhr.onreadystatechange = EhQuery.noop;
 				}
 
 			// The transfer is complete and the data is available, or the request timed out
 			} else if ( !requestDone && xhr && (xhr.readyState === 4 || isTimeout === "timeout") ) {
 				requestDone = true;
-				xhr.onreadystatechange = jQuery.noop;
+				xhr.onreadystatechange = EhQuery.noop;
 
 				status = isTimeout === "timeout" ?
 					"timeout" :
-					!jQuery.httpSuccess( xhr ) ?
+					!EhQuery.httpSuccess( xhr ) ?
 						"error" :
-						s.ifModified && jQuery.httpNotModified( xhr, s.url ) ?
+						s.ifModified && EhQuery.httpNotModified( xhr, s.url ) ?
 							"notmodified" :
 							"success";
 
@@ -5191,7 +5191,7 @@ jQuery.extend({
 					// Watch for, and catch, XML document parse errors
 					try {
 						// process the data (runs the xml through httpData regardless of callback)
-						data = jQuery.httpData( xhr, s.dataType, s );
+						data = EhQuery.httpData( xhr, s.dataType, s );
 					} catch(err) {
 						status = "parsererror";
 						errMsg = err;
@@ -5205,7 +5205,7 @@ jQuery.extend({
 						success();
 					}
 				} else {
-					jQuery.handleError(s, xhr, status, errMsg);
+					EhQuery.handleError(s, xhr, status, errMsg);
 				}
 
 				// Fire the complete handlers
@@ -5249,7 +5249,7 @@ jQuery.extend({
 		try {
 			xhr.send( type === "POST" || type === "PUT" || type === "DELETE" ? s.data : null );
 		} catch(e) {
-			jQuery.handleError(s, xhr, null, e);
+			EhQuery.handleError(s, xhr, null, e);
 			// Fire the complete handlers
 			complete();
 		}
@@ -5283,13 +5283,13 @@ jQuery.extend({
 			}
 
 			// Handle the global AJAX counter
-			if ( s.global && ! --jQuery.active ) {
-				jQuery.event.trigger( "ajaxStop" );
+			if ( s.global && ! --EhQuery.active ) {
+				EhQuery.event.trigger( "ajaxStop" );
 			}
 		}
-		
+
 		function trigger(type, args) {
-			(s.context ? jQuery(s.context) : jQuery.event).trigger(type, args);
+			(s.context ? EhQuery(s.context) : EhQuery.event).trigger(type, args);
 		}
 
 		// return XMLHttpRequest to allow aborting the request etc.
@@ -5304,7 +5304,7 @@ jQuery.extend({
 
 		// Fire the global callback
 		if ( s.global ) {
-			(s.context ? jQuery(s.context) : jQuery.event).trigger( "ajaxError", [xhr, s, e] );
+			(s.context ? EhQuery(s.context) : EhQuery.event).trigger( "ajaxError", [xhr, s, e] );
 		}
 	},
 
@@ -5330,11 +5330,11 @@ jQuery.extend({
 			etag = xhr.getResponseHeader("Etag");
 
 		if ( lastModified ) {
-			jQuery.lastModified[url] = lastModified;
+			EhQuery.lastModified[url] = lastModified;
 		}
 
 		if ( etag ) {
-			jQuery.etag[url] = etag;
+			EhQuery.etag[url] = etag;
 		}
 
 		// Opera returns 0 when status is 304
@@ -5347,7 +5347,7 @@ jQuery.extend({
 			data = xml ? xhr.responseXML : xhr.responseText;
 
 		if ( xml && data.documentElement.nodeName === "parsererror" ) {
-			jQuery.error( "parsererror" );
+			EhQuery.error( "parsererror" );
 		}
 
 		// Allow a pre-filtering function to sanitize the response
@@ -5360,11 +5360,11 @@ jQuery.extend({
 		if ( typeof data === "string" ) {
 			// Get the JavaScript object, if JSON is used.
 			if ( type === "json" || !type && ct.indexOf("json") >= 0 ) {
-				data = jQuery.parseJSON( data );
+				data = EhQuery.parseJSON( data );
 
 			// If the type is "script", eval it in global context
 			} else if ( type === "script" || !type && ct.indexOf("javascript") >= 0 ) {
-				jQuery.globalEval( data );
+				EhQuery.globalEval( data );
 			}
 		}
 
@@ -5375,19 +5375,19 @@ jQuery.extend({
 	// key/values into a query string
 	param: function( a, traditional ) {
 		var s = [];
-		
-		// Set traditional to true for jQuery <= 1.3.2 behavior.
+
+		// Set traditional to true for EhQuery <= 1.3.2 behavior.
 		if ( traditional === undefined ) {
-			traditional = jQuery.ajaxSettings.traditional;
+			traditional = EhQuery.ajaxSettings.traditional;
 		}
-		
+
 		// If an array was passed in, assume that it is an array of form elements.
-		if ( jQuery.isArray(a) || a.jquery ) {
+		if ( EhQuery.isArray(a) || a.jquery ) {
 			// Serialize the form elements
-			jQuery.each( a, function() {
+			EhQuery.each( a, function() {
 				add( this.name, this.value );
 			});
-			
+
 		} else {
 			// If traditional, encode the "old" way (the way 1.3.2 or older
 			// did it), otherwise encode params recursively.
@@ -5400,9 +5400,9 @@ jQuery.extend({
 		return s.join("&").replace(r20, "+");
 
 		function buildParams( prefix, obj ) {
-			if ( jQuery.isArray(obj) ) {
+			if ( EhQuery.isArray(obj) ) {
 				// Serialize array item.
-				jQuery.each( obj, function( i, v ) {
+				EhQuery.each( obj, function( i, v ) {
 					if ( traditional || /\[\]$/.test( prefix ) ) {
 						// Treat each array item as a scalar.
 						add( prefix, v );
@@ -5414,16 +5414,16 @@ jQuery.extend({
 						// a server error. Possible fixes are to modify rack's
 						// deserialization algorithm or to provide an option or flag
 						// to force array serialization to be shallow.
-						buildParams( prefix + "[" + ( typeof v === "object" || jQuery.isArray(v) ? i : "" ) + "]", v );
+						buildParams( prefix + "[" + ( typeof v === "object" || EhQuery.isArray(v) ? i : "" ) + "]", v );
 					}
 				});
-					
+
 			} else if ( !traditional && obj != null && typeof obj === "object" ) {
 				// Serialize object item.
-				jQuery.each( obj, function( k, v ) {
+				EhQuery.each( obj, function( k, v ) {
 					buildParams( prefix + "[" + k + "]", v );
 				});
-					
+
 			} else {
 				// Serialize scalar item.
 				add( prefix, obj );
@@ -5432,7 +5432,7 @@ jQuery.extend({
 
 		function add( key, value ) {
 			// If value is a function, invoke it and return its value
-			value = jQuery.isFunction(value) ? value() : value;
+			value = EhQuery.isFunction(value) ? value() : value;
 			s[ s.length ] = encodeURIComponent(key) + "=" + encodeURIComponent(value);
 		}
 	}
@@ -5450,25 +5450,25 @@ var elemdisplay = {},
 		[ "opacity" ]
 	];
 
-jQuery.fn.extend({
+EhQuery.fn.extend({
 	show: function( speed, callback ) {
 		if ( speed || speed === 0) {
 			return this.animate( genFx("show", 3), speed, callback);
 
 		} else {
 			for ( var i = 0, l = this.length; i < l; i++ ) {
-				var old = jQuery.data(this[i], "olddisplay");
+				var old = EhQuery.data(this[i], "olddisplay");
 
 				this[i].style.display = old || "";
 
-				if ( jQuery.css(this[i], "display") === "none" ) {
+				if ( EhQuery.css(this[i], "display") === "none" ) {
 					var nodeName = this[i].nodeName, display;
 
 					if ( elemdisplay[ nodeName ] ) {
 						display = elemdisplay[ nodeName ];
 
 					} else {
-						var elem = jQuery("<" + nodeName + " />").appendTo("body");
+						var elem = EhQuery("<" + nodeName + " />").appendTo("body");
 
 						display = elem.css("display");
 
@@ -5481,14 +5481,14 @@ jQuery.fn.extend({
 						elemdisplay[ nodeName ] = display;
 					}
 
-					jQuery.data(this[i], "olddisplay", display);
+					EhQuery.data(this[i], "olddisplay", display);
 				}
 			}
 
 			// Set the display of the elements in a second loop
 			// to avoid the constant reflow
 			for ( var j = 0, k = this.length; j < k; j++ ) {
-				this[j].style.display = jQuery.data(this[j], "olddisplay") || "";
+				this[j].style.display = EhQuery.data(this[j], "olddisplay") || "";
 			}
 
 			return this;
@@ -5501,9 +5501,9 @@ jQuery.fn.extend({
 
 		} else {
 			for ( var i = 0, l = this.length; i < l; i++ ) {
-				var old = jQuery.data(this[i], "olddisplay");
+				var old = EhQuery.data(this[i], "olddisplay");
 				if ( !old && old !== "none" ) {
-					jQuery.data(this[i], "olddisplay", jQuery.css(this[i], "display"));
+					EhQuery.data(this[i], "olddisplay", EhQuery.css(this[i], "display"));
 				}
 			}
 
@@ -5518,18 +5518,18 @@ jQuery.fn.extend({
 	},
 
 	// Save the old toggle function
-	_toggle: jQuery.fn.toggle,
+	_toggle: EhQuery.fn.toggle,
 
 	toggle: function( fn, fn2 ) {
 		var bool = typeof fn === "boolean";
 
-		if ( jQuery.isFunction(fn) && jQuery.isFunction(fn2) ) {
+		if ( EhQuery.isFunction(fn) && EhQuery.isFunction(fn2) ) {
 			this._toggle.apply( this, arguments );
 
 		} else if ( fn == null || bool ) {
 			this.each(function() {
-				var state = bool ? fn : jQuery(this).is(":hidden");
-				jQuery(this)[ state ? "show" : "hide" ]();
+				var state = bool ? fn : EhQuery(this).is(":hidden");
+				EhQuery(this)[ state ? "show" : "hide" ]();
 			});
 
 		} else {
@@ -5545,15 +5545,15 @@ jQuery.fn.extend({
 	},
 
 	animate: function( prop, speed, easing, callback ) {
-		var optall = jQuery.speed(speed, easing, callback);
+		var optall = EhQuery.speed(speed, easing, callback);
 
-		if ( jQuery.isEmptyObject( prop ) ) {
+		if ( EhQuery.isEmptyObject( prop ) ) {
 			return this.each( optall.complete );
 		}
 
 		return this[ optall.queue === false ? "each" : "queue" ](function() {
-			var opt = jQuery.extend({}, optall), p,
-				hidden = this.nodeType === 1 && jQuery(this).is(":hidden"),
+			var opt = EhQuery.extend({}, optall), p,
+				hidden = this.nodeType === 1 && EhQuery(this).is(":hidden"),
 				self = this;
 
 			for ( p in prop ) {
@@ -5571,13 +5571,13 @@ jQuery.fn.extend({
 
 				if ( ( p === "height" || p === "width" ) && this.style ) {
 					// Store display property
-					opt.display = jQuery.css(this, "display");
+					opt.display = EhQuery.css(this, "display");
 
 					// Make sure that nothing sneaks out
 					opt.overflow = this.style.overflow;
 				}
 
-				if ( jQuery.isArray( prop[p] ) ) {
+				if ( EhQuery.isArray( prop[p] ) ) {
 					// Create (if needed) and add to specialEasing
 					(opt.specialEasing = opt.specialEasing || {})[p] = prop[p][1];
 					prop[p] = prop[p][0];
@@ -5588,10 +5588,10 @@ jQuery.fn.extend({
 				this.style.overflow = "hidden";
 			}
 
-			opt.curAnim = jQuery.extend({}, prop);
+			opt.curAnim = EhQuery.extend({}, prop);
 
-			jQuery.each( prop, function( name, val ) {
-				var e = new jQuery.fx( self, opt, name );
+			EhQuery.each( prop, function( name, val ) {
+				var e = new EhQuery.fx( self, opt, name );
 
 				if ( rfxtypes.test(val) ) {
 					e[ val === "toggle" ? hidden ? "show" : "hide" : val ]( prop );
@@ -5630,7 +5630,7 @@ jQuery.fn.extend({
 	},
 
 	stop: function( clearQueue, gotoEnd ) {
-		var timers = jQuery.timers;
+		var timers = EhQuery.timers;
 
 		if ( clearQueue ) {
 			this.queue([]);
@@ -5661,37 +5661,37 @@ jQuery.fn.extend({
 });
 
 // Generate shortcuts for custom animations
-jQuery.each({
+EhQuery.each({
 	slideDown: genFx("show", 1),
 	slideUp: genFx("hide", 1),
 	slideToggle: genFx("toggle", 1),
 	fadeIn: { opacity: "show" },
 	fadeOut: { opacity: "hide" }
 }, function( name, props ) {
-	jQuery.fn[ name ] = function( speed, callback ) {
+	EhQuery.fn[ name ] = function( speed, callback ) {
 		return this.animate( props, speed, callback );
 	};
 });
 
-jQuery.extend({
+EhQuery.extend({
 	speed: function( speed, easing, fn ) {
 		var opt = speed && typeof speed === "object" ? speed : {
 			complete: fn || !fn && easing ||
-				jQuery.isFunction( speed ) && speed,
+				EhQuery.isFunction( speed ) && speed,
 			duration: speed,
-			easing: fn && easing || easing && !jQuery.isFunction(easing) && easing
+			easing: fn && easing || easing && !EhQuery.isFunction(easing) && easing
 		};
 
-		opt.duration = jQuery.fx.off ? 0 : typeof opt.duration === "number" ? opt.duration :
-			jQuery.fx.speeds[opt.duration] || jQuery.fx.speeds._default;
+		opt.duration = EhQuery.fx.off ? 0 : typeof opt.duration === "number" ? opt.duration :
+			EhQuery.fx.speeds[opt.duration] || EhQuery.fx.speeds._default;
 
 		// Queueing
 		opt.old = opt.complete;
 		opt.complete = function() {
 			if ( opt.queue !== false ) {
-				jQuery(this).dequeue();
+				EhQuery(this).dequeue();
 			}
-			if ( jQuery.isFunction( opt.old ) ) {
+			if ( EhQuery.isFunction( opt.old ) ) {
 				opt.old.call( this );
 			}
 		};
@@ -5722,14 +5722,14 @@ jQuery.extend({
 
 });
 
-jQuery.fx.prototype = {
+EhQuery.fx.prototype = {
 	// Simple function for setting a style value
 	update: function() {
 		if ( this.options.step ) {
 			this.options.step.call( this.elem, this.now, this );
 		}
 
-		(jQuery.fx.step[this.prop] || jQuery.fx.step._default)( this );
+		(EhQuery.fx.step[this.prop] || EhQuery.fx.step._default)( this );
 
 		// Set display property to block for height/width animations
 		if ( ( this.prop === "height" || this.prop === "width" ) && this.elem.style ) {
@@ -5743,8 +5743,8 @@ jQuery.fx.prototype = {
 			return this.elem[ this.prop ];
 		}
 
-		var r = parseFloat(jQuery.css(this.elem, this.prop, force));
-		return r && r > -10000 ? r : parseFloat(jQuery.curCSS(this.elem, this.prop)) || 0;
+		var r = parseFloat(EhQuery.css(this.elem, this.prop, force));
+		return r && r > -10000 ? r : parseFloat(EhQuery.curCSS(this.elem, this.prop)) || 0;
 	},
 
 	// Start an animation from one number to another
@@ -5763,15 +5763,15 @@ jQuery.fx.prototype = {
 
 		t.elem = this.elem;
 
-		if ( t() && jQuery.timers.push(t) && !timerId ) {
-			timerId = setInterval(jQuery.fx.tick, 13);
+		if ( t() && EhQuery.timers.push(t) && !timerId ) {
+			timerId = setInterval(EhQuery.fx.tick, 13);
 		}
 	},
 
 	// Simple 'show' function
 	show: function() {
 		// Remember where we started, so that we can go back to it later
-		this.options.orig[this.prop] = jQuery.style( this.elem, this.prop );
+		this.options.orig[this.prop] = EhQuery.style( this.elem, this.prop );
 		this.options.show = true;
 
 		// Begin the animation
@@ -5780,13 +5780,13 @@ jQuery.fx.prototype = {
 		this.custom(this.prop === "width" || this.prop === "height" ? 1 : 0, this.cur());
 
 		// Start by showing the element
-		jQuery( this.elem ).show();
+		EhQuery( this.elem ).show();
 	},
 
 	// Simple 'hide' function
 	hide: function() {
 		// Remember where we started, so that we can go back to it later
-		this.options.orig[this.prop] = jQuery.style( this.elem, this.prop );
+		this.options.orig[this.prop] = EhQuery.style( this.elem, this.prop );
 		this.options.hide = true;
 
 		// Begin the animation
@@ -5816,23 +5816,23 @@ jQuery.fx.prototype = {
 					this.elem.style.overflow = this.options.overflow;
 
 					// Reset the display
-					var old = jQuery.data(this.elem, "olddisplay");
+					var old = EhQuery.data(this.elem, "olddisplay");
 					this.elem.style.display = old ? old : this.options.display;
 
-					if ( jQuery.css(this.elem, "display") === "none" ) {
+					if ( EhQuery.css(this.elem, "display") === "none" ) {
 						this.elem.style.display = "block";
 					}
 				}
 
 				// Hide the element if the "hide" operation was done
 				if ( this.options.hide ) {
-					jQuery(this.elem).hide();
+					EhQuery(this.elem).hide();
 				}
 
 				// Reset the properties, if the item has been hidden or shown
 				if ( this.options.hide || this.options.show ) {
 					for ( var p in this.options.curAnim ) {
-						jQuery.style(this.elem, p, this.options.orig[p]);
+						EhQuery.style(this.elem, p, this.options.orig[p]);
 					}
 				}
 
@@ -5848,8 +5848,8 @@ jQuery.fx.prototype = {
 
 			// Perform the easing function, defaults to swing
 			var specialEasing = this.options.specialEasing && this.options.specialEasing[this.prop];
-			var defaultEasing = this.options.easing || (jQuery.easing.swing ? "swing" : "linear");
-			this.pos = jQuery.easing[specialEasing || defaultEasing](this.state, n, 0, 1, this.options.duration);
+			var defaultEasing = this.options.easing || (EhQuery.easing.swing ? "swing" : "linear");
+			this.pos = EhQuery.easing[specialEasing || defaultEasing](this.state, n, 0, 1, this.options.duration);
 			this.now = this.start + ((this.end - this.start) * this.pos);
 
 			// Perform the next step of the animation
@@ -5860,9 +5860,9 @@ jQuery.fx.prototype = {
 	}
 };
 
-jQuery.extend( jQuery.fx, {
+EhQuery.extend( EhQuery.fx, {
 	tick: function() {
-		var timers = jQuery.timers;
+		var timers = EhQuery.timers;
 
 		for ( var i = 0; i < timers.length; i++ ) {
 			if ( !timers[i]() ) {
@@ -5871,15 +5871,15 @@ jQuery.extend( jQuery.fx, {
 		}
 
 		if ( !timers.length ) {
-			jQuery.fx.stop();
+			EhQuery.fx.stop();
 		}
 	},
-		
+
 	stop: function() {
 		clearInterval( timerId );
 		timerId = null;
 	},
-	
+
 	speeds: {
 		slow: 600,
  		fast: 200,
@@ -5889,7 +5889,7 @@ jQuery.extend( jQuery.fx, {
 
 	step: {
 		opacity: function( fx ) {
-			jQuery.style(fx.elem, "opacity", fx.now);
+			EhQuery.style(fx.elem, "opacity", fx.now);
 		},
 
 		_default: function( fx ) {
@@ -5902,9 +5902,9 @@ jQuery.extend( jQuery.fx, {
 	}
 });
 
-if ( jQuery.expr && jQuery.expr.filters ) {
-	jQuery.expr.filters.animated = function( elem ) {
-		return jQuery.grep(jQuery.timers, function( fn ) {
+if ( EhQuery.expr && EhQuery.expr.filters ) {
+	EhQuery.expr.filters.animated = function( elem ) {
+		return EhQuery.grep(EhQuery.timers, function( fn ) {
 			return elem === fn.elem;
 		}).length;
 	};
@@ -5913,19 +5913,19 @@ if ( jQuery.expr && jQuery.expr.filters ) {
 function genFx( type, num ) {
 	var obj = {};
 
-	jQuery.each( fxAttrs.concat.apply([], fxAttrs.slice(0,num)), function() {
+	EhQuery.each( fxAttrs.concat.apply([], fxAttrs.slice(0,num)), function() {
 		obj[ this ] = type;
 	});
 
 	return obj;
 }
 if ( "getBoundingClientRect" in document.documentElement ) {
-	jQuery.fn.offset = function( options ) {
+	EhQuery.fn.offset = function( options ) {
 		var elem = this[0];
 
-		if ( options ) { 
+		if ( options ) {
 			return this.each(function( i ) {
-				jQuery.offset.setOffset( this, options, i );
+				EhQuery.offset.setOffset( this, options, i );
 			});
 		}
 
@@ -5934,24 +5934,24 @@ if ( "getBoundingClientRect" in document.documentElement ) {
 		}
 
 		if ( elem === elem.ownerDocument.body ) {
-			return jQuery.offset.bodyOffset( elem );
+			return EhQuery.offset.bodyOffset( elem );
 		}
 
 		var box = elem.getBoundingClientRect(), doc = elem.ownerDocument, body = doc.body, docElem = doc.documentElement,
 			clientTop = docElem.clientTop || body.clientTop || 0, clientLeft = docElem.clientLeft || body.clientLeft || 0,
-			top  = box.top  + (self.pageYOffset || jQuery.support.boxModel && docElem.scrollTop  || body.scrollTop ) - clientTop,
-			left = box.left + (self.pageXOffset || jQuery.support.boxModel && docElem.scrollLeft || body.scrollLeft) - clientLeft;
+			top  = box.top  + (self.pageYOffset || EhQuery.support.boxModel && docElem.scrollTop  || body.scrollTop ) - clientTop,
+			left = box.left + (self.pageXOffset || EhQuery.support.boxModel && docElem.scrollLeft || body.scrollLeft) - clientLeft;
 
 		return { top: top, left: left };
 	};
 
 } else {
-	jQuery.fn.offset = function( options ) {
+	EhQuery.fn.offset = function( options ) {
 		var elem = this[0];
 
-		if ( options ) { 
+		if ( options ) {
 			return this.each(function( i ) {
-				jQuery.offset.setOffset( this, options, i );
+				EhQuery.offset.setOffset( this, options, i );
 			});
 		}
 
@@ -5960,10 +5960,10 @@ if ( "getBoundingClientRect" in document.documentElement ) {
 		}
 
 		if ( elem === elem.ownerDocument.body ) {
-			return jQuery.offset.bodyOffset( elem );
+			return EhQuery.offset.bodyOffset( elem );
 		}
 
-		jQuery.offset.initialize();
+		EhQuery.offset.initialize();
 
 		var offsetParent = elem.offsetParent, prevOffsetParent = elem,
 			doc = elem.ownerDocument, computedStyle, docElem = doc.documentElement,
@@ -5972,7 +5972,7 @@ if ( "getBoundingClientRect" in document.documentElement ) {
 			top = elem.offsetTop, left = elem.offsetLeft;
 
 		while ( (elem = elem.parentNode) && elem !== body && elem !== docElem ) {
-			if ( jQuery.offset.supportsFixedPosition && prevComputedStyle.position === "fixed" ) {
+			if ( EhQuery.offset.supportsFixedPosition && prevComputedStyle.position === "fixed" ) {
 				break;
 			}
 
@@ -5984,7 +5984,7 @@ if ( "getBoundingClientRect" in document.documentElement ) {
 				top  += elem.offsetTop;
 				left += elem.offsetLeft;
 
-				if ( jQuery.offset.doesNotAddBorder && !(jQuery.offset.doesAddBorderForTableAndCells && /^t(able|d|h)$/i.test(elem.nodeName)) ) {
+				if ( EhQuery.offset.doesNotAddBorder && !(EhQuery.offset.doesAddBorderForTableAndCells && /^t(able|d|h)$/i.test(elem.nodeName)) ) {
 					top  += parseFloat( computedStyle.borderTopWidth  ) || 0;
 					left += parseFloat( computedStyle.borderLeftWidth ) || 0;
 				}
@@ -5992,7 +5992,7 @@ if ( "getBoundingClientRect" in document.documentElement ) {
 				prevOffsetParent = offsetParent, offsetParent = elem.offsetParent;
 			}
 
-			if ( jQuery.offset.subtractsBorderForOverflowNotVisible && computedStyle.overflow !== "visible" ) {
+			if ( EhQuery.offset.subtractsBorderForOverflowNotVisible && computedStyle.overflow !== "visible" ) {
 				top  += parseFloat( computedStyle.borderTopWidth  ) || 0;
 				left += parseFloat( computedStyle.borderLeftWidth ) || 0;
 			}
@@ -6005,7 +6005,7 @@ if ( "getBoundingClientRect" in document.documentElement ) {
 			left += body.offsetLeft;
 		}
 
-		if ( jQuery.offset.supportsFixedPosition && prevComputedStyle.position === "fixed" ) {
+		if ( EhQuery.offset.supportsFixedPosition && prevComputedStyle.position === "fixed" ) {
 			top  += Math.max( docElem.scrollTop, body.scrollTop );
 			left += Math.max( docElem.scrollLeft, body.scrollLeft );
 		}
@@ -6014,12 +6014,12 @@ if ( "getBoundingClientRect" in document.documentElement ) {
 	};
 }
 
-jQuery.offset = {
+EhQuery.offset = {
 	initialize: function() {
-		var body = document.body, container = document.createElement("div"), innerDiv, checkDiv, table, td, bodyMarginTop = parseFloat( jQuery.curCSS(body, "marginTop", true) ) || 0,
+		var body = document.body, container = document.createElement("div"), innerDiv, checkDiv, table, td, bodyMarginTop = parseFloat( EhQuery.curCSS(body, "marginTop", true) ) || 0,
 			html = "<div style='position:absolute;top:0;left:0;margin:0;border:5px solid #000;padding:0;width:1px;height:1px;'><div></div></div><table style='position:absolute;top:0;left:0;margin:0;border:5px solid #000;padding:0;width:1px;height:1px;' cellpadding='0' cellspacing='0'><tr><td></td></tr></table>";
 
-		jQuery.extend( container.style, { position: "absolute", top: 0, left: 0, margin: 0, border: 0, width: "1px", height: "1px", visibility: "hidden" } );
+		EhQuery.extend( container.style, { position: "absolute", top: 0, left: 0, margin: 0, border: 0, width: "1px", height: "1px", visibility: "hidden" } );
 
 		container.innerHTML = html;
 		body.insertBefore( container, body.firstChild );
@@ -6042,33 +6042,33 @@ jQuery.offset = {
 
 		body.removeChild( container );
 		body = container = innerDiv = checkDiv = table = td = null;
-		jQuery.offset.initialize = jQuery.noop;
+		EhQuery.offset.initialize = EhQuery.noop;
 	},
 
 	bodyOffset: function( body ) {
 		var top = body.offsetTop, left = body.offsetLeft;
 
-		jQuery.offset.initialize();
+		EhQuery.offset.initialize();
 
-		if ( jQuery.offset.doesNotIncludeMarginInBodyOffset ) {
-			top  += parseFloat( jQuery.curCSS(body, "marginTop",  true) ) || 0;
-			left += parseFloat( jQuery.curCSS(body, "marginLeft", true) ) || 0;
+		if ( EhQuery.offset.doesNotIncludeMarginInBodyOffset ) {
+			top  += parseFloat( EhQuery.curCSS(body, "marginTop",  true) ) || 0;
+			left += parseFloat( EhQuery.curCSS(body, "marginLeft", true) ) || 0;
 		}
 
 		return { top: top, left: left };
 	},
-	
+
 	setOffset: function( elem, options, i ) {
 		// set position first, in-case top/left are set even on static elem
-		if ( /static/.test( jQuery.curCSS( elem, "position" ) ) ) {
+		if ( /static/.test( EhQuery.curCSS( elem, "position" ) ) ) {
 			elem.style.position = "relative";
 		}
-		var curElem   = jQuery( elem ),
+		var curElem   = EhQuery( elem ),
 			curOffset = curElem.offset(),
-			curTop    = parseInt( jQuery.curCSS( elem, "top",  true ), 10 ) || 0,
-			curLeft   = parseInt( jQuery.curCSS( elem, "left", true ), 10 ) || 0;
+			curTop    = parseInt( EhQuery.curCSS( elem, "top",  true ), 10 ) || 0,
+			curLeft   = parseInt( EhQuery.curCSS( elem, "left", true ), 10 ) || 0;
 
-		if ( jQuery.isFunction( options ) ) {
+		if ( EhQuery.isFunction( options ) ) {
 			options = options.call( elem, i, curOffset );
 		}
 
@@ -6076,7 +6076,7 @@ jQuery.offset = {
 			top:  (options.top  - curOffset.top)  + curTop,
 			left: (options.left - curOffset.left) + curLeft
 		};
-		
+
 		if ( "using" in options ) {
 			options.using.call( elem, props );
 		} else {
@@ -6086,7 +6086,7 @@ jQuery.offset = {
 };
 
 
-jQuery.fn.extend({
+EhQuery.fn.extend({
 	position: function() {
 		if ( !this[0] ) {
 			return null;
@@ -6104,12 +6104,12 @@ jQuery.fn.extend({
 		// Subtract element margins
 		// note: when an element has margin: auto the offsetLeft and marginLeft
 		// are the same in Safari causing offset.left to incorrectly be 0
-		offset.top  -= parseFloat( jQuery.curCSS(elem, "marginTop",  true) ) || 0;
-		offset.left -= parseFloat( jQuery.curCSS(elem, "marginLeft", true) ) || 0;
+		offset.top  -= parseFloat( EhQuery.curCSS(elem, "marginTop",  true) ) || 0;
+		offset.left -= parseFloat( EhQuery.curCSS(elem, "marginLeft", true) ) || 0;
 
 		// Add offsetParent borders
-		parentOffset.top  += parseFloat( jQuery.curCSS(offsetParent[0], "borderTopWidth",  true) ) || 0;
-		parentOffset.left += parseFloat( jQuery.curCSS(offsetParent[0], "borderLeftWidth", true) ) || 0;
+		parentOffset.top  += parseFloat( EhQuery.curCSS(offsetParent[0], "borderTopWidth",  true) ) || 0;
+		parentOffset.left += parseFloat( EhQuery.curCSS(offsetParent[0], "borderLeftWidth", true) ) || 0;
 
 		// Subtract the two offsets
 		return {
@@ -6121,7 +6121,7 @@ jQuery.fn.extend({
 	offsetParent: function() {
 		return this.map(function() {
 			var offsetParent = this.offsetParent || document.body;
-			while ( offsetParent && (!/^body|html$/i.test(offsetParent.nodeName) && jQuery.css(offsetParent, "position") === "static") ) {
+			while ( offsetParent && (!/^body|html$/i.test(offsetParent.nodeName) && EhQuery.css(offsetParent, "position") === "static") ) {
 				offsetParent = offsetParent.offsetParent;
 			}
 			return offsetParent;
@@ -6131,12 +6131,12 @@ jQuery.fn.extend({
 
 
 // Create scrollLeft and scrollTop methods
-jQuery.each( ["Left", "Top"], function( i, name ) {
+EhQuery.each( ["Left", "Top"], function( i, name ) {
 	var method = "scroll" + name;
 
-	jQuery.fn[ method ] = function(val) {
+	EhQuery.fn[ method ] = function(val) {
 		var elem = this[0], win;
-		
+
 		if ( !elem ) {
 			return null;
 		}
@@ -6148,8 +6148,8 @@ jQuery.each( ["Left", "Top"], function( i, name ) {
 
 				if ( win ) {
 					win.scrollTo(
-						!i ? val : jQuery(win).scrollLeft(),
-						 i ? val : jQuery(win).scrollTop()
+						!i ? val : EhQuery(win).scrollLeft(),
+						 i ? val : EhQuery(win).scrollTop()
 					);
 
 				} else {
@@ -6161,7 +6161,7 @@ jQuery.each( ["Left", "Top"], function( i, name ) {
 
 			// Return the scroll offset
 			return win ? ("pageXOffset" in win) ? win[ i ? "pageYOffset" : "pageXOffset" ] :
-				jQuery.support.boxModel && win.document.documentElement[ method ] ||
+				EhQuery.support.boxModel && win.document.documentElement[ method ] ||
 					win.document.body[ method ] :
 				elem[ method ];
 		}
@@ -6176,34 +6176,34 @@ function getWindow( elem ) {
 			false;
 }
 // Create innerHeight, innerWidth, outerHeight and outerWidth methods
-jQuery.each([ "Height", "Width" ], function( i, name ) {
+EhQuery.each([ "Height", "Width" ], function( i, name ) {
 
 	var type = name.toLowerCase();
 
 	// innerHeight and innerWidth
-	jQuery.fn["inner" + name] = function() {
+	EhQuery.fn["inner" + name] = function() {
 		return this[0] ?
-			jQuery.css( this[0], type, false, "padding" ) :
+			EhQuery.css( this[0], type, false, "padding" ) :
 			null;
 	};
 
 	// outerHeight and outerWidth
-	jQuery.fn["outer" + name] = function( margin ) {
+	EhQuery.fn["outer" + name] = function( margin ) {
 		return this[0] ?
-			jQuery.css( this[0], type, false, margin ? "margin" : "border" ) :
+			EhQuery.css( this[0], type, false, margin ? "margin" : "border" ) :
 			null;
 	};
 
-	jQuery.fn[ type ] = function( size ) {
+	EhQuery.fn[ type ] = function( size ) {
 		// Get window width or height
 		var elem = this[0];
 		if ( !elem ) {
 			return size == null ? null : this;
 		}
-		
-		if ( jQuery.isFunction( size ) ) {
+
+		if ( EhQuery.isFunction( size ) ) {
 			return this.each(function( i ) {
-				var self = jQuery( this );
+				var self = EhQuery( this );
 				self[ type ]( size.call( this, i, self[ type ]() ) );
 			});
 		}
@@ -6225,14 +6225,14 @@ jQuery.each([ "Height", "Width" ], function( i, name ) {
 				// Get or set width or height on the element
 				size === undefined ?
 					// Get width or height on the element
-					jQuery.css( elem, type ) :
+					EhQuery.css( elem, type ) :
 
 					// Set the width or height on the element (default to pixels if value is unitless)
 					this.css( type, typeof size === "string" ? size : size + "px" );
 	};
 
 });
-// Expose jQuery to the global object
-window.jQuery = window.$ = jQuery;
+// Expose EhQuery to the global object
+window.EhQuery = window.$ = EhQuery;
 
 })(window);

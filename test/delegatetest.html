@@ -196,22 +196,22 @@ if ( typeof(sel1[0].fireEvent) !== "undefined" ) {
 	//alert($("#select-one select").map(function(){ return this._change_attached || "undef"; }).get().join("|"));
 }
 
-jQuery.fn.blink = function(){
+EhQuery.fn.blink = function(){
 	return this
 		.css("backgroundColor","green")
 		.text( (parseInt(this.text(), 10) || 0) + 1 )
 		.delay(700).queue(function(next){
-			jQuery(this).css("backgroundColor","#afa");
+			EhQuery(this).css("backgroundColor","#afa");
 			next();
 		});
 };
 
-jQuery.fn.addSubmitTest = function( id, prevent ) {
+EhQuery.fn.addSubmitTest = function( id, prevent ) {
 	return this.live("submit", function(e){
 		if ( prevent ) {
 				e.preventDefault();
 		}
-		jQuery(id).blink();
+		EhQuery(id).blink();
 	});
 };
 
@@ -220,7 +220,7 @@ $("#password_submit").addSubmitTest("#passwordSubmit", true);
 $("#submit_submit").addSubmitTest("#submitSubmit", true);
 $("#prog_submit").addSubmitTest("#submitSubmit", true);
 $(document).bind("submit", function(){
-	jQuery("#boundSubmit").blink();
+	EhQuery("#boundSubmit").blink();
 });
 
 </script>

@@ -1,9 +1,9 @@
-jQuery.fn.offset = function( options ) {
+EhQuery.fn.offset = function( options ) {
 	if ( arguments.length ) {
 		return options === undefined ?
 			this :
 			this.each(function( i ) {
-				jQuery.offset.setOffset( this, options, i );
+				EhQuery.offset.setOffset( this, options, i );
 			});
 	}
 
@@ -19,7 +19,7 @@ jQuery.fn.offset = function( options ) {
 	docElem = doc.documentElement;
 
 	// Make sure it's not a disconnected DOM node
-	if ( !jQuery.contains( docElem, elem ) ) {
+	if ( !EhQuery.contains( docElem, elem ) ) {
 		return box;
 	}
 
@@ -35,12 +35,12 @@ jQuery.fn.offset = function( options ) {
 	};
 };
 
-jQuery.offset = {
+EhQuery.offset = {
 
 	setOffset: function( elem, options, i ) {
 		var curPosition, curLeft, curCSSTop, curTop, curOffset, curCSSLeft, calculatePosition,
-			position = jQuery.css( elem, "position" ),
-			curElem = jQuery( elem ),
+			position = EhQuery.css( elem, "position" ),
+			curElem = EhQuery( elem ),
 			props = {};
 
 		// Set position first, in-case top/left are set even on static elem
@@ -49,8 +49,8 @@ jQuery.offset = {
 		}
 
 		curOffset = curElem.offset();
-		curCSSTop = jQuery.css( elem, "top" );
-		curCSSLeft = jQuery.css( elem, "left" );
+		curCSSTop = EhQuery.css( elem, "top" );
+		curCSSLeft = EhQuery.css( elem, "left" );
 		calculatePosition = ( position === "absolute" || position === "fixed" ) && ( curCSSTop + curCSSLeft ).indexOf("auto") > -1;
 
 		// Need to be able to calculate position if either top or left is auto and position is either absolute or fixed
@@ -64,7 +64,7 @@ jQuery.offset = {
 			curLeft = parseFloat( curCSSLeft ) || 0;
 		}
 
-		if ( jQuery.isFunction( options ) ) {
+		if ( EhQuery.isFunction( options ) ) {
 			options = options.call( elem, i, curOffset );
 		}
 
@@ -85,7 +85,7 @@ jQuery.offset = {
 };
 
 
-jQuery.fn.extend({
+EhQuery.fn.extend({
 
 	position: function() {
 		if ( !this[ 0 ] ) {
@@ -97,7 +97,7 @@ jQuery.fn.extend({
 			parentOffset = { top: 0, left: 0 };
 
 		// Fixed elements are offset from window (parentOffset = {top:0, left: 0}, because it is it's only offset parent
-		if ( jQuery.css( elem, "position" ) === "fixed" ) {
+		if ( EhQuery.css( elem, "position" ) === "fixed" ) {
 			// We assume that getBoundingClientRect is available when computed position is fixed
 			offset = elem.getBoundingClientRect();
 
@@ -107,19 +107,19 @@ jQuery.fn.extend({
 
 			// Get correct offsets
 			offset = this.offset();
-			if ( !jQuery.nodeName( offsetParent[ 0 ], "html" ) ) {
+			if ( !EhQuery.nodeName( offsetParent[ 0 ], "html" ) ) {
 				parentOffset = offsetParent.offset();
 			}
 
 			// Add offsetParent borders
-			parentOffset.top += jQuery.css( offsetParent[ 0 ], "borderTopWidth", true );
-			parentOffset.left += jQuery.css( offsetParent[ 0 ], "borderLeftWidth", true );
+			parentOffset.top += EhQuery.css( offsetParent[ 0 ], "borderTopWidth", true );
+			parentOffset.left += EhQuery.css( offsetParent[ 0 ], "borderLeftWidth", true );
 		}
 
 		// Subtract parent offsets and element margins
 		return {
-			top: offset.top - parentOffset.top - jQuery.css( elem, "marginTop", true ),
-			left: offset.left - parentOffset.left - jQuery.css( elem, "marginLeft", true )
+			top: offset.top - parentOffset.top - EhQuery.css( elem, "marginTop", true ),
+			left: offset.left - parentOffset.left - EhQuery.css( elem, "marginLeft", true )
 		};
 	},
 
@@ -127,7 +127,7 @@ jQuery.fn.extend({
 		return this.map(function() {
 			var offsetParent = this.offsetParent || docElem;
 
-			while ( offsetParent && ( !jQuery.nodeName( offsetParent, "html" ) && jQuery.css( offsetParent, "position") === "static" ) ) {
+			while ( offsetParent && ( !EhQuery.nodeName( offsetParent, "html" ) && EhQuery.css( offsetParent, "position") === "static" ) ) {
 				offsetParent = offsetParent.offsetParent;
 			}
 
@@ -138,11 +138,11 @@ jQuery.fn.extend({
 
 
 // Create scrollLeft and scrollTop methods
-jQuery.each( {scrollLeft: "pageXOffset", scrollTop: "pageYOffset"}, function( method, prop ) {
+EhQuery.each( {scrollLeft: "pageXOffset", scrollTop: "pageYOffset"}, function( method, prop ) {
 	var top = "pageYOffset" === prop;
 
-	jQuery.fn[ method ] = function( val ) {
-		return jQuery.access( this, function( elem, method, val ) {
+	EhQuery.fn[ method ] = function( val ) {
+		return EhQuery.access( this, function( elem, method, val ) {
 			var win = getWindow( elem );
 
 			if ( val === undefined ) {
@@ -163,5 +163,5 @@ jQuery.each( {scrollLeft: "pageXOffset", scrollTop: "pageYOffset"}, function( me
 });
 
 function getWindow( elem ) {
-	return jQuery.isWindow( elem ) ? elem : elem.nodeType === 9 && elem.defaultView;
+	return EhQuery.isWindow( elem ) ? elem : elem.nodeType === 9 && elem.defaultView;
 }

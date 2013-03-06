@@ -3,7 +3,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-	<title>jQuery Test Suite</title>
+	<title>EhQuery Test Suite</title>
 	<link rel="Stylesheet" media="screen" href="qunit/qunit/qunit.css" />
 	<link rel="Stylesheet" media="screen" href="data/testsuite.css" />
 	<!-- Includes -->
@@ -18,11 +18,11 @@
 		(function() {
 			var src = "../dist/jquery.min.js";
 
-			// Config parameter to use minified jQuery
+			// Config parameter to use minified EhQuery
 			QUnit.config.urlConfig.push({
 				id: "dev",
 				label: "Load unminified",
-				tooltip: "Load the development (unminified) jQuery file"
+				tooltip: "Load the development (unminified) EhQuery file"
 			});
 			if ( QUnit.urlParams.dev ) {
 				src = "../dist/jquery.js";
@@ -40,7 +40,7 @@
 				document.documentElement.compareDocumentPosition = null;
 			}
 
-			// Load jQuery
+			// Load EhQuery
 			document.write( "<script id='jquery-js' src='" + src + "'><\x2Fscript>" );
 		})();
 	</script>
@@ -72,7 +72,7 @@
 	</script>
 
 	<script>
-		// html5shiv, enabling HTML5 elements to be used with jQuery
+		// html5shiv, enabling HTML5 elements to be used with EhQuery
 		( "abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup " +
 			"mark meter nav output progress section summary time video"
 		).replace(/\w+/g, function(n) {

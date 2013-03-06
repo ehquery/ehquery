@@ -4,17 +4,17 @@
 	<title>Test .closest() Performance</title>
 	<script src="benchmark.js"></script>
 	<script src="jquery-basis.js"></script>
-	<script>var old = jQuery.noConflict(true);</script>
+	<script>var old = EhQuery.noConflict(true);</script>
 	<script src="../dist/jquery.js"></script>
 	<script>
-		jQuery(function ready() {
+		EhQuery(function ready() {
 			var node = $("#child"), name;
 
-			jQuery.each([".zoo", "#zoo", "[data-foo=zoo]", "#nonexistant"], function(i, item) {
+			EhQuery.each([".zoo", "#zoo", "[data-foo=zoo]", "#nonexistant"], function(i, item) {
 	setTimeout(function(){
 					name = "closest '" + item + "'";
 
-		jQuery("#results").append("<li>" + name + "<ul>" +
+		EhQuery("#results").append("<li>" + name + "<ul>" +
 						"<li>new: " + benchmarkString("$('#child').closest('" + item + "')", 2500, name) + "</li>" +
 						"<li>old: " + benchmarkString("old('#child').closest('" + item + "')", 2500, name) + "</li>"
 			+ "</ul></li>");

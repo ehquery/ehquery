@@ -17,9 +17,9 @@
 			script.parentNode.appendChild( div );
 			div.innerHTML = "<iframe name=\"test\" src=\"" + src + "\">";
 
-			jQuery(function() {
+			EhQuery(function() {
 				try {
-					jQuery( "<div>hello<div>world</div>!</div>" ).appendTo( "#qunit-fixture" );
+					EhQuery( "<div>hello<div>world</div>!</div>" ).appendTo( "#qunit-fixture" );
 				} catch( e ) {
 					success = false;
 					error = e;

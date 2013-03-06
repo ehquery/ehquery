@@ -1,7 +1,7 @@
 /*jshint multistr:true, quotmark:false */
 
 var amdDefined, fireNative,
-	originaljQuery = this.jQuery || "jQuery",
+	originalEhQuery = this.EhQuery || "EhQuery",
 	original$ = this.$ || "$",
 	hasPHP = true,
 	isLocal = window.location.protocol === "file:",
@@ -9,7 +9,7 @@ var amdDefined, fireNative,
 	externalHost = "example.com";
 
 // For testing .noConflict()
-this.jQuery = originaljQuery;
+this.EhQuery = originalEhQuery;
 this.$ = original$;
 
 /**
@@ -45,7 +45,7 @@ function q() {
  * @result returns true if "//[a]" return two elements with the IDs 'foo' and 'baar'
  */
 function t( a, b, c ) {
-	var f = jQuery(b).get(),
+	var f = EhQuery(b).get(),
 		s = "",
 		i = 0;
 
@@ -69,7 +69,7 @@ function createDashboardXML() {
 		</locations> \
 	</dashboard>';
 
-	return jQuery.parseXML(string);
+	return EhQuery.parseXML(string);
 }
 
 function createWithFriesXML() {
@@ -99,7 +99,7 @@ function createWithFriesXML() {
 		</soap:Body> \
 	</soap:Envelope>';
 
-	return jQuery.parseXML( string.replace( /\{\{\s*externalHost\s*\}\}/g, externalHost ) );
+	return EhQuery.parseXML( string.replace( /\{\{\s*externalHost\s*\}\}/g, externalHost ) );
 }
 
 function createXMLFragment() {
@@ -144,12 +144,12 @@ function url( value ) {
 // Ajax testing helper
 function ajaxTest( title, expect, options ) {
 	var requestOptions;
-	if ( jQuery.isFunction( options ) ) {
+	if ( EhQuery.isFunction( options ) ) {
 		options = options();
 	}
 	options = options || [];
 	requestOptions = options.requests || options.request || options;
-	if ( !jQuery.isArray( requestOptions ) ) {
+	if ( !EhQuery.isArray( requestOptions ) ) {
 		requestOptions = [ requestOptions ];
 	}
 	asyncTest( title, expect, function() {
@@ -169,15 +169,15 @@ function ajaxTest( title, expect, options ) {
 					start();
 				}
 			},
-			requests = jQuery.map( requestOptions, function( options ) {
-				var request = ( options.create || jQuery.ajax )( options ),
+			requests = EhQuery.map( requestOptions, function( options ) {
+				var request = ( options.create || EhQuery.ajax )( options ),
 					callIfDefined = function( deferType, optionType ) {
 						var handler = options[ deferType ] || !!options[ optionType ];
 						return function( _, status ) {
 							if ( !completed ) {
 								if ( !handler ) {
 									ok( false, "unexpected " + status );
-								} else if ( jQuery.isFunction( handler ) ) {
+								} else if ( EhQuery.isFunction( handler ) ) {
 									handler.apply( this, arguments );
 								}
 							}
@@ -199,7 +199,7 @@ function ajaxTest( title, expect, options ) {
 				completed = true;
 				delete ajaxTest.abort;
 				ok( false, "aborted " + reason );
-				jQuery.each( requests, function( i, request ) {
+				EhQuery.each( requests, function( i, request ) {
 					request.abort();
 				});
 			}
@@ -219,12 +219,12 @@ function ajaxTest( title, expect, options ) {
 			var iframe = loadFixture(),
 				win = iframe.contentWindow,
 				interval = setInterval( function() {
-					if ( win && win.jQuery && win.jQuery.isReady ) {
+					if ( win && win.EhQuery && win.EhQuery.isReady ) {
 						clearInterval( interval );
 						// continue
 						start();
-						// call actual tests passing the correct jQuery instance to use
-						fn.call( this, win.jQuery, win, win.document );
+						// call actual tests passing the correct EhQuery instance to use
+						fn.call( this, win.EhQuery, win, win.document );
 						document.body.removeChild( iframe );
 						iframe = null;
 					}
@@ -233,7 +233,7 @@ function ajaxTest( title, expect, options ) {
 
 		function loadFixture() {
 			var src = url("./data/" + fileName + ".html"),
-				iframe = jQuery("<iframe />").appendTo("body")[0];
+				iframe = EhQuery("<iframe />").appendTo("body")[0];
 				iframe.style.cssText = "width: 500px; height: 500px; position: absolute; top: -600px; left: -600px; visibility: hidden;";
 			iframe.contentWindow.location = src;
 			return iframe;
@@ -257,8 +257,8 @@ function ajaxTest( title, expect, options ) {
 					start();
 				}, 0 );
 			};
-			iframe = jQuery( "<div/>" ).append(
-				jQuery( "<iframe/>" ).attr( "src", url( "./data/" + fileName ) )
+			iframe = EhQuery( "<div/>" ).append(
+				EhQuery( "<iframe/>" ).attr( "src", url( "./data/" + fileName ) )
 			).appendTo( "body" );
 		});
 	};

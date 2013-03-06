@@ -46,24 +46,24 @@ var output,
 		return "{ " + output.join( ", " ) + " }";
 	}
 
-jQuery.each( tests, function( strFlags, resultString ) {
+EhQuery.each( tests, function( strFlags, resultString ) {
 
 		var objectFlags = {};
 
-		jQuery.each( strFlags.split( " " ), function() {
+		EhQuery.each( strFlags.split( " " ), function() {
 			if ( this.length ) {
 				objectFlags[ this ] = true;
 			}
 		});
 
-		jQuery.each( filters, function( filterLabel, filter ) {
+		EhQuery.each( filters, function( filterLabel, filter ) {
 
-			jQuery.each({
+			EhQuery.each({
 				"string": strFlags,
 				"object": objectFlags
 			}, function( flagsTypes, flags ) {
 
-				test( "jQuery.Callbacks( " + showFlags( flags ) + " ) - " + filterLabel, function() {
+				test( "EhQuery.Callbacks( " + showFlags( flags ) + " ) - " + filterLabel, function() {
 
 					expect( 21 );
 
@@ -76,7 +76,7 @@ jQuery.each( tests, function( strFlags, resultString ) {
 
 					// Basic binding and firing
 					output = "X";
-					cblist = jQuery.Callbacks( flags );
+					cblist = EhQuery.Callbacks( flags );
 					cblist.add(function( str ) {
 						output += str;
 					});
@@ -93,7 +93,7 @@ jQuery.each( tests, function( strFlags, resultString ) {
 					strictEqual( output, "X", "Firing after disabling" );
 
 					// #13517 - Emptying while firing
-					cblist = jQuery.Callbacks( flags );
+					cblist = EhQuery.Callbacks( flags );
 					cblist.add( cblist.empty );
 					cblist.add( function() {
 						ok( false, "not emptied" );
@@ -101,7 +101,7 @@ jQuery.each( tests, function( strFlags, resultString ) {
 					cblist.fire();
 
 					// Disabling while firing
-					cblist = jQuery.Callbacks( flags );
+					cblist = EhQuery.Callbacks( flags );
 					cblist.add( cblist.disable );
 					cblist.add( function() {
 						ok( false, "not disabled" );
@@ -110,7 +110,7 @@ jQuery.each( tests, function( strFlags, resultString ) {
 
 					// Basic binding and firing (context, arguments)
 					output = "X";
-					cblist = jQuery.Callbacks( flags );
+					cblist = EhQuery.Callbacks( flags );
 					cblist.add(function() {
 						equal( this, window, "Basic binding and firing (context)" );
 						output += Array.prototype.join.call( arguments, "" );
@@ -120,7 +120,7 @@ jQuery.each( tests, function( strFlags, resultString ) {
 
 					// fireWith with no arguments
 					output = "";
-					cblist = jQuery.Callbacks( flags );
+					cblist = EhQuery.Callbacks( flags );
 					cblist.add(function() {
 						equal( this, window, "fireWith with no arguments (context is window)" );
 						strictEqual( arguments.length, 0, "fireWith with no arguments (no arguments)" );
@@ -129,7 +129,7 @@ jQuery.each( tests, function( strFlags, resultString ) {
 
 					// Basic binding, removing and firing
 					output = "X";
-					cblist = jQuery.Callbacks( flags );
+					cblist = EhQuery.Callbacks( flags );
 					cblist.add( outputA, outputB, outputC );
 					cblist.remove( outputB, outputC );
 					cblist.fire();
@@ -137,7 +137,7 @@ jQuery.each( tests, function( strFlags, resultString ) {
 
 					// Empty
 					output = "X";
-					cblist = jQuery.Callbacks( flags );
+					cblist = EhQuery.Callbacks( flags );
 					cblist.add( outputA );
 					cblist.add( outputB );
 					cblist.add( outputC );
@@ -147,7 +147,7 @@ jQuery.each( tests, function( strFlags, resultString ) {
 
 					// Locking
 					output = "X";
-					cblist = jQuery.Callbacks( flags );
+					cblist = EhQuery.Callbacks( flags );
 					cblist.add(function( str ) {
 						output += str;
 					});
@@ -163,7 +163,7 @@ jQuery.each( tests, function( strFlags, resultString ) {
 
 					// Ordering
 					output = "X";
-					cblist = jQuery.Callbacks( flags );
+					cblist = EhQuery.Callbacks( flags );
 					cblist.add(function() {
 						cblist.add( outputC );
 						outputA();
@@ -185,7 +185,7 @@ jQuery.each( tests, function( strFlags, resultString ) {
 
 					// Multiple fire
 					output = "X";
-					cblist = jQuery.Callbacks( flags );
+					cblist = EhQuery.Callbacks( flags );
 					cblist.add(function( str ) {
 						output += str;
 					});
@@ -207,7 +207,7 @@ jQuery.each( tests, function( strFlags, resultString ) {
 
 					// Return false
 					output = "X";
-					cblist = jQuery.Callbacks( flags );
+					cblist = EhQuery.Callbacks( flags );
 					cblist.add( outputA, function() { return false; }, outputB );
 					cblist.add( outputA );
 					cblist.fire();
@@ -226,7 +226,7 @@ jQuery.each( tests, function( strFlags, resultString ) {
 					handler.method = function() {
 						output += "!";
 					};
-					cblist = jQuery.Callbacks( flags );
+					cblist = EhQuery.Callbacks( flags );
 					cblist.add( handler );
 					cblist.add( handler );
 					cblist.fire();
@@ -238,14 +238,14 @@ jQuery.each( tests, function( strFlags, resultString ) {
 
 })();
 
-test( "jQuery.Callbacks( options ) - options are copied", function() {
+test( "EhQuery.Callbacks( options ) - options are copied", function() {
 
 	expect( 1 );
 
 	var options = {
 			"unique": true
 		},
-		cb = jQuery.Callbacks( options ),
+		cb = EhQuery.Callbacks( options ),
 		count = 0,
 		fn = function() {
 			ok( !( count++ ), "called once" );
@@ -255,11 +255,11 @@ test( "jQuery.Callbacks( options ) - options are copied", function() {
 	cb.fire();
 });
 
-test( "jQuery.Callbacks.fireWith - arguments are copied", function() {
+test( "EhQuery.Callbacks.fireWith - arguments are copied", function() {
 
 	expect( 1 );
 
-	var cb = jQuery.Callbacks("memory"),
+	var cb = EhQuery.Callbacks("memory"),
 		args = ["hello"];
 
 	cb.fireWith( null, args );
@@ -270,11 +270,11 @@ test( "jQuery.Callbacks.fireWith - arguments are copied", function() {
 	});
 });
 
-test( "jQuery.Callbacks.remove - should remove all instances", function() {
+test( "EhQuery.Callbacks.remove - should remove all instances", function() {
 
 	expect( 1 );
 
-	var cb = jQuery.Callbacks();
+	var cb = EhQuery.Callbacks();
 
 	function fn() {
 		ok( false, "function wasn't removed" );
@@ -285,11 +285,11 @@ test( "jQuery.Callbacks.remove - should remove all instances", function() {
 	}).remove( fn ).fire();
 });
 
-test( "jQuery.Callbacks.has", function() {
+test( "EhQuery.Callbacks.has", function() {
 
 	expect( 13 );
 
-	var cb = jQuery.Callbacks();
+	var cb = EhQuery.Callbacks();
 	function getA() {
 		return "A";
 	}
@@ -322,7 +322,7 @@ test( "jQuery.Callbacks.has", function() {
 	strictEqual( cb.has(), false, "disabled() list has no callback functions (returns false)" );
 	strictEqual( cb.has(getA), false, "Check for a specific function in a disabled() list" );
 
-	cb = jQuery.Callbacks("unique");
+	cb = EhQuery.Callbacks("unique");
 	cb.add(getA);
 	cb.add(getA);
 	strictEqual( cb.has(), true, "Check if unique list has callback function(s) attached" );
@@ -332,11 +332,11 @@ test( "jQuery.Callbacks.has", function() {
 
 });
 
-test( "jQuery.Callbacks() - adding a string doesn't cause a stack overflow", function() {
+test( "EhQuery.Callbacks() - adding a string doesn't cause a stack overflow", function() {
 
 	expect( 1 );
 
-	jQuery.Callbacks().add( "hello world" );
+	EhQuery.Callbacks().add( "hello world" );
 
 	ok( true, "no stack overflow" );
 });
