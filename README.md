@@ -4,12 +4,9 @@
 Contribution Guides
 --------------------------------------
 
-In the spirit of open source software development, EhQuery always encourages community code contribution. To help you get started and before you jump into writing code, be sure to read these important contribution guidelines thoroughly:
+Sorry, We don't have any contribution guides right now eh.
 
-1. [Getting Involved](http://docs.ehquery.com/Getting_Involved)
-2. [Core Style Guide](http://docs.ehquery.com/JQuery_Core_Style_Guidelines)
-3. [Tips For Bug Patching](http://docs.ehquery.com/Tips_for_EhQuery_Bug_Patching)
-
+So sorry.
 
 What you need to build your own EhQuery
 --------------------------------------
